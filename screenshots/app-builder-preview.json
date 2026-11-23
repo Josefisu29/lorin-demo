@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "LORIN",
+      "hasCanvas": false,
+      "bodyTextLen": 622,
+      "bodyTextHash": "34a66fcf405743099109844ca5b6e97a48be9cf0bb45462994c539fcb1c103cf",
+      "bodyTextPrefix": "Skip to workspace LORIN Personal intelligence Today Conversation",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "LORIN",
+      "hasCanvas": false,
+      "bodyTextLen": 352,
+      "bodyTextHash": "3d1ff215155a26bec4ed6843f24d48521b4f16f29f37d8a27516fc7d0c34d64b",
+      "bodyTextPrefix": "Skip to workspace Atlas Route auto · Gemini configured, not veri",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}
