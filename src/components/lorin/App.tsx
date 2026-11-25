@@ -1,8 +1,10 @@
 import { useCallback, useEffect } from "react";
 import { useGlobalShortcuts } from "@/lib/lorin/shortcuts";
 import { useLorin, type View } from "@/lib/lorin/store";
+import { CallInModal } from "./CallInModal";
 import { Shell } from "./chrome";
 import { CommandPalette } from "./CommandPalette";
+import { ActivationIntroOverlay } from "./CompanionCanvas";
 import { Ambient, Immersive, MainView } from "./views";
 
 export function LorinApp() {
@@ -13,11 +15,21 @@ export function LorinApp() {
   useEffect(() => {
     void useLorin.persist.rehydrate().then(() => {
       const s = useLorin.getState();
-      const hot = s.character === "listening" || s.character === "processing" || s.character === "speaking" || s.voice !== "idle";
+      const hot =
+        s.character === "listening" ||
+        s.character === "processing" ||
+        s.character === "speaking" ||
+        s.voice !== "idle";
       const patch: Partial<typeof s> = {};
-      if (hot) Object.assign(patch, { voice: "idle", voiceSource: "none", character: "idle", voiceSession: "" });
-      // Older demo builds allowed a local toggle to mark Gemini verified.
-      // That flag never checked credentials; clear it during migration.
+      if (hot) {
+        Object.assign(patch, {
+          voice: "idle",
+          voiceSource: "none",
+          character: "idle",
+          voiceSession: "",
+          activationStage: 0,
+        });
+      }
       if (s.geminiVerified) patch.geminiVerified = false;
       if (Object.keys(patch).length) useLorin.setState(patch);
     });
@@ -25,7 +37,11 @@ export function LorinApp() {
 
   const handleNavigate = useCallback((view: View) => {
     const state = useLorin.getState();
-    if (state.mode === "ambient" || state.mode === "immersive" || state.mode === "compact") {
+    if (
+      state.mode === "ambient" ||
+      state.mode === "immersive" ||
+      state.mode === "compact"
+    ) {
       state.setMode("workspace");
     }
     state.setView(view);
@@ -61,14 +77,15 @@ export function LorinApp() {
     <>
       {content}
       <CommandPalette />
+      <ActivationIntroOverlay />
+      <CallInModal />
       {pendingPrefix && (
         <div className="chord-indicator" role="status" aria-live="polite">
           <span className="text-muted">Shortcut</span>
           <kbd className="kbd-key">{pendingPrefix}</kbd>
-          <span className="text-muted">then h / s / c / i …</span>
+          <span className="text-muted">then h / o / s / c / i …</span>
         </div>
       )}
     </>
   );
 }
-

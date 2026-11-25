@@ -63,6 +63,19 @@
 
 @layer components {
 .lorin-app-shell { min-height: 100dvh; }
+.lorin-app-shell.theme-light {
+  --color-bg: #f4f7fa;
+  --color-surface: #ffffff;
+  --color-elevated: #eaf0f6;
+  --color-line: #d0dce8;
+  --color-fg: #0f1722;
+  --color-muted: #526377;
+  --color-teal: #0b8a73;
+  --color-teal-ink: #ffffff;
+  --color-indigo: #3f57c8;
+  --color-signal: #b8740a;
+  --color-danger: #c63636;
+}
 .lorin-sidebar {
   position: sticky;
   top: 0;

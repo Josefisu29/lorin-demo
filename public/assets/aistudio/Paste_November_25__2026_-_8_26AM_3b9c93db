@@ -1,0 +1,2175 @@
+# LORIN — EXISTING APPLICATION IN-PLACE UPGRADE
+## Unified Interactive Demonstration, Wake-Word Companion, Local-First Device Fabric and Semi-Autonomous Intelligence
+
+**Product:** LORIN — Personal Intelligence. Everywhere.  
+**Target:** The existing active LORIN application and its current demonstration environment  
+**Scope:** M1–M9 completion, plus wake-word activation, adaptive companion presentation, local-first multi-device connectivity and semi-automated operation  
+**Development approach:** Extend and complete the existing implementation. Do not create a separate demonstration application.
+
+---
+
+# 0. CRITICAL DIRECTIVE — UPGRADE THE EXISTING LORIN APPLICATION
+
+Act as a complete senior engineering, AI, security, product-design and quality-assurance team.
+
+Your assignment is to continue the existing LORIN project from the supplied/current source code and complete the interactive demonstration within that same application.
+
+**This is an in-place upgrade, not a new project.**
+
+The existing LORIN website, existing application routes, current implementation, established design system, backend foundations, database, authentication, PWA configuration, device infrastructure, Presence foundation and other working features must be inspected and reused.
+
+Do not create:
+
+- A second LORIN application.
+- A separate LORIN Demo website.
+- A disconnected prototype.
+- A replacement React starter project.
+- A second dashboard with copied information.
+- A standalone chatbot that does not communicate with the existing LORIN application.
+- A static Figma-style presentation pretending to be functional software.
+
+The current LORIN application must become the working product demonstration.
+
+The user must be able to open the existing LORIN website, sign in or enter its isolated demo environment, navigate its actual workspaces, activate its companion, ask questions, use its tools, manage its data, test synchronization and explore the M1–M9 functionality.
+
+All relevant features must be integrated into the existing navigation and application architecture.
+
+## 0.1 Preserve the existing source
+
+Before modifying anything:
+
+1. Inspect the complete existing repository.
+2. Identify the currently active application entry point.
+3. Identify the actual frontend, backend, database and authentication architecture.
+4. Identify existing demo functionality and demo records.
+5. Inspect all M1–M9 implementations and unfinished components.
+6. Identify existing routes, layouts, components, services and APIs.
+7. Determine which features already work and which only have interfaces or documentation.
+8. Back up the source and create a recoverable working branch.
+9. Prepare an implementation map linking every required feature to its existing or planned location.
+
+Reuse existing working implementations.
+
+Do not overwrite the existing application merely to achieve a different visual appearance.
+
+## 0.2 One application, two isolated operating environments
+
+Within the current application, support two distinct environments:
+
+**A. Demonstration Environment**
+
+- Fictional owner profile.
+- Synthetic contacts and projects.
+- Synthetic conversations and knowledge.
+- Persistent demonstration records.
+- Working internal tools.
+- Real AI inference when a provider is configured.
+- Clearly marked simulated external integrations.
+- Safe reset and reseeding.
+- No access to the owner's real private data.
+
+**B. Owner's Live Environment**
+
+- Real owner identity.
+- Real personal data.
+- Real approved devices.
+- Real configured providers.
+- Owner-controlled storage.
+- Actual connected services.
+- Explicit permissions for external actions.
+
+These environments must be logically and technically isolated.
+
+The user must not need a second application to switch between demonstration and live configuration.
+
+Use separate tenant identifiers, database namespaces, storage prefixes, authentication context and authorization policies.
+
+Never mix demo records with real owner records.
+
+---
+
+# 1. PRODUCT EXPERIENCE — HOW LORIN SHOULD FEEL
+
+LORIN must feel like an intelligent assistant that is ready to help, not an ordinary chatbot that waits passively for every instruction.
+
+The experience should combine:
+
+- Natural text conversation.
+- Voice conversation.
+- A responsive visual companion.
+- Context-aware presentation.
+- Knowledge retrieval.
+- Project and task management.
+- Proactive notifications.
+- Approved task execution.
+- Local device connectivity.
+- Private synchronization.
+- Owner-controlled automation.
+
+The user should be able to move naturally between speaking, typing, viewing the companion and working inside the application's workspaces.
+
+The application must not force the user into one fixed interface.
+
+## 1.1 Main user experience
+
+When LORIN opens, the user should see a polished personal intelligence workspace.
+
+The initial experience should include:
+
+- LORIN identity and status.
+- A natural companion presentation.
+- A clear way to start a conversation.
+- Voice activation controls.
+- Current AI provider and model status.
+- Current device and synchronization status.
+- Relevant tasks and activities.
+- Notifications requiring attention.
+- Quick access to major workspaces.
+
+Avoid overwhelming the user with every system metric.
+
+Show useful information first and detailed technical information when requested.
+
+## 1.2 A consistent assistant identity
+
+LORIN is the only primary assistant identity.
+
+Internal specialist capabilities remain:
+
+- Lena — Guardian and security.
+- Owen — Coordination and task orchestration.
+- Riley — Communication and companion experience.
+- Iris — Research and evidence.
+- Nolan — Engineering and architecture.
+- GIDEON — Memory, history and continuity.
+
+These are internal capabilities, not competing assistants that the user must constantly select.
+
+---
+
+# 2. THE NEW WAKE-WORD ACTIVATION SYSTEM
+
+## Objective
+
+The user should be able to activate LORIN by speaking naturally, rather than having to open the application and press a microphone button every time.
+
+Support configurable wake phrases, including:
+
+- "Hey LORIN."
+- "LORIN, are you there?"
+- "LORIN, let's get to work."
+- "LORIN, can you check this?"
+- "LORIN, I need your help."
+
+The user should also be able to add, remove or change wake phrases.
+
+## 2.1 Wake-word architecture
+
+Implement a dedicated wake-word service with platform-specific adapters.
+
+Preferred design:
+
+1. Local wake-word detection.
+2. Local voice activity detection.
+3. A small on-device speech-processing pipeline.
+4. Speech recognition after activation.
+5. LORIN intent and command processing.
+6. Backend AI inference when needed.
+
+The wake-word detector should operate locally wherever technically possible.
+
+Do not continuously stream raw microphone audio to Gemini, Ollama or another cloud service simply to detect the wake phrase.
+
+The actual command may be transmitted to the selected AI provider only after the user has activated the assistant and the applicable privacy policy permits it.
+
+Use a suitable, maintained wake-word engine with verified licensing and supported target platforms.
+
+Do not implement a fake wake-word listener that activates merely because a button was clicked.
+
+## 2.2 Supported listening states
+
+Create an explicit listener state machine.
+
+States:
+
+- Listener disabled.
+- Permission required.
+- Permission denied.
+- Preparing listener.
+- Foreground listening.
+- Background listening.
+- Wake phrase detected.
+- Assistant activating.
+- Command recognition.
+- Processing request.
+- Speaking.
+- Interrupted.
+- Paused.
+- Listener unavailable.
+- Listener error.
+
+Every state must have an accurate visual representation.
+
+Provide an easily accessible control to:
+
+- Enable listening.
+- Disable listening.
+- Pause listening.
+- Resume listening.
+- Select the microphone.
+- Test microphone input.
+- Configure wake phrases.
+- View privacy information.
+- View current listener capability.
+
+A microphone indicator must remain visible whenever audio capture is active.
+
+Do not hide microphone activity.
+
+Do not secretly record, store or transmit conversations.
+
+## 2.3 Browser and PWA listening behaviour
+
+Implement actual foreground wake-word detection in the PWA only where the browser and operating system provide the required microphone capabilities.
+
+Require:
+
+- HTTPS or a secure context.
+- Explicit microphone permission.
+- User activation to start listening.
+- A visible listening state.
+- A clear stop control.
+- Proper microphone release when the listener is disabled.
+
+When the browser suspends the page, the microphone permission is revoked or the operating system stops audio capture, LORIN must report that listening has stopped.
+
+Do not attempt to bypass browser lifecycle restrictions.
+
+A service worker must not be presented as a permanently running microphone listener.
+
+The PWA should continue to support:
+
+- Tap-to-talk.
+- Text conversation.
+- Foreground voice interaction.
+- Push notifications where supported and configured.
+- Restoration of conversations and pending work.
+- Automatic reconnection and synchronization.
+
+**Do not advertise permanent background listening as a PWA capability unless it has been verified on that exact platform.**
+
+## 2.4 Windows desktop background listener
+
+Use the existing Tauri 2 direction to build the actual Windows desktop application.
+
+The desktop application should support, subject to verified permissions and platform testing:
+
+- Running in the system tray.
+- Minimizing to tray.
+- Optional launch at system startup.
+- Optional background wake-word listening.
+- Microphone selection.
+- Visible listening status.
+- A keyboard shortcut to activate LORIN.
+- Notification-based activation.
+- A setting to disable background listening.
+- A setting to completely exit the application.
+
+Autostart must be user-controlled and disabled until the owner explicitly enables it.
+
+Closing the main window should offer the configured behaviour:
+
+- Minimize to tray.
+- Continue approved background services.
+- Completely exit.
+
+Never assume that closing the interface means the application has stopped.
+
+Likewise, never claim that the background listener remains active after the native process has exited.
+
+Build and test the actual Windows application before labelling this feature available.
+
+## 2.5 Android and mobile background listening
+
+Keep the PWA as the first mobile installation option.
+
+For Android, implement background wake listening only through a genuine, permissioned native capability where supported.
+
+When required, use an appropriately configured foreground service, persistent system notification, explicit microphone permission and compliant operating-system lifecycle handling.
+
+The user must be able to see that the microphone listener is active and stop it immediately.
+
+If Android battery management, system policy or application restrictions interrupt listening, show the actual interruption.
+
+Do not silently restart a microphone service in violation of operating-system restrictions.
+
+For iOS and unsupported mobile browsers, provide foreground listening and tap-to-talk. Do not promise continuous background microphone operation through a normal PWA.
+
+A future native iOS implementation must be evaluated separately against supported platform capabilities and privacy rules.
+
+## 2.6 Wake phrases must carry context
+
+LORIN must distinguish between a simple wake phrase and a wake phrase that already contains a command.
+
+Examples:
+
+**User:** "Hey LORIN."
+
+Expected behaviour: Activate and greet the user naturally.
+
+**User:** "LORIN, are you there?"
+
+Expected behaviour: Activate and respond that LORIN is available.
+
+**User:** "LORIN, let's get to work."
+
+Expected behaviour: Activate and open the appropriate working context.
+
+**User:** "LORIN, can you check the Atlas project?"
+
+Expected behaviour: Activate and retain the actual command. After the introduction, begin checking the Atlas project.
+
+Do not discard the words spoken after the wake phrase.
+
+Do not ask the user what to do when the user has already supplied the instruction.
+
+---
+
+# 3. THE FIVE-SECOND LORIN ACTIVATION INTRODUCTION
+
+## Objective
+
+Whenever the user successfully activates LORIN from an idle state, show a short, polished activation sequence.
+
+Default duration: approximately five seconds.
+
+The sequence should feel like the assistant is becoming present and ready.
+
+It must not be a loading animation that pretends the AI is thinking when no request has been submitted.
+
+## 3.1 Activation sequence
+
+Implement the following sequence.
+
+**Stage 1 — Wake detected**
+
+- Wake phrase detected locally.
+- Listener changes to activation state.
+- A subtle light or visual pulse appears.
+- The interface acknowledges activation.
+
+**Stage 2 — Companion emergence**
+
+- LORIN's visual companion becomes visible.
+- The character transitions from idle to activation.
+- The environment responds with subtle lighting and motion.
+- A short original activation animation plays.
+
+**Stage 3 — Presence established**
+
+- The visual companion becomes attentive.
+- Eye movement and expression transition naturally.
+- The visual state changes to ready/listening.
+- Audio greeting begins only after the audio system is ready.
+
+**Stage 4 — Greeting or command processing**
+
+When the user has only called LORIN:
+
+"Hello. I'm here. What are we working on today?"
+
+The greeting may adapt to the time of day, recent activity, user preferences and whether the user prefers a short or conversational greeting.
+
+When the user has already issued a command, acknowledge it and proceed without asking a redundant question.
+
+## 3.2 Animation requirements
+
+- Original LORIN visual identity.
+- Smooth transitions.
+- Real-time character rendering.
+- Natural expressions.
+- Eye and head movement.
+- Actual speech synchronization.
+- Appropriate lighting.
+- No excessive movie-style effects.
+- No fake processing telemetry.
+- No unnecessary waiting.
+
+Provide a skip option.
+
+Respect reduced-motion settings.
+
+Do not replay the entire five-second animation for every individual message or navigation change. Trigger it for meaningful assistant activation after an idle state.
+
+## 3.3 Activation failure
+
+If the visual companion fails to load, LORIN must still activate through the text and voice interface.
+
+If audio is unavailable, provide a visible greeting.
+
+If the AI provider is unavailable, the assistant may still open and explain its current capabilities, but must not pretend that live model inference succeeded.
+
+---
+
+# 4. AUTOMATIC VISUAL PRESENTATION — LORIN MUST KNOW HOW TO APPEAR
+
+The application must intelligently select the most useful presentation of LORIN based on the user's interaction, device capabilities and current task.
+
+Implement an adaptive presentation controller.
+
+The user should not have to manually switch between visual modes every time.
+
+## 4.1 Visual presentations
+
+### A. Holographic / 3D Companion
+
+Use for:
+
+- Wake-word activation.
+- Voice conversations.
+- Assistant introductions.
+- Natural conversational interaction.
+- Immersive companion experiences.
+- Relevant voice briefings.
+
+This must use an actual real-time rendering system, not a static image labelled 3D.
+
+### B. Conversational Companion
+
+Use for:
+
+- Normal conversations.
+- Follow-up questions.
+- Interactive explanations.
+- Voice-and-text exchanges.
+- Personal assistance.
+
+The companion can appear alongside the conversation without obstructing message content.
+
+### C. Text / Productivity Workspace
+
+Use for:
+
+- Coding.
+- Research.
+- Long technical explanations.
+- Project management.
+- Knowledge retrieval.
+- Document analysis.
+- Task workflows.
+
+Prioritize readability and usable workspace space.
+
+The companion should remain available in a compact form where appropriate.
+
+### D. Compact Companion
+
+Use when:
+
+- The user is working in another workspace.
+- The screen is small.
+- The companion should remain accessible but unobtrusive.
+- The user is viewing documents or code.
+
+### E. Ambient Presentation
+
+Use when:
+
+- LORIN is idle.
+- The user enables ambient mode.
+- The screen is intended to show subtle assistant status.
+
+Do not assume that ambient mode grants permission to activate the microphone or camera.
+
+## 4.2 Adaptive presentation rules
+
+Implement configurable rules such as:
+
+| Context | Default presentation |
+|---|---|
+| Wake-word activation | 3D companion activation |
+| Voice conversation | Companion with audio and transcript |
+| Text conversation | Conversational/text |
+| Coding | Engineering workspace with compact companion |
+| Research | Knowledge workspace with contextual companion |
+| Task execution | Workspace with visible execution state |
+| Critical alert | Priority alert presentation |
+| Small mobile screen | Compact adaptive companion |
+| Low GPU capability | Optimized 2D or lightweight 3D |
+| Reduced motion | Minimal animation |
+
+The automatic controller must never override an explicit user choice indefinitely.
+
+Provide:
+
+- Automatic presentation.
+- Manual presentation.
+- Preferred default mode.
+- Companion visibility.
+- 3D quality settings.
+- GPU fallback.
+- Accessibility settings.
+
+## 4.3 Visual companion implementation
+
+Complete M1 requirements:
+
+- Original high-quality character.
+- Actual 3D rendering.
+- Facial rigging when the production asset supports it.
+- Eye tracking and gaze behaviour.
+- Facial expressions.
+- Lip synchronization.
+- Head and body movement.
+- Idle animations.
+- Listening, thinking and speaking states.
+- Responsive environments.
+- Companion, Compact, Immersive, Workspace and Ambient modes.
+- Quality scaling.
+- 2D fallback.
+
+Use a suitable GLB/glTF asset and rendering engine such as Babylon.js where appropriate to the existing architecture.
+
+Do not mark final rigging, animation or lip synchronization complete without the actual asset and tested implementation.
+
+---
+
+# 5. A REAL CLICKABLE EXPERIENCE — GUIDED VISUAL DEMONSTRATION
+
+The user must be able to visually explore LORIN by clicking actual interface controls.
+
+Create a built-in **Explore LORIN** experience within the existing application.
+
+This must not be a separate slideshow or prerecorded walkthrough.
+
+## 5.1 Guided walkthrough
+
+Provide a button labelled:
+
+"Explore how LORIN works."
+
+When selected, it should guide the user through real application screens.
+
+The walkthrough should include:
+
+1. Open the LORIN Home workspace.
+2. Activate the companion.
+3. Enable foreground listening where supported.
+4. Try a wake phrase.
+5. Watch the activation animation.
+6. Send a text message.
+7. Receive a real AI response if a provider is configured.
+8. Search the Knowledge Vault.
+9. Ask LORIN about a project.
+10. Create a task.
+11. Inspect the task record.
+12. Open the Device Centre.
+13. Pair a demonstration client.
+14. View synchronization.
+15. Trigger a Presence event.
+16. Open the call demonstration.
+17. View Storage and Backup.
+18. Inspect Security and Audit.
+
+## 5.2 Click-by-click implementation
+
+Each walkthrough step must:
+
+- Navigate to the actual application route.
+- Highlight the actual relevant interface element.
+- Explain what the user is seeing.
+- Wait for the user to perform or approve the action where appropriate.
+- Show the resulting actual application state.
+- Allow the user to go back or skip.
+- Record walkthrough completion in the demo environment.
+
+Do not fake clicks.
+
+Do not display a successful action until the actual backend operation has succeeded.
+
+## 5.3 Guided scenario library
+
+Provide repeatable scenarios for:
+
+- Meet LORIN.
+- Research and Knowledge.
+- Software Engineering.
+- Task Coordination.
+- Proactive Presence.
+- Contact Follow-up.
+- Device Pairing.
+- Cross-Device Synchronization.
+- Cloud and Storage.
+- Security Incident.
+
+Every scenario must operate against the actual isolated demo database.
+
+---
+
+# 6. M1 — VISUAL COMPANION
+
+Complete all existing M1 requirements.
+
+The visual companion must:
+
+- Render in the existing application.
+- Have an original LORIN identity.
+- Support real 3D rendering.
+- React to actual application states.
+- Synchronize speech animation with actual audio.
+- Respond to wake-word activation.
+- Support adaptive presentation.
+- Work on desktop, tablet and mobile.
+- Provide GPU scaling and fallback.
+- Allow the user to enable or disable it.
+- Avoid blocking essential application functionality.
+
+Include the activation sequence specified in Section 3.
+
+---
+
+# 7. M2 — REAL CORE AI INTELLIGENCE
+
+The live model must be real.
+
+Use the existing backend-controlled Model Gateway.
+
+Support:
+
+- Gemini.
+- Ollama.
+- Approved additional providers already supported by the architecture.
+
+Implement:
+
+- Automatic model routing.
+- Manual model selection.
+- Provider health.
+- Actual model attribution.
+- Streaming.
+- Cancellation.
+- Retry.
+- Token usage where available.
+- Latency measurement.
+- Error handling.
+- Privacy modes.
+- Local-only operation.
+- Cloud-assisted operation.
+- Conversation history.
+- Tool calling.
+- Model fallback only when explicitly permitted by the configured policy.
+
+Never insert API keys into frontend source.
+
+Never silently substitute a canned AI response when inference fails.
+
+## 7.1 Live AI versus local knowledge
+
+Support two distinct capabilities:
+
+**Live AI Inference**
+
+When a provider is configured, LORIN sends an authorized request to the selected model and returns the genuine response.
+
+**Local Knowledge Retrieval**
+
+When no AI provider is configured, LORIN may still search its preloaded local knowledge database and display actual matching information.
+
+Clearly identify this as knowledge retrieval rather than live model inference.
+
+Do not pretend that the local search result was generated by Gemini or Ollama.
+
+If neither the live model nor the local knowledge base contains the answer, LORIN must report that the information is unavailable or not sufficiently verified.
+
+## 7.2 Real tool execution
+
+Give the model access to controlled backend tools:
+
+- Search projects.
+- Retrieve documents.
+- Search conversations.
+- Read approved memories.
+- List tasks.
+- Create and update tasks.
+- Summarize projects.
+- Search contacts.
+- Inspect calendar events.
+- Prepare briefings.
+- Create Presence events.
+- Inspect approved device status.
+- Inspect demo storage.
+- Prepare execution jobs.
+
+All tool arguments must be schema-validated and permission-checked on the backend.
+
+The model must not directly access the operating system or arbitrary databases.
+
+---
+
+# 8. M3 — KNOWLEDGE VAULT, MOCKUP KNOWLEDGE DATABASE AND GIDEON MEMORY
+
+The user wants LORIN to have enough prepared knowledge to answer basic questions during the demonstration without relying on an empty database.
+
+Implement a useful, persistent, searchable synthetic knowledge collection inside the existing LORIN Knowledge Vault.
+
+## 8.1 Knowledge domains
+
+Provide a coherent starter knowledge collection covering:
+
+- Computer science fundamentals.
+- Programming concepts.
+- Web development.
+- Mobile development.
+- Networking.
+- Internet and web technologies.
+- Operating systems.
+- Databases.
+- Cybersecurity fundamentals.
+- Artificial intelligence.
+- Machine learning concepts.
+- Cloud computing.
+- Software architecture.
+- Mathematics and logic fundamentals.
+- Productivity and planning.
+- Project management.
+- General technical terminology.
+- LORIN product requirements.
+- LORIN architecture.
+- LORIN security and device synchronization.
+
+Do not generate thousands of meaningless or contradictory entries merely to create the appearance of a large knowledge base.
+
+Each knowledge item should have:
+
+- A unique ID.
+- Title.
+- Topic.
+- Category.
+- Actual content.
+- Source or provenance.
+- Creation or import date.
+- Version.
+- Verification status.
+- Relevant keywords.
+- Searchable content.
+- Related documents.
+
+Clearly mark synthetic instructional content as demonstration knowledge.
+
+Do not fabricate external sources or citations.
+
+## 8.2 Knowledge answers
+
+When asked a basic question:
+
+1. Search the local knowledge collection.
+2. Retrieve relevant matching information.
+3. Display the source.
+4. Use the real AI model to synthesize the retrieved information when available.
+5. Provide a useful answer with source attribution.
+
+If the AI provider is unavailable, display matching knowledge passages as a direct knowledge lookup, clearly labelled.
+
+If the database has no reliable answer, say so.
+
+Use an appropriate response such as:
+
+"I don't currently have sufficiently reliable information about that in my available knowledge sources. I can investigate it when an approved research or AI provider is available."
+
+Do not invent information merely to maintain a natural conversation.
+
+## 8.3 Knowledge Vault functionality
+
+Implement:
+
+- PDF parsing.
+- DOCX parsing.
+- TXT.
+- Markdown.
+- CSV.
+- JSON.
+- HTML.
+- XLSX where supported.
+- Full-text search.
+- Document previews.
+- Indexing.
+- Retrieval.
+- Source citations.
+- Version history.
+- File checksums.
+- Project assignment.
+- Deletion.
+- Re-indexing.
+- Import history.
+- Sync history.
+
+Provide the Drive integration interface, but clearly distinguish a simulated connector from a real authenticated Google Drive connection.
+
+## 8.4 GIDEON memory
+
+Implement functional long-term memory management:
+
+- Preferences.
+- Project history.
+- Decisions.
+- Important facts.
+- Plans.
+- User-approved memories.
+- Conversation references.
+- Activity history.
+
+Support:
+
+- Create.
+- Review.
+- Approve.
+- Edit.
+- Search.
+- Pin.
+- Expire.
+- Export.
+- Delete.
+- Inspect provenance.
+
+Do not permanently store every conversation automatically.
+
+---
+
+# 9. M4 — SANDBOX AND ENGINEERING WORKSPACE
+
+Complete the engineering environment using the existing source and backend architecture.
+
+Provide:
+
+- Projects.
+- Files.
+- Jobs.
+- Logs.
+- Terminal interface.
+- Artifacts.
+- Permissions.
+- Approvals.
+- Diffs.
+- Test results.
+- Verification reports.
+
+Implement safe demonstration workflows against synthetic projects.
+
+Examples:
+
+- Inspect a sample React application.
+- Analyse an illustrative build error.
+- Generate a correction.
+- Prepare a patch.
+- Run approved tests in an actual isolated worker.
+- Generate a deployment checklist.
+
+If a genuine sandbox worker is not available, use an explicitly labelled demonstration adapter.
+
+Never present synthetic terminal output as actual execution.
+
+Do not enable unrestricted host command execution.
+
+Require permission and approval for potentially destructive or external operations.
+
+---
+
+# 10. M5 — VOICE, SPEECH AND VISION
+
+Complete M5 using the same assistant identity and the same conversation history.
+
+Voice requirements:
+
+- Tap-to-talk.
+- Foreground wake-word listening.
+- Background listening only through supported native capabilities.
+- Speech-to-text.
+- Text-to-speech.
+- Voice selection.
+- Microphone selection.
+- Interruptions.
+- Audio cancellation.
+- Listening indicators.
+- Speaking indicators.
+- Transcripts.
+- Companion lip synchronization.
+- Audio-device selection.
+- Permission handling.
+
+Clearly identify browser-provided speech APIs and external speech providers.
+
+Do not misrepresent browser speech as a connected LORIN voice provider.
+
+Vision requirements:
+
+- User-selected image upload.
+- Preview.
+- User-initiated camera snapshot.
+- Actual configured vision inference.
+- Analysis.
+- Conversation integration.
+- Data retention.
+- Permission and deletion controls.
+
+Do not activate the camera automatically.
+
+Do not describe a still image as continuous video understanding.
+
+---
+
+# 11. M6 — DEVICE CENTRE AND LOCAL DEVICE DISCOVERY
+
+## Objective
+
+The user's devices should be able to discover, pair and synchronize with one another while remaining under the same owner-controlled LORIN identity.
+
+The preferred default architecture is local-first.
+
+The user's devices are the primary environment for user data.
+
+A third-party cloud service must not silently become the default destination for private information.
+
+## 11.1 Supported device types
+
+Support:
+
+- Windows desktop.
+- Windows laptop.
+- Android phone.
+- Android tablet.
+- Supported iPhone/iPad web clients.
+- Other supported browser clients.
+- Primary Node / home server.
+
+Every device must have a unique identity.
+
+## 11.2 One-time trusted pairing
+
+The user should pair a device once.
+
+After the initial pairing and approval:
+
+- The device receives its own device identity.
+- Its public key is registered.
+- The owner approves its capabilities.
+- A secure device trust record is stored.
+- The device can reconnect using the approved identity.
+- Network changes do not automatically erase its pairing.
+- Revocation prevents future access.
+
+Pairing must never grant Primary Node privileges automatically.
+
+Require explicit owner approval.
+
+Use secure cryptographic pairing, high-entropy one-time challenges, expiry, rate limits, proof-of-possession and replay protection.
+
+## 11.3 Wi-Fi and local network discovery
+
+When two supported LORIN devices are on the same Wi-Fi network, attempt local discovery.
+
+Also support a personal mobile hotspot where devices can communicate.
+
+Use an appropriate platform-native discovery method, such as mDNS/DNS-SD, where available.
+
+The discovery process must:
+
+1. Identify the available LORIN Primary Node or paired peer.
+2. Verify the advertised endpoint.
+3. Validate the TLS certificate and expected identity.
+4. Authenticate the existing paired device.
+5. Establish an encrypted session.
+6. Exchange pending synchronization operations.
+7. Report actual connection status.
+
+Do not trust a device merely because it is connected to the same Wi-Fi.
+
+Do not assume every hotspot permits device-to-device communication. Some networks isolate their clients.
+
+Probe the actual endpoint before reporting that local synchronization is available.
+
+## 11.4 Bluetooth discovery and pairing
+
+Add Bluetooth discovery as an additional device-linking option where supported.
+
+Use Bluetooth to:
+
+- Discover nearby compatible devices.
+- Assist the initial pairing process.
+- Exchange pairing bootstrap information.
+- Confirm device presence.
+- Support limited low-bandwidth control operations where appropriate.
+
+Prefer Wi-Fi or an encrypted IP transport for normal document and database synchronization.
+
+Do not depend on Web Bluetooth for every browser.
+
+Use native Bluetooth adapters for supported desktop and mobile applications.
+
+When Bluetooth is unavailable, use QR pairing, secure local networking or the approved remote connection path.
+
+Do not report Bluetooth as connected unless an actual Bluetooth connection has been established.
+
+## 11.5 Connection transport priorities
+
+Implement a transport manager with these preferences:
+
+1. Secure local Wi-Fi connection.
+2. Secure local hotspot connection.
+3. Supported native peer connection.
+4. Approved remote private-server connection.
+5. Owner-authorized encrypted relay, if configured.
+
+The system should automatically detect network changes and retry the best available approved transport.
+
+Do not silently switch private data through an unknown third-party relay.
+
+## 11.6 Pair once, reconnect across networks
+
+A device should not need to be paired from scratch every time it changes networks.
+
+After trusted pairing, retain the cryptographic device identity.
+
+When a device moves from home Wi-Fi to a mobile hotspot, another Wi-Fi network or a remote connection, LORIN should:
+
+- Check the approved connection routes.
+- Discover the Primary Node where possible.
+- Authenticate the paired device.
+- Re-establish the encrypted session.
+- Resume pending synchronization.
+- Resolve conflicts according to the data-specific policy.
+
+**Important:** Pairing once does not create network connectivity where none exists. For communication across unrelated networks, the devices need a reachable owner-controlled Primary Node, private VPN or an explicitly approved relay.
+
+When no communication path exists, retain encrypted changes locally and synchronize when connectivity returns.
+
+## 11.7 Device permissions
+
+Support individual capability scopes.
+
+Examples:
+
+- Conversation sync.
+- Project sync.
+- Task sync.
+- Knowledge sync.
+- File access.
+- Notifications.
+- Voice.
+- Camera.
+- Device management.
+- Owner administration.
+
+A device must receive only the permissions explicitly approved by the owner.
+
+Include revocation, audit history and re-pairing controls.
+
+---
+
+# 12. M7 — PRESENCE AND PROACTIVE INTELLIGENCE
+
+LORIN must not remain passive.
+
+Implement the existing Presence foundation and complete the internal event processing system.
+
+Provide:
+
+- Event monitoring.
+- Scheduled briefings.
+- Task follow-ups.
+- Project alerts.
+- Contact responses.
+- Deadline monitoring.
+- Security alerts.
+- Pending approval alerts.
+- Notification delivery.
+- Acknowledgments.
+- Escalation rules.
+- Quiet hours.
+- Rate limits.
+- User preferences.
+- Audit records.
+
+Support priorities:
+
+- P0 Critical.
+- P1 Urgent.
+- P2 Important.
+- P3 Normal.
+- P4 Informational.
+
+## 12.1 Semi-automatic Presence
+
+During the current demonstration phase, Presence must be semi-automated.
+
+It may:
+
+- Observe approved demo records.
+- Detect configured conditions.
+- Summarize relevant events.
+- Generate briefings.
+- Prepare follow-ups.
+- Suggest next actions.
+- Create internal notifications.
+- Request approval.
+
+It must not independently send real external messages, initiate telephone calls or execute consequential actions.
+
+## 12.2 Call-in experience
+
+Build the interactive incoming-call experience.
+
+Support:
+
+- LORIN caller identity.
+- Incoming animation.
+- Priority.
+- Accept.
+- Decline.
+- Mute.
+- End.
+- Transcript.
+- AI-generated briefing.
+- Acknowledgment.
+
+The initial demonstration call must be clearly simulated.
+
+When the user accepts, use actual configured AI inference to generate the briefing from real demo records.
+
+Do not use prerecorded text and pretend that a real model produced it.
+
+Real PSTN, cellular, VoIP or push call delivery must be a separately configured and explicitly authorized integration.
+
+Do not contact real people from the demonstration environment.
+
+---
+
+# 13. M8 — PWA, WINDOWS DESKTOP AND CROSS-PLATFORM DELIVERY
+
+## 13.1 The existing website must remain the same application
+
+The current LORIN website must remain the main application.
+
+The PWA must install that application, not a second version.
+
+Any changes must remain compatible with the current domain, origin, authenticated account and application data policies.
+
+Use safe service-worker update handling.
+
+Do not create a new application origin unnecessarily because doing so may fragment existing authentication, device identity and local data.
+
+## 13.2 PWA installation
+
+Support the PWA experience on:
+
+- Windows.
+- Supported desktop browsers.
+- Android.
+- Supported mobile browsers.
+- iOS/iPadOS through the platform-supported installation process.
+
+Implement:
+
+- Correct manifest.
+- Icons.
+- Standalone display.
+- Installation prompts where supported.
+- Safe service worker.
+- Offline application shell.
+- Update notifications.
+- User-confirmed updates.
+- Reconnection.
+- Local demo persistence.
+- Responsive layouts.
+- Touch-friendly controls.
+- Safe-area handling.
+
+Only cache public application assets and other approved content.
+
+Never cache private API responses in a public or uncontrolled cache.
+
+The offline interface must clearly identify which features are unavailable offline.
+
+## 13.3 Device detection and installation recommendations
+
+When the user opens LORIN, detect the available platform capabilities.
+
+Do not infer exact hardware identity from an unreliable user-agent string.
+
+Present the correct installation recommendation.
+
+Example:
+
+**On a Windows laptop:**
+
+- LORIN Web: Available.
+- Installable PWA: Available, when browser support is verified.
+- Windows Desktop Application: Available only after the actual desktop package is installed and verified.
+- If the Windows installer has not been completed: "Desktop application is not available yet. You can install LORIN as a PWA."
+
+**On Android:**
+
+- LORIN Web: Available.
+- PWA installation: Available when supported.
+- Native background listener: Show only when a verified native component is installed and authorized.
+
+**On iPhone/iPad:**
+
+- LORIN Web: Available.
+- Add to Home Screen: Explain the supported installation process.
+- Background wake-word status: Report actual platform limitations.
+
+Do not automatically install anything without the user's action.
+
+Do not falsely report that a Windows desktop application exists merely because the browser detects Windows.
+
+## 13.4 Windows desktop application
+
+Build the actual Windows desktop application using the existing Tauri 2 direction.
+
+Requirements:
+
+- Shared React application.
+- Restricted native permissions.
+- Primary Node sidecar management.
+- Tray integration.
+- Optional startup launch.
+- Native notifications.
+- Secure credential storage.
+- Microphone permissions.
+- Background listener where supported.
+- Installer.
+- Update mechanism.
+- Safe shutdown.
+- Recovery.
+- Logging.
+- Uninstall support.
+
+Prepare a real Windows installer and verify it on a clean supported Windows installation.
+
+Until a tested installer exists, the UI must continue to report:
+
+"Windows Desktop Application — Not Yet Available."
+
+The PWA remains usable in the meantime.
+
+## 13.5 Shared application experience
+
+The PWA and Windows desktop application must use the same application identity, backend contracts, user account and approved synchronization system.
+
+Avoid separate implementations of project and task logic.
+
+Use the same shared frontend wherever possible, with platform-specific adapters for native functionality.
+
+---
+
+# 14. M9 — LOCAL-FIRST DATA, STORAGE AND SYNCHRONIZATION
+
+## Objective
+
+LORIN's data should remain under the user's control and synchronize between the user's devices.
+
+The default should be local-first, not cloud-first.
+
+## 14.1 Data ownership
+
+The user's own devices and approved Primary Node are the primary data environment.
+
+Use:
+
+- Encrypted local databases.
+- Encrypted browser storage.
+- Secure native credential storage.
+- Device-specific cryptographic identities.
+- An owner-controlled synchronization service.
+- Optional owner-controlled remote storage.
+
+Use the existing SQLite architecture where suitable.
+
+Provide an appropriate browser storage implementation for PWA clients.
+
+Use protected operating-system storage for native credentials where supported.
+
+Do not expose database encryption keys in frontend source.
+
+## 14.2 Local-first synchronization
+
+Implement a proper synchronization engine.
+
+Support:
+
+- Conversations.
+- Messages.
+- Projects.
+- Tasks.
+- Project files.
+- Knowledge metadata.
+- Approved knowledge documents.
+- Memories.
+- Settings.
+- Notifications.
+- Presence events.
+- Device records.
+- Approvals.
+- Audit history where permitted.
+- File versions.
+- Storage metadata.
+
+Use a durable change journal, unique operation IDs, version numbers, idempotency and synchronization acknowledgments.
+
+Do not simply overwrite the receiving device's records.
+
+## 14.3 Conflict resolution
+
+Use data-specific conflict handling.
+
+Examples:
+
+- Conversations: preserve message history and order.
+- Tasks: merge independent field changes where safe.
+- Projects: use versions and revision history.
+- Documents: preserve file versions and hashes.
+- Memories: preserve provenance and approval history.
+- Settings: apply authoritative owner settings.
+- Device permissions: Primary Node or owner authority.
+- Approvals: never duplicate or replay approved actions blindly.
+- External actions: require fresh authorization.
+
+Provide a Synchronization Centre where the user can inspect conflicts and resolutions.
+
+## 14.4 Network interruption
+
+When a device loses connection:
+
+- Continue permitted local work.
+- Save changes locally.
+- Encrypt pending operations.
+- Maintain the synchronization queue.
+- Display offline status.
+- Avoid false success messages.
+- Retry safely when the network returns.
+- Detect duplicated operations.
+- Resume from the last confirmed checkpoint.
+
+Do not require the user to pair again simply because the network changed.
+
+## 14.5 Optional private cloud and remote connectivity
+
+The architecture must support a future owner-controlled remote server or private cloud.
+
+This may provide:
+
+- Remote device access.
+- Remote synchronization.
+- Backup.
+- Secure relay.
+- Cloud storage.
+- Notifications.
+- Service continuity.
+
+However, private cloud hosting must remain an explicit owner-controlled option.
+
+Do not silently upload personal content to Firebase, PostgreSQL, S3 or another service merely because the adapter exists.
+
+When no remote path is configured, LORIN must still function locally and synchronize when the devices are reachable.
+
+## 14.6 Storage Centre
+
+Provide:
+
+- Local storage usage.
+- Device storage.
+- Primary Node storage.
+- Optional cloud storage.
+- File uploads.
+- Downloads.
+- File previews.
+- Checksums.
+- Versions.
+- Deletion.
+- Recovery.
+- Backup.
+- Restore.
+- Retention policies.
+- Storage quotas.
+- Sync status.
+
+Use actual persistent demonstration storage for the demo environment.
+
+Never claim that a simulated cloud provider is connected.
+
+## 14.7 Backup and recovery
+
+Implement actual backup and restore for the demonstration database and files.
+
+Show:
+
+- Backup date.
+- Size.
+- Integrity.
+- Status.
+- Location.
+- Restore options.
+- Last verified restore.
+
+Do not call a backup verified until a restore test has succeeded.
+
+---
+
+# 15. THE SEMI-AUTONOMOUS LORIN MODE
+
+## Objective
+
+Build an assistant that can perform useful work without requiring a new user instruction for every small step, while keeping the owner in control.
+
+The first implementation should be **semi-automatic**, not unrestricted autonomous operation.
+
+## 15.1 What LORIN may do automatically
+
+When enabled and within the owner's configured policy, LORIN may:
+
+- Monitor approved internal events.
+- Index newly approved documents.
+- Summarize new project activity.
+- Identify overdue tasks.
+- Prepare briefings.
+- Detect synchronization issues.
+- Prepare suggested follow-ups.
+- Draft messages.
+- Prepare task plans.
+- Generate code suggestions.
+- Run approved safe tests inside the sandbox.
+- Notify the owner.
+- Queue internal non-destructive operations.
+
+## 15.2 What requires owner approval
+
+Require explicit approval for:
+
+- Sending real emails or messages.
+- Making telephone calls.
+- Contacting other people.
+- Deleting important user data.
+- Changing security policies.
+- Granting device permissions.
+- Revoking devices.
+- Deploying software.
+- Running destructive commands.
+- Making purchases or financial transactions.
+- Publishing content.
+- Sharing private documents externally.
+- Changing external accounts.
+- Performing other consequential operations.
+
+## 15.3 Automation levels
+
+Provide:
+
+**Level 0 — Manual**
+
+LORIN only responds to explicit user commands.
+
+**Level 1 — Assisted**
+
+LORIN prepares recommendations, drafts and plans.
+
+**Level 2 — Semi-Automatic**
+
+LORIN monitors approved events and executes low-risk internal operations within configured rules. External and consequential operations require approval.
+
+**Level 3 — Advanced Automation**
+
+A future explicitly enabled capability with separately reviewed policies, permissions, monitoring and rollback.
+
+Do not enable Level 3 by default.
+
+The current demonstration must primarily implement Levels 1 and 2.
+
+## 15.4 Automation controls
+
+Provide:
+
+- Enable/disable automation.
+- Current automation level.
+- Allowed actions.
+- Disallowed actions.
+- Approval queue.
+- Scheduled jobs.
+- Execution history.
+- Failure history.
+- Retry controls.
+- Rate limits.
+- Quiet hours.
+- Audit records.
+- Emergency stop.
+
+A single owner-controlled emergency stop must disable background execution and pending automation safely.
+
+---
+
+# 16. INTELLIGENT GREETING AND CONVERSATION EXPERIENCE
+
+LORIN should communicate naturally.
+
+Avoid repeating the same scripted greeting every time.
+
+Use context from:
+
+- Current local time.
+- Approved user preferences.
+- Active project.
+- Pending tasks.
+- Current conversation.
+- Recent activity.
+- Current interaction mode.
+
+Examples:
+
+When the user only calls LORIN:
+
+"I'm here. What are we working on today?"
+
+When the user says "Let's get to work":
+
+"Ready. Would you like to continue where we left off, or start something new?"
+
+When the user says "Can you check this?":
+
+"Of course. Send it over, or tell me what you'd like me to inspect."
+
+When the user already provides a detailed request, acknowledge the instruction and begin processing it.
+
+Do not ask unnecessary questions where the required information is already available.
+
+The assistant should be concise when a short answer is sufficient and detailed when the task requires it.
+
+---
+
+# 17. FULL DEMONSTRATION DATABASE
+
+Populate the existing demonstration environment with coherent synthetic data.
+
+Do not build a second database that the current application never uses.
+
+Seed the actual demo tenant and existing application services.
+
+Include at least:
+
+- One fictional demo owner.
+- Four detailed projects.
+- Twenty-five or more tasks.
+- Five or more fictional contacts.
+- Eight or more sample conversations.
+- Twelve or more substantive LORIN documents.
+- The starter technical knowledge collection.
+- Calendar records.
+- Fifteen or more Presence events.
+- Twelve or more notifications.
+- Seven or more demonstration devices.
+- Storage objects.
+- File versions.
+- Backup records.
+- Memory examples.
+- Device pairing history.
+- Synchronization history.
+- Sample conflicts.
+- Approval records.
+- Execution jobs.
+- Audit events.
+
+Use consistent IDs and relationships.
+
+The projects should include:
+
+1. Atlas Commerce.
+2. Meridian Studio.
+3. Horizon Intelligence.
+4. LORIN Development.
+
+The documents should include:
+
+1. LORIN Product Requirements.
+2. LORIN System Architecture.
+3. LORIN Security Policy.
+4. LORIN Model Routing Specification.
+5. Google Drive Integration Guide.
+6. Presence and Call-In Requirements.
+7. Device Pairing Specification.
+8. Cloud Storage Strategy.
+9. Atlas Commerce Requirements.
+10. Meridian Studio Brief.
+11. Horizon Research Notes.
+12. Weekly Project Meeting Summary.
+
+Documents must contain real searchable demonstration content, not only filenames.
+
+## 17.1 Demonstration data integrity
+
+All demo data must be internally consistent.
+
+For example:
+
+- Task completion must correspond to its actual task record.
+- Project progress must be calculated from actual task data.
+- Presence events must refer to existing tasks or project records when applicable.
+- Notifications must link to real demo activities.
+- Storage usage must come from actual demo file records.
+- Device status must come from actual demo device records.
+- Synchronization history must represent actual operations.
+- Memory records must have provenance.
+
+Do not fill dashboards with randomly changing fabricated statistics.
+
+---
+
+# 18. APPLICATION NAVIGATION
+
+Integrate all workspaces into the existing application's navigation.
+
+Required workspaces:
+
+**Personal Workspace**
+1. Home / Today.
+2. LORIN Companion.
+3. Conversations.
+4. Projects.
+5. Tasks and Approvals.
+6. Calendar.
+7. Engineering Workbench.
+
+**Intelligence**
+8. Intelligence Studio.
+9. Knowledge Vault.
+10. Memory / GIDEON.
+11. Voice and Wake Word.
+12. Vision.
+
+**Execution**
+13. Sandbox.
+14. Automation.
+15. Verification.
+
+**Connected Environment**
+16. Device Centre.
+17. Connections.
+18. Presence Centre.
+19. Cloud and Storage.
+20. Synchronization Centre.
+
+**Security and Administration**
+21. Security Centre.
+22. Audit History.
+23. Owner Control.
+24. Settings.
+
+Every destination must open a real workspace.
+
+Every visible button must work or explain why it is disabled.
+
+Avoid placeholder screens that look completed but contain no implementation.
+
+---
+
+# 19. DESIGN AND RESPONSIVE REQUIREMENTS
+
+Keep the established LORIN visual identity.
+
+Design tokens:
+
+- Background: `#0B0F14`.
+- Main surface: `#111821`.
+- Elevated surface: `#17212C`.
+- Primary text: `#F1F5F9`.
+- Secondary text: `#A2AFBF`.
+- Primary accent: `#66E3CB`.
+- Secondary accent: `#A9B8FF`.
+- Warm accent: `#E8BE78`.
+
+Design requirements:
+
+- Premium.
+- Clean.
+- Minimal.
+- Responsive.
+- Human-centered.
+- Technically sophisticated.
+- Consistent.
+- Accessible.
+
+Support:
+
+- Desktop monitors.
+- Windows laptops.
+- Tablets.
+- Android phones.
+- iPhones.
+- PWA standalone mode.
+- Windows desktop application.
+
+Implement:
+
+- Responsive navigation.
+- Appropriate mobile menus.
+- Touch-friendly controls.
+- Keyboard navigation.
+- Loading states.
+- Error states.
+- Reduced-motion support.
+- Dark and light themes.
+- Performance scaling.
+- Accessible contrast.
+- Safe-area support.
+- No horizontal overflow.
+
+Do not allow the 3D companion to obstruct essential work.
+
+---
+
+# 20. SECURITY AND PRIVACY REQUIREMENTS
+
+Security applies across all M1–M9 components.
+
+Implement:
+
+- Strong owner authentication.
+- Secure sessions.
+- Device identity.
+- Device approval.
+- Per-device capabilities.
+- Cryptographic pairing.
+- Encrypted synchronization.
+- TLS verification.
+- Strict origin and CORS policies.
+- Secure API authorization.
+- Input validation.
+- Output validation.
+- Rate limits.
+- Audit logs.
+- Protected credentials.
+- Secure storage.
+- Backup protection.
+- Data export.
+- Data deletion.
+- Demo/live environment separation.
+
+Do not store provider secrets in browser local storage.
+
+Do not expose API keys in bundled frontend code.
+
+Do not treat Bluetooth proximity, Wi-Fi membership, device names or IP addresses as authentication.
+
+Do not let AI-generated output grant itself permissions.
+
+Do not allow the assistant to disable its own security boundaries.
+
+The user must always be able to see and control:
+
+- Microphone access.
+- Camera access.
+- Wake-word listening.
+- Background operation.
+- Device connections.
+- Synchronization.
+- Cloud access.
+- AI provider usage.
+- Automation.
+- External actions.
+
+---
+
+# 21. IMPLEMENTATION ORDER
+
+Complete the work in a controlled order while preserving the existing application.
+
+## Phase A — Existing application audit and build stability
+
+- Inspect existing source.
+- Identify working and incomplete features.
+- Fix package and lockfile consistency.
+- Resolve supported Node runtime requirements.
+- Install dependencies.
+- Run baseline tests.
+- Establish a repeatable build.
+- Preserve the existing app identity.
+
+## Phase B — Unified application and demo data
+
+- Integrate all existing workspaces.
+- Complete the demonstration tenant.
+- Seed all required records.
+- Make all internal operations persistent.
+- Implement the guided clickable walkthrough.
+
+## Phase C — Live AI and knowledge
+
+- Complete Model Gateway.
+- Connect Gemini and Ollama where configured.
+- Implement real streaming.
+- Implement tool calling.
+- Implement local knowledge retrieval.
+- Implement memory and citations.
+- Implement truthful unavailable states.
+
+## Phase D — Visual companion and voice
+
+- Complete the real-time companion.
+- Implement adaptive presentations.
+- Add the five-second activation.
+- Implement foreground wake-word listening.
+- Add platform capability detection.
+- Implement speech recognition and synthesis.
+- Add the Windows native background listener path.
+- Add Android native capability only where supported and verified.
+
+## Phase E — Device fabric
+
+- Complete pairing.
+- Device cryptographic identity.
+- Wi-Fi and hotspot discovery.
+- Bluetooth discovery adapters.
+- Pair-once trust.
+- Reconnection.
+- Revocation.
+- Permission scopes.
+
+## Phase F — Presence and semi-automation
+
+- Complete the event engine.
+- Add internal event monitoring.
+- Add briefings.
+- Add approvals.
+- Add simulated calls.
+- Implement automation levels 0–2.
+- Add emergency stop.
+
+## Phase G — PWA, Windows and M9
+
+- Complete installable PWA.
+- Build Windows desktop application.
+- Implement local-first synchronization.
+- Implement offline queue.
+- Implement conflict resolution.
+- Implement storage.
+- Implement backup and restore.
+- Add optional private-server connectivity.
+
+## Phase H — Final quality and delivery
+
+- Run tests.
+- Run browser checks.
+- Test actual devices.
+- Test the PWA installation process.
+- Test wake-word capabilities.
+- Test local network pairing.
+- Test reconnect behaviour.
+- Test native desktop operation.
+- Perform security checks.
+- Package the same upgraded application.
+
+---
+
+# 22. TESTING AND ACCEPTANCE CRITERIA
+
+Do not declare the application complete based on a successful compilation alone.
+
+## 22.1 Existing M1–M9 criteria
+
+Preserve the full existing acceptance criteria from the original M1–M9 master prompt.
+
+Do not remove a requirement simply because it is difficult or unavailable in the current environment.
+
+Record every item as:
+
+- Implemented.
+- Tested.
+- Verified.
+- Partially implemented.
+- Simulated.
+- Not configured.
+- Unavailable.
+- Blocked.
+
+## 22.2 Wake-word tests
+
+Verify:
+
+1. User can enable the listener.
+2. Permission is requested correctly.
+3. Microphone activity is visible.
+4. Wake phrase is detected using the actual local detector.
+5. False activations are measured.
+6. Wake phrase aliases can be configured.
+7. The five-second introduction appears.
+8. The introduction can be skipped.
+9. The assistant greeting is generated correctly.
+10. A command included with the wake phrase is preserved.
+11. User can interrupt the assistant.
+12. Listener can be paused and disabled.
+13. Audio stops when permission is removed.
+14. Background capability reports the actual platform state.
+15. Unsupported environments provide a truthful fallback.
+
+## 22.3 Visual tests
+
+Verify:
+
+- 3D renderer loads.
+- Companion activation works.
+- Companion state changes with actual conversation events.
+- Lip synchronization responds to real speech audio.
+- Auto presentation works.
+- Manual override works.
+- Compact mode works.
+- Mobile layout works.
+- GPU fallback works.
+- Reduced-motion mode works.
+- Companion failure does not block conversation.
+
+## 22.4 Device tests
+
+Verify:
+
+- One-time pairing.
+- Owner approval.
+- Identity registration.
+- Permission scope enforcement.
+- Wi-Fi discovery.
+- Hotspot connection where the network permits client communication.
+- Bluetooth discovery on supported native devices.
+- Reconnection on network changes.
+- Pairing remains valid after a network change.
+- Remote connection works only through an approved reachable route.
+- Revoked devices are denied.
+- No device automatically receives Primary Node privileges.
+
+## 22.5 Synchronization tests
+
+Open at least two independent clients connected to the same demo backend.
+
+Test:
+
+1. Create a task on Client A.
+2. Verify it appears on Client B.
+3. Update it on Client B.
+4. Verify Client A receives the update.
+5. Acknowledge a Presence event on one client.
+6. Verify the other client updates.
+7. Disconnect one client.
+8. Make permitted local changes.
+9. Reconnect.
+10. Verify safe synchronization.
+11. Introduce a conflict.
+12. Resolve the conflict.
+13. Verify duplicate operations are not applied.
+14. Revoke a device.
+15. Verify its next request is rejected.
+
+## 22.6 AI and knowledge tests
+
+Verify:
+
+- Actual Gemini requests when configured.
+- Actual Ollama requests when configured.
+- Actual provider attribution.
+- Streaming.
+- Stop.
+- Retry.
+- Tool calling.
+- Knowledge retrieval.
+- Citation validity.
+- Memory provenance.
+- Unknown-answer behaviour.
+- Provider-unavailable behaviour.
+- No canned answer substituted for a failed inference.
+
+## 22.7 PWA and desktop tests
+
+Verify:
+
+- PWA installation.
+- Standalone launch.
+- Offline application shell.
+- Reconnection.
+- Update handling.
+- No private API caching.
+- Correct install recommendations.
+- Windows installer.
+- Clean Windows installation.
+- Desktop startup preference.
+- Tray behaviour.
+- Background listener status.
+- Complete application exit.
+- Data persistence across updates.
+
+## 22.8 Security tests
+
+Verify:
+
+- Cross-tenant isolation.
+- Owner-only operations.
+- Unauthorized API denial.
+- Device revocation.
+- Permission enforcement.
+- Pairing expiry.
+- Replay protection.
+- Credential protection.
+- Network certificate validation.
+- CORS.
+- Rate limits.
+- Automation approval enforcement.
+- Demo/live separation.
+
+---
+
+# 23. DEMONSTRATION AND LIVE INTEGRATION STATUS
+
+Every service and capability must have an accurate status.
+
+Use:
+
+| Status | Meaning |
+|---|---|
+| LIVE | Actual operation against a real configured service |
+| DEMO | Functional operation using synthetic records |
+| SIMULATED | Simulated external action |
+| CONFIGURED | Settings or credentials are present |
+| CONNECTED | Real authenticated connection succeeded |
+| VERIFIED | Relevant test passed |
+| DEGRADED | Partially operational |
+| OFFLINE | Currently unreachable |
+| NOT CONFIGURED | Required configuration is absent |
+| UNAVAILABLE | Required implementation or platform capability is absent |
+
+Examples:
+
+- Live Gemini request: LIVE, with actual provider and model attribution.
+- Local Ollama request: LIVE, with actual model attribution.
+- Demo task creation: DEMO.
+- Simulated incoming phone call: SIMULATED.
+- Actual Google Drive connection: CONNECTED only after real authentication.
+- Local PWA storage: DEMO or LOCAL depending on its environment.
+- Windows desktop application: AVAILABLE only after an actual successful build and installation test.
+- Background listener: ENABLED only when the real listener is actively operating.
+
+Never create fictional connected states.
+
+Never show invented token usage, hardware statistics, network measurements or completed jobs.
+
+---
+
+# 24. REQUIRED DELIVERABLES
+
+Deliver the upgraded existing LORIN application, not another application.
+
+Provide:
+
+1. Complete updated source code.
+2. Updated frontend.
+3. Updated backend.
+4. Updated database schema and migrations.
+5. Persistent demonstration data.
+6. Knowledge starter collection.
+7. Real AI provider integration.
+8. Knowledge retrieval and memory.
+9. Visual companion.
+10. Adaptive presentation system.
+11. Five-second activation sequence.
+12. Foreground wake-word listener.
+13. Platform-specific background listener implementation where supported.
+14. Voice and vision workflows.
+15. Presence and semi-automation.
+16. Device pairing and discovery.
+17. Wi-Fi and hotspot connectivity.
+18. Bluetooth adapter where supported.
+19. Local-first synchronization.
+20. Offline queue and conflict resolution.
+21. PWA installation experience.
+22. Windows desktop application source and actual installer when successfully built.
+23. Storage, backup and restore.
+24. Security and owner-control improvements.
+25. Clickable guided walkthrough.
+26. Automated tests.
+27. Browser and device test results.
+28. Installation guide.
+29. Demo walkthrough guide.
+30. Environment configuration template.
+31. Updated M1–M9 acceptance matrix.
+32. Changed-file manifest.
+33. Known limitations.
+34. Verification report.
+35. Complete downloadable ZIP of the upgraded existing source.
+
+Include screenshots of actual application screens, not generated concept images pretending to be the implemented product.
+
+---
+
+# 25. FINAL EXECUTION RULES
+
+Begin by auditing the existing active LORIN application.
+
+Do not ask the owner to repeat the requirements in this prompt or the established M1–M9 specification.
+
+Do not rebuild the application from scratch.
+
+Do not create a second LORIN demo application.
+
+Do not replace working features without a clear technical reason.
+
+Do not reduce the requested scope silently.
+
+Do not claim a feature is complete because its UI exists.
+
+Do not use scripted responses to imitate live AI.
+
+Do not simulate a microphone listener and call it a real wake-word system.
+
+Do not advertise continuous listening on a platform that cannot support it.
+
+Do not report fake Bluetooth, Wi-Fi, cloud or device connections.
+
+Do not claim an installer exists until it has actually been built and tested.
+
+Do not expose the owner's real information in the demo database.
+
+Do not enable unrestricted autonomous execution.
+
+When a real external provider is not configured, complete the internal workflow using a clearly labelled demonstration adapter and provide exact configuration steps.
+
+When the operating system does not support a requested background capability, explain the limitation and implement the best supported alternative without pretending it is equivalent.
+
+When the build environment blocks a task, report the exact blocker and complete all independently verifiable work.
+
+## Final product acceptance
+
+The upgraded LORIN must behave as one connected personal intelligence application.
+
+The owner should be able to:
+
+- Open the existing LORIN website.
+- Install it as a PWA on supported devices.
+- Use the same LORIN account and approved identity across devices.
+- See the correct installation option for the current platform.
+- Activate LORIN by voice where the real platform capability supports it.
+- See the five-second companion activation.
+- Speak or type naturally.
+- Switch between holographic, conversational and text presentations.
+- Ask general questions against available knowledge.
+- Receive genuine live AI responses when a provider is configured.
+- Understand when LORIN does not know something.
+- Search and retrieve documents.
+- Work with projects and tasks.
+- Use controlled engineering tools.
+- Receive proactive notifications.
+- Experience the call-in demonstration.
+- Pair devices once and reconnect through approved networks.
+- Synchronize data between the owner's devices.
+- Continue permitted local work offline.
+- Inspect data, storage, backups and device permissions.
+- Control semi-automatic behaviour.
+- Pause listening and automation immediately.
+- Understand exactly what is live, simulated, configured or unavailable.
+
+**The demonstration must be the existing LORIN application functioning as a realistic preview of the intended product—not a separate mock application.**
+
+**One application. One identity. One owner-controlled data environment. One connected intelligence. Multiple devices. Real functionality. Honest capability boundaries.**
+
+# LORIN — PERSONAL INTELLIGENCE. EVERYWHERE.

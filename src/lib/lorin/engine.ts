@@ -2,21 +2,30 @@ export type Mode = "companion" | "compact" | "immersive" | "workspace" | "ambien
 export type SyncProfile = "balanced" | "privacy-first" | "full-approved" | "manual";
 export type View =
   | "home"
+  | "companion"
   | "chat"
   | "projects"
   | "tasks"
+  | "calendar"
+  | "workbench"
+  | "intelligence"
   | "knowledge"
   | "vault"
   | "memory"
   | "gideon"
   | "voice"
   | "vision"
-  | "workbench"
-  | "devices"
-  | "trust"
-  | "intelligence"
-  | "connections"
   | "sandbox"
+  | "automation"
+  | "verification"
+  | "devices"
+  | "connections"
+  | "presence"
+  | "storage"
+  | "sync"
+  | "trust"
+  | "audit"
+  | "owner"
   | "settings";
 
 export type RoutePref = "auto" | "gemini" | "ollama" | "local-only";
@@ -63,12 +72,12 @@ export const CAPABILITIES: Capability[] = [
 ];
 
 export const SPECIALISTS: { name: string; role: string }[] = [
-  { name: "Lena", role: "Refuses anything outside policy." },
-  { name: "Owen", role: "Research routing. Not a second assistant." },
-  { name: "Riley", role: "Workspace and project context." },
-  { name: "Iris", role: "Vault passages and citations." },
-  { name: "Nolan", role: "Engineering diffs. No shell." },
-  { name: "GIDEON", role: "Continuity log. Not a chat identity." },
+  { name: "Lena", role: "Guardian — security, privacy, identity, permissions and authorization." },
+  { name: "Owen", role: "Coordinator — planning, orchestration, scheduling and execution coordination." },
+  { name: "Riley", role: "Companion — communication, voice, personalization and adaptive interaction." },
+  { name: "Iris", role: "Investigator — research, evidence, retrieval and verification." },
+  { name: "Nolan", role: "Strategist — programming, engineering, architecture and troubleshooting." },
+  { name: "GIDEON", role: "Continuity — long-term memory, decision history and continuity." },
 ];
 
 export const POLICY_BEFORE = `function allow(flag: boolean) {\n  return flag;\n}`;
@@ -82,6 +91,14 @@ export type Doc = {
   tags: string[];
   indexed: boolean;
   scope: "atlas" | "public";
+  topic?: string;
+  category?: string;
+  provenance?: string;
+  version?: string;
+  verified?: boolean;
+  createdAt?: string;
+  checksum?: string;
+  relatedIds?: string[];
 };
 
 export type Memory = {
@@ -89,6 +106,9 @@ export type Memory = {
   text: string;
   source: string;
   verified: boolean;
+  category?: string;
+  pinned?: boolean;
+  expiresAt?: string;
 };
 
 export type Decision = {
@@ -273,21 +293,25 @@ export function answerQuestion(input: {
     return true;
   });
 
-  const terms = query.toLowerCase().split(/[^a-z0-9]+/).filter((w) => w.length > 3);
+  const terms = query
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter((w) => w.length >= 3 && !["what", "does", "about", "with", "from", "that", "this", "have", "tell", "how"].includes(w));
   const hits = pool
     .map((d) => {
-      const hay = `${d.title} ${d.body} ${d.tags.join(" ")}`.toLowerCase();
-      const score = terms.reduce((n, w) => n + (hay.includes(w) ? 1 : 0), 0);
+      const hay = `${d.title} ${d.topic ?? ""} ${d.category ?? ""} ${d.body} ${d.tags.join(" ")}`.toLowerCase();
+      const score = terms.reduce((n, w) => n + (hay.includes(w) ? (d.title.toLowerCase().includes(w) ? 3 : 1) : 0), 0);
       return { d, score };
     })
     .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score)
+    .slice(0, 3)
     .map((x) => x.d);
 
   if (!hits.length) {
     return {
       ...decision,
-      text: "No vault passage matches that. I will not fill the gap with an unsourced claim.",
+      text: "I don't currently have sufficiently reliable information about that in my available knowledge sources. I can investigate it when an approved research or AI provider is available.",
       sources: [],
       specialists: ["Iris"],
       character: "idle",
@@ -296,7 +320,7 @@ export function answerQuestion(input: {
 
   return {
     ...decision,
-    text: hits.map((d) => `${d.title} — ${d.body}`).join("\n\n"),
+    text: `[Local Knowledge Lookup · ${hits.length} verified source${hits.length === 1 ? "" : "s"}]\n\n` + hits.map((d) => `${d.title} — ${d.body}`).join("\n\n"),
     sources: hits.map((d) => d.title),
   };
 }

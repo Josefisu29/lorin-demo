@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
+  Archive,
+  Bell,
   BookOpen,
   BrainCircuit,
+  Calendar,
+  Compass,
   Cpu,
   Database,
   Eye,
+  FileCheck2,
   FolderKanban,
   History,
   Home,
@@ -14,13 +19,17 @@ import {
   Mic,
   MonitorSmartphone,
   PanelRight,
+  PhoneIncoming,
   Plug,
+  RefreshCw,
   Search,
   Settings,
   ShieldCheck,
   Sparkles,
   Terminal,
+  UserCheck,
   WifiOff,
+  Workflow,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -47,6 +56,11 @@ export function CommandPalette() {
   const setOnline = useLorin((s) => s.setOnline);
   const setInspector = useLorin((s) => s.setInspector);
   const propose = useLorin((s) => s.propose);
+  const startExplore = useLorin((s) => s.startExplore);
+  const triggerWakePhrase = useLorin((s) => s.triggerWakePhrase);
+  const startSimulatedCall = useLorin((s) => s.startSimulatedCall);
+  const switchEnvironment = useLorin((s) => s.switchEnvironment);
+  const envMode = useLorin((s) => s.envMode);
   const projects = useLorin((s) => s.projects);
   const online = useLorin((s) => s.online);
   const inspector = useLorin((s) => s.inspector);
@@ -61,7 +75,13 @@ export function CommandPalette() {
       setOpen(false);
     };
 
-    const nav = (view: View, label: string, detail: string, icon: LucideIcon, shortcut?: string): CommandItem => ({
+    const nav = (
+      view: View,
+      label: string,
+      detail: string,
+      icon: LucideIcon,
+      shortcut?: string,
+    ): CommandItem => ({
       id: `nav-${view}`,
       group: "Navigation",
       label,
@@ -70,7 +90,11 @@ export function CommandPalette() {
       icon,
       keywords: `${label} ${detail} ${view} ${shortcut ?? ""}`.toLowerCase(),
       run: closeAnd(() => {
-        if (useLorin.getState().mode === "ambient" || useLorin.getState().mode === "immersive" || useLorin.getState().mode === "compact") {
+        if (
+          useLorin.getState().mode === "ambient" ||
+          useLorin.getState().mode === "immersive" ||
+          useLorin.getState().mode === "compact"
+        ) {
           setMode("workspace");
         }
         setView(view);
@@ -87,21 +111,30 @@ export function CommandPalette() {
 
     return [
       nav("home", "Today / Home", "Overview, readiness and pending approvals", Home, "g h"),
-      nav("chat", "Conversation", "Chat with LORIN across internal capabilities", MessageSquare, "g c"),
-      nav("projects", "Projects", "Switch isolated workspaces (Atlas / MOSAIRA)", FolderKanban, "g p"),
-      nav("tasks", "Tasks & approvals", "Review, approve and verify scoped actions", Activity, "g t"),
-      nav("workbench", "Workbench", "Inspect policy diffs and controlled changes", Cpu, "g w"),
-      nav("sandbox", "Sandbox", "Isolated execution environments and policies", Terminal, "g x"),
-      nav("knowledge", "Knowledge vault", "Approved project documents and indexing", BookOpen, "g k"),
-      nav("vault", "Private vault", "Isolated private owner notes", Lock, "g v"),
-      nav("memory", "Memory", "Approved memories with provenance", Sparkles, "g m"),
-      nav("gideon", "Continuity (GIDEON)", "Chronological decisions and events", History, "g g"),
-      nav("voice", "Voice", "Microphone permission and speech controls", Mic),
-      nav("vision", "Vision", "User-selected local image snapshots", Eye),
+      nav("companion", "LORIN Companion", "3D interactive companion & 5s wake activation", Sparkles, "g o"),
+      nav("chat", "Conversations", "Chat with LORIN across internal capabilities", MessageSquare, "g c"),
+      nav("projects", "Projects", "Switch isolated workspaces (Atlas / Meridian / Horizon / MOSAIRA)", FolderKanban, "g p"),
+      nav("tasks", "Tasks & approvals", "Review approvals and manage 26 project tasks", Activity, "g t"),
+      nav("calendar", "Calendar & contacts", "Deadlines, schedule and trusted contacts", Calendar, "g l"),
+      nav("workbench", "Engineering workbench", "Inspect policy diffs and controlled changes", Cpu, "g w"),
       nav("intelligence", "Intelligence studio", "Models, downloads, providers and hardware", BrainCircuit, "g i"),
-      nav("connections", "Connected services", "Google Drive and local folder governance", Plug, "g n"),
-      nav("devices", "Devices", "Companion enrollment and revocation", MonitorSmartphone, "g d"),
-      nav("trust", "Security & trust", "Capabilities, policies and audit trail", ShieldCheck, "g r"),
+      nav("knowledge", "Knowledge vault", "22 approved documents across 20 domains", BookOpen, "g k"),
+      nav("vault", "Private vault", "Isolated private owner notes", Lock, "g v"),
+      nav("memory", "Memory (GIDEON)", "Approved memories with provenance and export", Sparkles, "g m"),
+      nav("gideon", "Continuity (GIDEON)", "Chronological decisions and events", History, "g g"),
+      nav("voice", "Voice & wake word", "15-state wake listener and configurable phrases", Mic),
+      nav("vision", "Vision", "User-selected local image snapshots", Eye),
+      nav("sandbox", "Sandbox", "Isolated execution environments and policies", Terminal, "g x"),
+      nav("automation", "Automation", "Autonomy Levels 0–2 and Owner Emergency Stop", Workflow, "g a"),
+      nav("verification", "Verification", "M1–M9 acceptance matrix and scenario runner", FileCheck2, "g f"),
+      nav("devices", "Device centre", "7 paired devices, transport priority and scopes", MonitorSmartphone, "g d"),
+      nav("connections", "Connections", "Google Drive and local folder governance", Plug, "g n"),
+      nav("presence", "Presence centre", "P0–P4 proactive events and simulated Call-In", Bell, "g e"),
+      nav("storage", "Cloud & storage", "Content-addressed objects and verified backups", Archive, "g b"),
+      nav("sync", "Synchronization centre", "Change journal and conflict resolution", RefreshCw, "g y"),
+      nav("trust", "Security centre", "Capabilities, policies and security controls", ShieldCheck, "g r"),
+      nav("audit", "Audit history", "Searchable security log and JSON export", History, "g u"),
+      nav("owner", "Owner control", "Demo/Live tenant isolation & platform truth matrix", UserCheck),
       nav("settings", "Settings", "Hardware status, privacy defaults and shortcuts", Settings, "g s"),
       ...modes.map((m) => ({
         id: `mode-${m.id}`,
@@ -121,6 +154,45 @@ export function CommandPalette() {
         keywords: `project switch workspace ${p.name} ${p.note}`.toLowerCase(),
         run: closeAnd(() => setProject(p.id)),
       })),
+      {
+        id: "act-explore-tour",
+        group: "Quick actions",
+        label: "Explore how LORIN works (18-step guided tour)",
+        detail: "Launch interactive M1–M9 walkthrough across real views",
+        icon: Compass,
+        keywords: "explore tour walkthrough guided demo how lorin works",
+        run: closeAnd(() => startExplore()),
+      },
+      {
+        id: "act-wake-atlas",
+        group: "Quick actions",
+        label: "Trigger Wake Word: “LORIN, can you check the Atlas project?”",
+        detail: "Run 5-second companion activation with trailing command preservation",
+        icon: Mic,
+        keywords: "wake word activation hey lorin atlas command intro",
+        run: closeAnd(() => triggerWakePhrase("LORIN, can you check the Atlas project?")),
+      },
+      {
+        id: "act-simulate-call",
+        group: "Quick actions",
+        label: "Simulate Incoming LORIN Call-In Briefing",
+        detail: "Open interactive M7 Presence Call-In modal",
+        icon: PhoneIncoming,
+        keywords: "call incoming briefing presence phone alert",
+        run: closeAnd(() => startSimulatedCall()),
+      },
+      {
+        id: "act-switch-env",
+        group: "Quick actions",
+        label:
+          envMode === "demo"
+            ? "Switch to Owner's Live Environment (live-owner-01)"
+            : "Switch to Demonstration Environment (demo-atlas-01)",
+        detail: "Toggle strictly isolated Demo vs Live tenant data",
+        icon: UserCheck,
+        keywords: "environment tenant demo live owner switch isolation",
+        run: closeAnd(() => switchEnvironment(envMode === "demo" ? "live" : "demo")),
+      },
       {
         id: "act-local-only",
         group: "Quick actions",
@@ -169,7 +241,24 @@ export function CommandPalette() {
         ),
       },
     ];
-  }, [projects, online, inspector, setOpen, setMode, setView, setProject, setRoute, setOnline, setInspector, propose]);
+  }, [
+    projects,
+    online,
+    inspector,
+    envMode,
+    setOpen,
+    setMode,
+    setView,
+    setProject,
+    setRoute,
+    setOnline,
+    setInspector,
+    propose,
+    startExplore,
+    triggerWakePhrase,
+    startSimulatedCall,
+    switchEnvironment,
+  ]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -204,7 +293,9 @@ export function CommandPalette() {
       setSelectedIndex((prev) => (filtered.length ? (prev + 1) % filtered.length : 0));
     } else if (event.key === "ArrowUp") {
       event.preventDefault();
-      setSelectedIndex((prev) => (filtered.length ? (prev - 1 + filtered.length) % filtered.length : 0));
+      setSelectedIndex((prev) =>
+        filtered.length ? (prev - 1 + filtered.length) % filtered.length : 0,
+      );
     } else if (event.key === "Enter") {
       event.preventDefault();
       const activeItem = filtered[selectedIndex];
@@ -240,7 +331,7 @@ export function CommandPalette() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Jump to a workspace, switch mode, or run an action…"
+            placeholder="Jump to any of the 24 workspaces, trigger wake-word, or run a scenario…"
             aria-label="Search commands"
             aria-autocomplete="list"
           />
@@ -256,9 +347,7 @@ export function CommandPalette() {
 
         <div className="command-palette-list" role="listbox" aria-label="Available commands">
           {filtered.length === 0 ? (
-            <div className="p-6 text-center text-sm text-muted">
-              No command matches “{query}”.
-            </div>
+            <div className="p-6 text-center text-sm text-muted">No command matches “{query}”.</div>
           ) : (
             Object.entries(grouped).map(([groupName, items]) => (
               <div key={groupName} className="command-palette-group">
@@ -304,9 +393,10 @@ export function CommandPalette() {
 
         <div className="command-palette-footer">
           <span>
-            <kbd className="kbd-key">↑</kbd> <kbd className="kbd-key">↓</kbd> navigate · <kbd className="kbd-key">↵</kbd> select · <kbd className="kbd-key">Esc</kbd> close
+            <kbd className="kbd-key">↑</kbd> <kbd className="kbd-key">↓</kbd> navigate ·{" "}
+            <kbd className="kbd-key">↵</kbd> select · <kbd className="kbd-key">Esc</kbd> close
           </span>
-          <span>Shortcuts: g then h (Home) · g then s (Settings)</span>
+          <span>Shortcuts: g then h (Home) · g then o (Companion) · g then s (Settings)</span>
         </div>
       </div>
     </div>
