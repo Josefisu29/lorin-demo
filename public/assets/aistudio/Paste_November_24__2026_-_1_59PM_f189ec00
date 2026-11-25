@@ -1,0 +1,2277 @@
+# LORIN — ULTIMATE MASTER UPGRADE, INTEGRATION & COMPLETION PROMPT
+
+**Product:** LORIN — Personal Intelligence. Everywhere.  
+**Target release:** LORIN 2.1 → LORIN Unified Production Platform  
+**Development scope:** M1–M9  
+**Acceptance criteria:** 97  
+**Primary baseline:** Latest `LORIN_2_1_M8_Device_Fabric_Hardened_2026-11-24` source package  
+**Recovery baseline:** `LORIN_2_0_Corrected_2026-11-23`  
+**Implementation approach:** Preserve, audit, repair, integrate, upgrade, test and complete the existing application.
+
+---
+
+# MASTER EXECUTION DIRECTIVE
+
+You are responsible for completing LORIN as a senior software architect, full-stack engineer, AI infrastructure engineer, cybersecurity engineer, cloud architect, database engineer, desktop/mobile developer, 3D real-time engineer, DevOps engineer and quality assurance lead.
+
+Your responsibility is to transform the existing LORIN application into a complete, secure, intelligent, persistent, proactive, cross-platform personal AI assistant.
+
+This is an existing-project upgrade.
+
+**It is not permission to create a replacement application, a new starter template, a disconnected demonstration, a collection of mock interfaces or a smaller application that merely resembles LORIN.**
+
+Work directly on the latest complete LORIN source.
+
+The result must preserve existing functionality while implementing and integrating all requirements in this specification.
+
+## 0.1 Absolute development rules
+
+1. Inspect the entire source before modifying it.
+2. Establish the actual current source baseline and verify its identity.
+3. Preserve the existing application architecture, data models, working routes, services, assets, project history and functionality unless a documented technical reason justifies a migration.
+4. Never replace working code simply because a different implementation is easier.
+5. Do not create duplicate versions of existing services.
+6. Reuse and improve existing Primary Node, Device Centre, model gateway, Knowledge Vault, Memory, task and security implementations.
+7. Preserve compatibility with existing user data.
+8. Back up the source before major modifications.
+9. Use version control, controlled checkpoints and documented migrations.
+10. Maintain a complete changed-file manifest.
+11. Keep the project runnable after every development stage.
+12. Implement backend functionality rather than merely creating interface controls.
+13. Never claim that a feature works simply because its screen exists.
+14. Never fabricate statistics, provider status, model availability, hardware specifications, synchronization progress, task results or telemetry.
+15. Do not silently switch private data to public cloud services.
+16. Do not allow an AI model to approve its own permissions or authorize its own actions.
+17. Do not expose secrets, private documents, database dumps or personal credentials in source archives.
+18. Do not introduce undocumented breaking changes.
+19. Never remove an existing feature without documenting the reason and migration.
+20. Continue implementation through actual verification and delivery, not just planning.
+
+## 0.2 Zero-defect engineering standard
+
+The objective is to deliver a stable, secure and thoroughly tested product.
+
+Do not promise that an application is error-free merely because tests pass.
+
+Instead:
+
+- Detect errors.
+- Reproduce failures.
+- Identify root causes.
+- Correct defects.
+- Add regression tests.
+- Re-run relevant tests.
+- Test interactions between modules.
+- Test permission boundaries.
+- Test failure and recovery scenarios.
+- Record all unresolved issues.
+
+No known critical or high-severity defect may be silently ignored.
+
+If an environment limitation prevents verification, clearly identify it. Never change a test, disable a security control, fabricate a result or weaken validation merely to produce a passing build.
+
+---
+
+# 1. PRODUCT IDENTITY AND VISION
+
+## 1.1 Product definition
+
+LORIN is a unified, owner-controlled personal intelligence system.
+
+It is designed to operate across:
+
+- Web browsers.
+- Installable Progressive Web Application.
+- Windows desktop and laptop.
+- Android companion.
+- Private home server.
+- Approved cloud infrastructure.
+- Local networks.
+- Secure remote networks.
+
+It combines:
+
+- Advanced AI intelligence.
+- Natural conversation.
+- Persistent memory.
+- Knowledge management.
+- Software engineering.
+- Task execution.
+- Research and investigation.
+- Visual presence.
+- Voice and vision.
+- Device integration.
+- Project coordination.
+- Proactive communication.
+- Automatic synchronization.
+- Secure cloud and local storage.
+
+LORIN must maintain one consistent identity and one coordinated intelligence architecture.
+
+It must not become multiple competing assistants or disconnected versions of the same application.
+
+## 1.2 Product personality
+
+LORIN should be:
+
+- Intelligent.
+- Analytical.
+- Dependable.
+- Calm.
+- Natural.
+- Curious.
+- Research-driven.
+- Context-aware.
+- Practical.
+- Honest about limitations.
+- Security-conscious.
+- Adaptable to the owner.
+
+It should challenge incorrect assumptions, explain uncertainty and prioritize useful solutions.
+
+## 1.3 Internal specialist architecture
+
+Preserve these internal capabilities:
+
+| Specialist | Responsibility |
+|---|---|
+| Lena Guardian | Security, privacy, identity, permissions and authorization |
+| Owen Coordinator | Planning, orchestration, scheduling and execution coordination |
+| Iris Investigator | Research, evidence, retrieval and verification |
+| Nolan Strategist | Programming, engineering, architecture and troubleshooting |
+| Riley Companion | Communication, voice, personalization and adaptive interaction |
+| GIDEON | Long-term memory, decision history and continuity |
+
+These specialists operate behind LORIN.
+
+LORIN remains the single conversational interface and final owner-facing assistant.
+
+All specialists must use the same authorization and policy infrastructure.
+
+No specialist can expand its own permissions.
+
+## 1.4 Safe autonomy
+
+LORIN should have strong reasoning and practical autonomy, but must never have unrestricted authority.
+
+It may independently:
+
+- Research.
+- Analyse.
+- Organize.
+- Prepare plans.
+- Generate code.
+- Execute low-risk approved workflows.
+- Monitor authorized services.
+- Identify problems.
+- Prepare reports.
+- Suggest improvements.
+
+It must obtain appropriate approval before:
+
+- Destructive actions.
+- Financial transactions.
+- External commitments.
+- Sensitive communications.
+- Production deployments.
+- Credential or permission changes.
+- High-impact device operations.
+- Access to new private information.
+
+Never implement self-replication, hidden persistence, self-authorized privilege escalation, unrestricted remote access or the ability to disable owner controls.
+
+---
+
+# 2. SOURCE AUDIT AND BUILD RECOVERY
+
+This is the first implementation phase.
+
+## 2.1 Source selection
+
+Use the latest supplied M8 hardened LORIN source as the working candidate:
+
+`LORIN_2_1_M8_Device_Fabric_Hardened_2026-11-24.zip`
+
+Keep the corrected November 23 LORIN 2.0 package as a recovery/reference baseline.
+
+Inspect both where necessary.
+
+Do not blindly extract an embedded older archive over the current root application.
+
+Identify:
+
+- Application entry points.
+- React/Vite frontend.
+- Node/Express backend.
+- Primary Node implementation.
+- Firebase authentication.
+- Local database.
+- Existing PWA configuration.
+- Device Centre.
+- Pairing implementation.
+- Synchronization services.
+- Gemini and Ollama adapters.
+- Knowledge Vault.
+- Memory.
+- Task engine.
+- Sandbox foundations.
+- Voice and vision.
+- Existing security middleware.
+- Tauri desktop foundations.
+- Existing tests.
+- Deployment and build configuration.
+
+Produce a source inventory and dependency map.
+
+## 2.2 Runtime and dependency recovery
+
+The recorded baseline requires Node.js `>=24.12.0`, while the earlier development environment had Node 22.16.0.
+
+Verify the actual current package requirements.
+
+Then:
+
+1. Install the required supported Node runtime.
+2. Review `package.json`.
+3. Review `package-lock.json`.
+4. Identify every dependency mismatch.
+5. Reconcile the lockfile using the approved package manager and runtime.
+6. Do not hand-fabricate lockfile entries.
+7. Verify all declared packages and optional platform dependencies.
+8. Perform a clean dependency installation.
+9. Record the resulting dependency tree.
+10. Run the complete preflight.
+
+Required baseline commands include:
+
+```powershell
+node --version
+npm --version
+npm ci
+npm run preflight
+npm run test:core
+npm run test:security:static
+npm run lint
+npm run build
+```
+
+Run the existing Vitest and browser test commands identified in the repository.
+
+If scripts need to be added, implement them properly and document them.
+
+## 2.3 Build recovery acceptance
+
+The application must:
+
+- Install dependencies reproducibly.
+- Pass semantic TypeScript checks.
+- Pass lint.
+- Pass core tests.
+- Pass security regression tests.
+- Pass integration tests.
+- Build frontend assets.
+- Build backend assets.
+- Start successfully.
+- Connect to the local database.
+- Authenticate an owner.
+- Load all authorized workspaces.
+
+Do not begin large-scale changes on top of an unstable or unexplained build.
+
+---
+
+# 3. MASTER PLATFORM ARCHITECTURE
+
+Implement a modular architecture while preserving the existing technology stack wherever practical.
+
+## 3.1 Core services
+
+1. LORIN Core and Conversation Service.
+2. Intelligence Orchestrator.
+3. Model Gateway.
+4. Model Registry and Download Manager.
+5. Knowledge Service.
+6. Memory Service.
+7. Storage Service.
+8. Connector Service.
+9. Task and Automation Service.
+10. Policy and Authorization Service.
+11. Sandbox Control Plane.
+12. Windows Companion Service.
+13. Android Companion.
+14. Multimodal Service.
+15. Audit and Observability Service.
+16. 3D Companion Runtime.
+17. Proactive Presence Engine.
+18. Cross-Device Synchronization Engine.
+19. Cloud Infrastructure Service.
+20. Device Identity and Connection Service.
+
+These are logical service boundaries, not a requirement to deploy twenty independent servers.
+
+Use modular services with typed, versioned contracts.
+
+Avoid circular dependencies and unnecessary microservices.
+
+## 3.2 Architecture principles
+
+- Authenticated server-to-server communication.
+- Backend-enforced authorization.
+- Typed and validated API contracts.
+- Durable jobs and event processing.
+- Idempotent external actions.
+- Retry limits and cancellation.
+- Explicit local/cloud privacy boundaries.
+- Offline-first support where practical.
+- Versioned database migrations.
+- Centralized observability.
+- Replaceable provider adapters.
+- Secure secrets management.
+- Explicit health and readiness checks.
+
+---
+
+# 4. M1 — VISUAL COMPANION
+
+## Objective
+
+Deliver a production-quality original 3D LORIN character.
+
+Do not use a basic SVG avatar, static profile photograph or decorative hologram as the final solution.
+
+## 4.1 Eight acceptance requirements
+
+1. Original high-fidelity 3D character.
+2. Facial rigging and expression system.
+3. Realistic body and gesture animation.
+4. Lip synchronization with speech.
+5. Eye tracking and gaze behaviour.
+6. Adaptive lighting and environments.
+7. Companion, Immersive, Compact, Workspace and Ambient modes.
+8. GPU quality scaling and fallback.
+
+## 4.2 Character production
+
+Create an original character design.
+
+Produce:
+
+- Production-ready GLB/glTF model.
+- Rigged character.
+- Facial blend shapes or equivalent rig.
+- Optimized materials and textures.
+- LODs.
+- Animation library.
+- Documented asset licenses.
+- Source project and export files.
+
+Do not replicate protected fictional characters or real people.
+
+## 4.3 Expression and movement
+
+Implement:
+
+- Neutral.
+- Attentive.
+- Curious.
+- Thinking.
+- Explaining.
+- Speaking.
+- Listening.
+- Concerned.
+- Happy.
+- Alert.
+- Error.
+- Idle.
+
+Synchronize actual speech with mouth and facial movement.
+
+Use genuine speech timing and viseme data where available.
+
+## 4.4 Rendering
+
+Support:
+
+- WebGPU where available.
+- WebGL fallback.
+- 2D/compact fallback.
+- GPU quality scaling.
+- Reduced-motion preferences.
+- Mobile performance profiles.
+- Adaptive resolution.
+
+The interface must remain functional when 3D rendering is unavailable.
+
+---
+
+# 5. M2 — CORE AI INTELLIGENCE
+
+## Objective
+
+Build an actual intelligent model infrastructure, not a simulated chatbot.
+
+## 5.1 Nine acceptance requirements
+
+1. Private LORIN model infrastructure.
+2. Gemini and additional approved providers.
+3. Unified Model Gateway.
+4. Automatic and manual routing.
+5. Real streaming and interruption.
+6. Model downloads and installation.
+7. Hardware detection and compatibility.
+8. Embeddings and reranking.
+9. Model evaluation and controlled customization.
+
+## 5.2 Local intelligence
+
+Complete real Ollama integration.
+
+Support:
+
+- Runtime detection.
+- Model discovery.
+- Installed model inventory.
+- Inference.
+- Streaming.
+- Cancellation.
+- Model selection.
+- Context limits.
+- Resource monitoring.
+- Provider health.
+- Offline operation.
+
+A model must not appear installed until its actual runtime and files verify successfully.
+
+## 5.3 Gemini and cloud providers
+
+Implement authenticated Gemini requests and additional provider adapters through the Model Gateway.
+
+Requirements:
+
+- Server-side secret storage.
+- Provider health probes.
+- Actual model identification.
+- Streaming.
+- Error handling.
+- Rate limiting.
+- Token and cost attribution where available.
+- Request cancellation.
+- Privacy filtering.
+
+Never expose API keys in frontend code.
+
+Never substitute a provider silently.
+
+## 5.4 Automatic model routing
+
+Support:
+
+- Automatic selection.
+- Manual selection.
+- Task-specific routing.
+- Local-only.
+- Local-first.
+- Cloud-assisted.
+- Cloud-preferred.
+- Owner-approved sensitive requests.
+
+Routing must consider:
+
+- Task type.
+- Model capabilities.
+- Hardware.
+- Provider availability.
+- Latency.
+- Context window.
+- Cost.
+- Privacy classification.
+- Owner preferences.
+
+Record the real provider, model and routing decision.
+
+## 5.5 Model download manager
+
+Implement:
+
+- Approved model catalogue.
+- Trusted model sources.
+- Hardware compatibility checks.
+- Disk-space checks.
+- Download jobs.
+- Actual byte progress.
+- Cancellation.
+- Checksums and integrity verification.
+- Installation.
+- Registration.
+- Post-install inference verification.
+- Model deletion and management.
+
+Never invent download progress or hardware information.
+
+## 5.6 Embeddings and reranking
+
+Implement real embedding providers and compatible vector indexing.
+
+Support:
+
+- Local embeddings.
+- Approved cloud embeddings.
+- Vector search.
+- Keyword search.
+- Hybrid retrieval.
+- Reranking.
+- Evaluation datasets.
+
+Respect the same privacy and routing controls as normal AI inference.
+
+---
+
+# 6. M3 — KNOWLEDGE VAULT AND GIDEON MEMORY
+
+## Objective
+
+Make LORIN capable of maintaining reliable, searchable, owner-controlled knowledge.
+
+## 6.1 Eight acceptance requirements
+
+1. Google Drive OAuth and file selection.
+2. Automatic and recoverable synchronization.
+3. Persistent local and remote Knowledge Vault.
+4. Hybrid keyword and vector search.
+5. Accurate source citations.
+6. Memory provenance and owner controls.
+7. Project-specific context and isolation.
+8. Export, deletion and backup recovery.
+
+## 6.2 Knowledge Vault
+
+Support:
+
+- PDF.
+- DOCX.
+- TXT.
+- Markdown.
+- CSV.
+- JSON.
+- HTML.
+- Supported spreadsheets.
+- Supported Google Workspace formats.
+- Images where supported.
+- Approved project files.
+
+Every document must retain:
+
+- Owner.
+- Project.
+- Source.
+- File ID.
+- Version.
+- Checksum.
+- Sensitivity classification.
+- Modification date.
+- Processing status.
+- Indexing status.
+- Last successful synchronization.
+
+Implement safe parsers, file-signature validation, upload limits, malware scanning and isolated document processing.
+
+Treat imported text as untrusted content. Embedded document instructions must never override LORIN's system instructions or security permissions.
+
+## 6.3 Google Drive integration
+
+Implement the complete real integration.
+
+Use official OAuth authorization with the narrowest appropriate permission scope.
+
+The initial selected-file workflow should use `drive.file` and Google Picker where suitable.
+
+Implement:
+
+- OAuth start and callback.
+- State and PKCE validation.
+- Token encryption.
+- Secure token refresh.
+- Account verification.
+- Picker.
+- Selected-file permissions.
+- Folder permissions.
+- Pagination.
+- File download.
+- Google Workspace export.
+- Incremental synchronization.
+- Change cursors.
+- Webhook processing.
+- Reconciliation.
+- Recovery.
+- Revocation.
+- Audit history.
+
+The browser must never handle refresh tokens or client secrets.
+
+The interface must distinguish:
+
+- Connected.
+- Selected.
+- Downloaded.
+- Indexed.
+- Retrievable.
+- Failed.
+- Disconnected.
+
+Do not display a document as available for retrieval until its actual contents have been successfully processed and indexed.
+
+Removing a document from LORIN must not delete the original Google Drive file.
+
+## 6.4 Memory architecture
+
+Separate:
+
+- Conversation history.
+- Episodic memory.
+- Semantic memory.
+- Preferences.
+- Project decisions.
+- Task history.
+- Long-term plans.
+- Contact and activity history where authorized.
+
+Memory requirements:
+
+- Explicit provenance.
+- Owner approval policy.
+- Search.
+- Editing.
+- Pinning.
+- Expiration.
+- Export.
+- Deletion.
+- Cross-project isolation.
+- Version history.
+
+Do not turn every conversation into permanent memory.
+
+GIDEON must preserve the history of important decisions and distinguish confirmed facts from inferred analysis.
+
+---
+
+# 7. M4 — SECURE SANDBOX AND EXECUTION
+
+## Objective
+
+Allow real software engineering and digital task execution without giving LORIN unrestricted access to the owner's machine.
+
+## 7.1 Eight acceptance requirements
+
+1. Isolated Docker or microVM workers.
+2. Code execution and development environments.
+3. Browser research and testing sandbox.
+4. Terminal and live job monitoring.
+5. Resource and network restrictions.
+6. Secure project workspaces.
+7. File diffs and artifact verification.
+8. Approval, delivery and rollback.
+
+## 7.2 Isolation
+
+Implement a dedicated sandbox control plane.
+
+Use:
+
+- Rootless Docker with hardened configuration for appropriate workloads.
+- MicroVM isolation for higher-risk workloads when required.
+- Non-root users.
+- Restricted capabilities.
+- Seccomp/AppArmor or equivalent protections.
+- Default-deny network access.
+- CPU and memory limits.
+- Disk quotas.
+- Process limits.
+- Timeouts.
+- Disposable job environments.
+
+Never expose the Docker socket to an AI agent or ordinary worker.
+
+## 7.3 Engineering capabilities
+
+Support approved:
+
+- Languages.
+- Frameworks.
+- Package managers.
+- Build tools.
+- Tests.
+- Linters.
+- Type checkers.
+- Browser testing.
+- Development servers.
+- Database test environments.
+
+Create working copies, branches or snapshots rather than modifying protected originals directly.
+
+## 7.4 Job lifecycle
+
+Use durable states:
+
+`PROPOSED → APPROVED → QUEUED → PROVISIONING → RUNNING → VERIFYING → SUCCEEDED / FAILED / CANCELLED`
+
+Show actual:
+
+- Job ID.
+- Owner.
+- Project.
+- Command.
+- Execution environment.
+- Permissions.
+- Resource usage.
+- Logs.
+- Exit code.
+- Duration.
+- Artifacts.
+- Verification results.
+
+## 7.5 Delivery
+
+Produce:
+
+- File manifests.
+- Diffs.
+- Checksums.
+- Test reports.
+- Artifact previews.
+- Rollback information.
+
+Require appropriate approval before delivering changes to protected projects.
+
+---
+
+# 8. M5 — MULTIMODAL INTERACTION
+
+## Objective
+
+Provide natural and truthful communication through voice, vision and approved device context.
+
+## 8.1 Eight acceptance requirements
+
+1. Reliable speech recognition.
+2. Natural speech synthesis.
+3. Voice activity and interruption handling.
+4. Foreground wake-word support.
+5. Camera and image understanding.
+6. Explicitly authorized live vision.
+7. Screen and application understanding.
+8. Visual and audio context coordination.
+
+## 8.2 Voice
+
+Implement actual STT and TTS providers.
+
+Support:
+
+- Device selection.
+- Microphone permissions.
+- Streaming transcripts.
+- Speech interruption.
+- Audio cancellation.
+- Voice settings.
+- Language selection.
+- Error handling.
+
+Implement local and approved cloud speech processing where practical.
+
+## 8.3 Wake word
+
+Provide:
+
+- User opt-in.
+- Foreground wake-word support.
+- Visible listening indicator.
+- Immediate pause.
+- Native Windows/Android roadmap.
+
+Do not claim unsupported browser background listening.
+
+## 8.4 Vision
+
+Support:
+
+- User-selected images.
+- User-initiated camera snapshots.
+- Real vision model analysis.
+- Authorized live video where available.
+- Screen capture with explicit permission.
+- Application-specific access.
+
+Provide clear preview, processing, retention and deletion states.
+
+Never activate cameras or microphones secretly.
+
+---
+
+# 9. M6 — CONNECTED ENVIRONMENT AND DEVICES
+
+## Objective
+
+Connect LORIN to approved computers, phones, online services and smart devices.
+
+## 9.1 Eight acceptance requirements
+
+1. Windows companion application.
+2. Secure Android integration.
+3. Device pairing and revocation.
+4. Approved filesystem and application access.
+5. Connected service status.
+6. Smart-home integrations.
+7. Permission-controlled remote actions.
+8. Cross-device task continuity.
+
+## 9.2 Windows companion
+
+Implement:
+
+- Local Primary Node integration.
+- Hardware detection.
+- Model runtime management.
+- Approved filesystem bridge.
+- Local notifications.
+- Background service management.
+- Secure secrets.
+- Diagnostic logging.
+- Signed updates.
+- Recovery.
+
+## 9.3 Android companion
+
+Implement a genuine Android integration within supported platform restrictions.
+
+Support:
+
+- Authenticated device registration.
+- Secure permissions.
+- Notifications.
+- Approved local actions.
+- Voice interaction.
+- Device revocation.
+- Offline state.
+
+Do not assume browser PWA capabilities equal native Android capabilities.
+
+## 9.4 Device permissions
+
+Use narrowly scoped capability grants.
+
+Support:
+
+- Conversation access.
+- Project access.
+- Knowledge access.
+- Voice.
+- Vision.
+- Task operations.
+- Local model use.
+- Device management.
+
+The server must enforce every permission.
+
+## 9.5 Smart-home support
+
+Build through documented, approved integrations such as Home Assistant.
+
+Require authorization for each device and action.
+
+High-impact physical actions must require explicit approval and real outcome verification.
+
+---
+
+# 10. M7 — PRESENCE AND PROACTIVE INTELLIGENCE
+
+## Objective
+
+Give LORIN continuous, authorized operational awareness and the ability to initiate meaningful communication with its owner.
+
+## 10.1 Nine acceptance requirements
+
+1. Persistent home-server runtime.
+2. Event monitoring engine.
+3. Intelligent priority engine.
+4. Notifications and messaging.
+5. Outbound voice calling.
+6. Scheduled briefings.
+7. Contact and response follow-ups.
+8. Personal check-ins.
+9. Security and escalation controls.
+
+## 10.2 Continuous Presence
+
+Implement a persistent background service that monitors authorized sources.
+
+Event sources include:
+
+- Projects.
+- Tasks.
+- Calendar.
+- Approved email.
+- Approved contacts.
+- Google Drive.
+- Model health.
+- Local server.
+- Connected devices.
+- Security events.
+- Scheduled tasks.
+
+Events must include stable IDs, timestamps, source, owner, confidence, severity and processing state.
+
+Use event deduplication and durable processing.
+
+## 10.3 Priority levels
+
+| Priority | Meaning | Default response |
+|---|---|---|
+| P0 | Critical | Immediate configured escalation |
+| P1 | Urgent | Immediate alert and possible call |
+| P2 | Important | Message or briefing |
+| P3 | Normal | Scheduled report |
+| P4 | Informational | Dashboard history |
+
+Evaluate evidence, confidence, importance, urgency, owner preferences and acknowledgment state.
+
+## 10.4 Communication channels
+
+Support:
+
+- In-app notifications.
+- PWA push where supported.
+- Windows notifications.
+- SMS where configured.
+- Email where configured.
+- Internet voice calls.
+- Cellular/telephony calls through an approved provider.
+- Scheduled voice briefings.
+
+The system must report actual delivery outcomes.
+
+A queued message is not a delivered message. A failed call must not appear as a successful call.
+
+## 10.5 Briefings
+
+Generate:
+
+- Morning briefing.
+- Midday briefing.
+- Evening review.
+- Weekly review.
+- Project-specific summaries.
+- Critical event summaries.
+
+Use real authorized data.
+
+## 10.6 Contact intelligence
+
+With explicit account permissions:
+
+- Detect incoming replies.
+- Identify related contacts and projects.
+- Summarize actual responses.
+- Track pending communications.
+- Prepare suggested replies.
+- Identify follow-up deadlines.
+- Report successful and failed outreach.
+
+Never claim that a message was sent without a successful provider response.
+
+## 10.7 Calling safeguards
+
+- Verify owner destination.
+- Verify provider configuration.
+- Validate event evidence.
+- Apply confidence thresholds.
+- Apply rate limits.
+- Respect quiet hours.
+- Handle acknowledgment.
+- Prevent call loops.
+- Implement safe retries.
+- Use authenticated webhooks.
+- Require additional confirmation for sensitive actions during calls.
+
+Caller ID or voice similarity alone is not sufficient authentication.
+
+Call recording must be disabled by default. Provide explicit consent and retention controls for any recording or transcript.
+
+Do not claim guaranteed emergency response.
+
+---
+
+# 11. M8 — CROSS-PLATFORM DELIVERY AND DEVICE FABRIC
+
+## Objective
+
+Deliver one LORIN application through web, PWA, Windows desktop and approved connected devices.
+
+## 11.1 Ten acceptance requirements
+
+1. Unified web application.
+2. Installable PWA.
+3. Offline PWA and recovery.
+4. Windows desktop application.
+5. Local Primary Node and background runtime.
+6. Local network discovery and pairing.
+7. Device-bound identity and revocation.
+8. HTTPS LAN and private-server connectivity.
+9. Real-time multi-device synchronization.
+10. Platform security, signed updates and recovery.
+
+## 11.2 Web application
+
+Retain the existing React/Vite architecture.
+
+Provide the full authorized LORIN experience in supported browsers.
+
+All web communication must use authenticated APIs.
+
+Never expose private server credentials, local filesystem access or unrestricted backend operations to the browser.
+
+## 11.3 PWA
+
+Improve the existing PWA implementation.
+
+Provide:
+
+- Correct manifest.
+- Complete icons.
+- Standalone presentation.
+- Install UX.
+- Responsive layouts.
+- Service-worker lifecycle.
+- User-confirmed updates.
+- Offline application shell.
+- Safe local queues.
+- Reconnection.
+- Supported push notifications.
+
+Do not cache private API responses or documents as public application assets.
+
+Clearly distinguish cached application access from genuinely available offline intelligence.
+
+## 11.4 Windows desktop
+
+Use Tauri 2 with the existing React/Vite frontend unless the source audit identifies a compelling incompatibility.
+
+Implement:
+
+- Managed Node Primary Node sidecar.
+- Native notifications.
+- Native credential storage.
+- Local model access.
+- Device identity.
+- Background service lifecycle.
+- Windows installer.
+- Start Menu shortcuts.
+- Application icons.
+- Signed updates.
+- Rollback.
+- Clean uninstall.
+
+Use restrictive Tauri capabilities and Content Security Policy.
+
+Do not grant the frontend unrestricted filesystem or process access.
+
+## 11.5 Primary Node architecture
+
+Support three deployment arrangements:
+
+**Local Primary Node:** A Windows computer or dedicated home server.
+
+**Private server Primary Node:** A securely hosted private runtime.
+
+**Hybrid Primary Node:** Local processing with approved cloud services.
+
+A deployment must have a clearly defined synchronization authority for each data class.
+
+Do not allow independent nodes to overwrite each other through uncontrolled multi-master writes.
+
+## 11.6 LAN discovery and pairing
+
+Support approved local discovery using mDNS/DNS-SD or an equivalent mechanism.
+
+Discovery is not authorization.
+
+Pairing requires:
+
+- Short-lived cryptographic challenge.
+- High-entropy one-time code.
+- Single-use consumption.
+- Rate limiting.
+- Attempt lockout.
+- Owner authentication.
+- Explicit device review.
+- Selected capability grants.
+- Audit record.
+
+## 11.7 Device cryptographic identity
+
+Complete the remaining device security requirements.
+
+Each device should generate a cryptographic key pair.
+
+The server stores the public key and fingerprint.
+
+Implement proof-of-possession and per-request or session-bound signed authentication with:
+
+- Fresh nonces or protected counters.
+- Expiration.
+- Replay prevention.
+- Key rotation.
+- Revocation.
+- Device-specific session binding.
+
+Client device IDs are identifiers, not authentication.
+
+Store private keys using operating-system protection where possible.
+
+## 11.8 Local and remote connections
+
+For LAN:
+
+- Valid HTTPS certificates.
+- Hostname validation.
+- Private-address restrictions.
+- Real health probes.
+- No redirects to untrusted endpoints.
+- Timeouts.
+- Firewall rules.
+- No certificate bypass.
+
+For remote access:
+
+- Prefer private Tailscale connectivity.
+- Use Tailscale Serve where appropriate.
+- Keep Funnel disabled unless separately authorized for a justified public endpoint.
+- Do not expose raw model, database or sandbox ports.
+- Authenticate every application request.
+
+## 11.9 Synchronization
+
+Extend beyond the existing conversation-centric synchronization.
+
+Support:
+
+- Conversations.
+- Projects.
+- Tasks.
+- Approved memories.
+- Knowledge metadata.
+- Selected documents.
+- Preferences.
+- Device records.
+- Synchronization status.
+
+Implement versioning, operation IDs, durable queues, acknowledgments, deduplication, conflict resolution and deletion propagation.
+
+Approvals, permissions and external actions must never be replayed blindly.
+
+---
+
+# 12. M9 — CLOUD INFRASTRUCTURE, STORAGE AND SYNCHRONIZATION FABRIC
+
+## Objective
+
+Make LORIN fully cloud-capable and continuously accessible while preserving local-first intelligence and owner control.
+
+## 12.1 Twelve acceptance requirements
+
+1. Cloud deployment.
+2. Private/home-server connectivity.
+3. Shared cloud database.
+4. Cloud object storage.
+5. Storage encryption.
+6. Automatic synchronization.
+7. Conflict resolution.
+8. Offline queue recovery.
+9. Backup and disaster recovery.
+10. Storage quotas and retention.
+11. Service redundancy and recovery.
+12. Cloud security and observability.
+
+## 12.2 Cloud infrastructure
+
+Implement deployment for:
+
+- Online frontend.
+- Authenticated API gateway.
+- Backend services.
+- Database.
+- Object storage.
+- Durable task and event queues.
+- Synchronization service.
+- Notification delivery.
+- Webhook processing.
+- Monitoring.
+- Backup and recovery.
+
+Support development, staging and production environments.
+
+Use TLS and authenticated service-to-service communication.
+
+Do not expose private infrastructure directly.
+
+## 12.3 Database architecture
+
+Audit the existing Firebase and SQLite implementations before choosing a migration strategy.
+
+Recommended arrangement:
+
+- Firebase Authentication for owner identity where the current integration is sound.
+- One authoritative shared cloud database.
+- Encrypted local SQLite for local state and offline operation.
+- IndexedDB for browser-local records and pending operations.
+- Cloud object storage for files and backups.
+
+PostgreSQL is the recommended candidate for the authoritative shared relational data platform, but retain Firestore if the source audit proves it is the better established and safer option for the current architecture.
+
+**Never run uncontrolled dual writes to two competing authoritative databases.**
+
+Define the canonical data owner and synchronization direction for every record type.
+
+Implement:
+
+- Versioned migrations.
+- Transactions.
+- Indexes.
+- Constraints.
+- Backup.
+- Restore.
+- Owner and project isolation.
+- Concurrency control.
+
+## 12.4 Cloud object storage
+
+Support:
+
+- Documents.
+- Attachments.
+- Project files.
+- Approved images.
+- Generated reports.
+- Selected voice/vision assets.
+- Encrypted backups.
+
+Implement:
+
+- Resumable uploads.
+- Secure downloads.
+- Versioning.
+- Checksums.
+- Duplicate detection.
+- Quotas.
+- Retention.
+- Access controls.
+- Short-lived authorized download URLs.
+- File deletion.
+- Integrity verification.
+
+Use Firebase Storage where suitable or an S3-compatible provider through a storage adapter.
+
+Do not store large binary files inside structured metadata records.
+
+## 12.5 Encryption
+
+Use:
+
+- TLS in transit.
+- Encryption at rest.
+- Appropriate application-level encryption for sensitive content.
+- Owner-controlled key-management strategy.
+- Key rotation.
+- Backup encryption.
+- Secure key recovery.
+
+Define clearly whether encryption is device-to-device, client-to-server or server-side at rest. Do not incorrectly describe ordinary server-side encrypted storage as end-to-end encryption.
+
+For private/local-only collections, never upload data without explicit authorization.
+
+## 12.6 Automatic cloud synchronization
+
+Implement a durable synchronization engine.
+
+Use:
+
+- Transactional change journal or equivalent durable event mechanism.
+- Unique operation IDs.
+- Versioned records.
+- Incremental cursors.
+- Acknowledgment tracking.
+- Idempotent operations.
+- Retry policies.
+- Conflict resolution.
+- Deletion tombstones.
+- Network recovery.
+- Audit history.
+
+Support WebSockets or another authenticated real-time channel, with an appropriate reconnect and fallback mechanism.
+
+## 12.7 Synchronization profiles
+
+Provide four owner-selectable profiles:
+
+**Full Approved Sync:** Synchronize all data explicitly approved for cloud storage.
+
+**Balanced Sync:** Automatically synchronize ordinary work and metadata; apply separate controls to large and sensitive content.
+
+**Privacy-First Sync:** Upload only selected data and keep sensitive material local by default.
+
+**Manual Sync:** Require user initiation except for essential security and connection maintenance.
+
+Use Balanced Sync as the recommended initial configuration.
+
+## 12.8 Multi-device conflict resolution
+
+Implement data-specific policies.
+
+| Data | Policy |
+|---|---|
+| Conversations | Append and preserve message ordering |
+| Tasks | Version checks and field-level reconciliation |
+| Projects | Versioned changes and reviewable diffs |
+| Documents | Content hashes and file versions |
+| Memory | Preserve provenance and approval history |
+| Preferences | Server-authoritative |
+| Permissions | Server-authoritative |
+| Approvals | Never replay as execution commands |
+| External actions | Reconcile actual provider state before retry |
+
+Do not solve every conflict through generic last-write-wins.
+
+## 12.9 Home server integration
+
+The cloud must communicate with the home Primary Node securely.
+
+Prefer outbound authenticated connections or a private network.
+
+The architecture must support:
+
+- Home-server heartbeat.
+- Secure registration.
+- Device authentication.
+- Event exchange.
+- Durable sync queues.
+- Local inference.
+- Local-only collections.
+- Reconnection.
+- Service restart.
+- Configuration recovery.
+
+If the home server is offline, the cloud must accurately identify which capabilities remain available.
+
+## 12.10 Storage management
+
+Build a Storage Manager showing:
+
+- Local storage.
+- Cloud storage.
+- Knowledge Vault.
+- Private Vault.
+- Project files.
+- Model storage.
+- Attachments.
+- Backup storage.
+- Used and available capacity.
+- Upload and download activity.
+- Failed operations.
+- Retention state.
+
+Provide search, filtering, selective deletion, duplicate identification and quota alerts.
+
+## 12.11 Backup and disaster recovery
+
+Implement:
+
+- Scheduled encrypted database backups.
+- Encrypted object-storage backups.
+- Versioned backup retention.
+- Offsite copies.
+- Local backup options.
+- Restoration procedures.
+- Recovery verification.
+- Disaster recovery records.
+
+Measure and document recovery point objective and recovery time objective.
+
+Perform an actual restore test into a clean environment.
+
+## 12.12 Cloud observability and cost management
+
+Monitor actual:
+
+- API availability.
+- Database health.
+- Storage consumption.
+- Network traffic.
+- Queue depth.
+- Sync latency.
+- Failed jobs.
+- Active devices.
+- Inference usage.
+- Provider charges where measurable.
+- Backup completion.
+- Service recovery.
+
+Do not fabricate uptime, traffic, costs or performance data.
+
+Provide spending limits and alerts for configured billable services.
+
+---
+
+# 13. GLOBAL SECURITY ARCHITECTURE
+
+Security must apply to all nine development groups.
+
+## 13.1 Authentication
+
+Implement:
+
+- Owner authentication.
+- MFA/passkeys where supported.
+- Session expiry.
+- Session revocation.
+- Device authentication.
+- Recovery.
+- Reauthentication for high-risk operations.
+- Login throttling.
+- Suspicious login detection.
+
+## 13.2 Authorization
+
+Create one centralized backend authorization system.
+
+Support:
+
+- Owner.
+- Device.
+- Session.
+- Project.
+- Resource.
+- Capability.
+- Sensitivity.
+- Risk level.
+- Approval state.
+
+Use deny-by-default.
+
+The frontend may present permissions but cannot be the authority that enforces them.
+
+## 13.3 Secrets
+
+Protect:
+
+- Gemini keys.
+- OAuth secrets.
+- Google refresh tokens.
+- Firebase service credentials.
+- Database credentials.
+- Storage keys.
+- Device private keys.
+- Telephony credentials.
+
+Use OS-protected or server-protected secret stores.
+
+Never place production secrets in Git, frontend bundles, logs or ZIP archives.
+
+## 13.4 Prompt injection
+
+Treat:
+
+- Webpages.
+- Emails.
+- Drive documents.
+- Uploaded files.
+- Code repositories.
+- Tool responses.
+- External API results.
+
+as untrusted content.
+
+Retrieved content cannot modify system instructions, authorize external actions or request permission escalation.
+
+Use typed tools, external policy checks, sandboxing and output validation.
+
+## 13.5 Browser and PWA security
+
+Implement:
+
+- Strict CSP.
+- XSS mitigation.
+- CSRF protection where applicable.
+- Strict CORS.
+- Dependency controls.
+- Secure cookies.
+- Protected local data.
+- Service-worker cache restrictions.
+- Safe update handling.
+- Token expiration.
+- Secure logout.
+- API rate limiting.
+
+Do not cache authenticated documents or API responses as public application assets.
+
+Encrypted IndexedDB is not an XSS security boundary.
+
+## 13.6 Device and LAN security
+
+Implement:
+
+- Device public-key identity.
+- Signed request proof.
+- Nonces and anti-replay.
+- Owner approval.
+- Capability grants.
+- Rate limits.
+- TLS verification.
+- Endpoint validation.
+- Device revocation.
+- Credential rotation.
+
+Do not trust a device merely because it shares the same Wi-Fi network.
+
+## 13.7 Security monitoring
+
+Create a real defensive monitoring layer for:
+
+- Unauthorized access.
+- Pairing attacks.
+- Suspicious sessions.
+- Token abuse.
+- Permission changes.
+- Device revocation.
+- API anomalies.
+- Data-access anomalies.
+- Sandbox violations.
+- Storage integrity.
+- Synchronization failures.
+
+Implement incident recording, notification, evidence preservation and recovery.
+
+## 13.8 Backup and recovery security
+
+Protect backup data and encryption keys.
+
+Test recovery after:
+
+- Device theft.
+- Local database failure.
+- Home-server failure.
+- Cloud service outage.
+- Interrupted synchronization.
+- Corrupted backup.
+- Revoked credentials.
+
+## 13.9 Software supply chain
+
+Implement:
+
+- Dependency auditing.
+- Vulnerability checks.
+- Build provenance.
+- Reproducible builds where practical.
+- Signed release artifacts.
+- Signed desktop updates.
+- Secure update channels.
+- Rollback.
+- Installer verification.
+
+---
+
+# 14. UNIFIED USER INTERFACE AND DESIGN
+
+Preserve LORIN's established premium Personal Intelligence Workspace identity.
+
+## 14.1 Visual system
+
+Use the established design tokens:
+
+- Background: `#0B0F14`.
+- Primary surface: `#111821`.
+- Elevated surface: `#17212C`.
+- Primary text: `#F1F5F9`.
+- Secondary text: `#A2AFBF`.
+- Main accent: `#66E3CB`.
+- Secondary accent: `#A9B8FF`.
+- Warm accent: `#E8BE78`.
+
+Use clear hierarchy, controlled motion and meaningful feedback.
+
+Avoid excessive neon, fake telemetry and unnecessary dashboard clutter.
+
+## 14.2 Primary navigation
+
+Organize the application into:
+
+**Personal Workspace**
+- Home / Today.
+- Companion.
+- Projects.
+- Tasks.
+- Workbench.
+
+**Intelligence**
+- Intelligence Studio.
+- Knowledge Vault.
+- Memory / GIDEON.
+- Voice.
+- Vision.
+
+**Execution**
+- Sandbox.
+- Automation.
+- Verification.
+
+**Connected Environment**
+- Devices.
+- Connections.
+- Presence.
+- Cloud & Storage.
+
+**Security and Management**
+- Security Centre.
+- Approvals.
+- Owner Control.
+- Settings.
+
+Avoid duplicated navigation entries and preserve access to existing functionality.
+
+## 14.3 New major workspaces
+
+Implement dedicated interfaces for:
+
+### Presence Centre
+- Current status.
+- Events.
+- Priority.
+- Call history.
+- Acknowledgments.
+- Briefing schedules.
+- Contact follow-ups.
+- Delivery health.
+- Quiet hours.
+- Communication preferences.
+
+### Device Centre
+- Enrolled devices.
+- Pending approvals.
+- Identity fingerprints.
+- Permissions.
+- Connectivity.
+- Last successful sync.
+- Revocation.
+- Local network.
+- Remote access.
+- Device activity.
+
+### Cloud & Storage Centre
+- Cloud service health.
+- Home-server connectivity.
+- Database status.
+- Storage providers.
+- Storage consumption.
+- Uploads/downloads.
+- Backup history.
+- Sync status.
+- Recovery controls.
+- Cost information.
+
+### Sync Centre
+- Connected devices.
+- Pending operations.
+- Last successful sync.
+- Conflicts.
+- Failed transfers.
+- Retry actions.
+- Data categories.
+- Selective sync preferences.
+
+### Security Centre
+- Authentication.
+- Sessions.
+- Device identities.
+- Permissions.
+- Connected accounts.
+- Privacy routing.
+- Audit events.
+- Incident history.
+- Recovery.
+- Key-management status.
+
+## 14.4 Responsive design
+
+Verify:
+
+- Desktop.
+- Laptop.
+- Tablet.
+- Mobile.
+
+Support:
+
+- Keyboard access.
+- Screen-reader semantics.
+- Visible focus.
+- Touch-sized controls.
+- Reduced motion.
+- Appropriate color contrast.
+- No horizontal overflow.
+
+Every visible control must perform an actual operation or be clearly unavailable with an explanation.
+
+---
+
+# 15. THREE DEPLOYMENT PROFILES
+
+LORIN must support three deliberate operating modes.
+
+## 15.1 Local Mode
+
+Runs primarily on the owner's computer or home server.
+
+- Local AI.
+- Local database.
+- Local Knowledge Vault.
+- Local sandbox.
+- Local device connections.
+- Offline-capable operation.
+
+## 15.2 Private Server Mode
+
+Uses a dedicated private Primary Node.
+
+- Remote availability.
+- Shared services.
+- Approved cloud storage.
+- Device synchronization.
+- Persistent monitoring.
+- Private network access.
+
+## 15.3 Hybrid Mode
+
+Combines local, private-server and approved cloud infrastructure.
+
+Use local inference and storage where appropriate, with cloud services for authorized availability, storage, notifications and other workloads.
+
+The owner must be able to decide which data remains local and which can synchronize or use cloud services.
+
+---
+
+# 16. INTEGRATED PRODUCT INFORMATION ARCHITECTURE
+
+All modules must share a coherent data and event model.
+
+Create or reconcile:
+
+- Owners.
+- Users.
+- Devices.
+- Device identities.
+- Sessions.
+- Capability grants.
+- Projects.
+- Tasks.
+- Conversations.
+- Messages.
+- Memory.
+- Knowledge sources.
+- Documents.
+- File versions.
+- Document chunks.
+- Embeddings.
+- Model providers.
+- Models.
+- Inference runs.
+- Jobs.
+- Sandbox environments.
+- Approvals.
+- Execution attempts.
+- Artifacts.
+- Cloud storage references.
+- Sync operations.
+- Sync cursors.
+- Sync conflicts.
+- Presence events.
+- Delivery records.
+- Call records.
+- Connected accounts.
+- Audit events.
+- Security incidents.
+- Backup records.
+
+Every record must have appropriate owner scope, version, timestamps and provenance.
+
+Do not store secrets or unnecessary private content in audit records.
+
+---
+
+# 17. REQUIRED ACCEPTANCE TESTS
+
+A feature is not verified until its actual functionality has been tested.
+
+## Journey A — Local AI
+
+1. Install an approved local model.
+2. Disconnect external networking.
+3. Start real local inference.
+4. Verify streaming.
+5. Verify model attribution.
+6. Verify no cloud request occurred in local-only mode.
+
+## Journey B — Cloud AI
+
+1. Configure an approved cloud provider.
+2. Verify credentials.
+3. Perform real inference.
+4. Verify model attribution.
+5. Revoke credentials.
+6. Verify truthful failure handling.
+
+## Journey C — Google Drive
+
+1. Authorize a test Google account.
+2. Select a non-sensitive document.
+3. Download/export.
+4. Parse and index it.
+5. Retrieve its content.
+6. Verify exact citation.
+7. Modify the document.
+8. Verify synchronization.
+9. Revoke access and verify appropriate exclusion.
+
+## Journey D — Knowledge and Memory
+
+1. Approve a memory.
+2. Verify provenance.
+3. Retrieve it in a new session.
+4. Edit it.
+5. Export it.
+6. Delete it.
+7. Verify deletion from applicable derived indexes and caches.
+8. Test cross-project isolation.
+
+## Journey E — Sandbox
+
+1. Create an isolated environment.
+2. Run harmless test code.
+3. Verify isolation.
+4. Test restricted network.
+5. Trigger resource limits.
+6. Cancel a job.
+7. Generate file diffs.
+8. Approve delivery.
+9. Verify the original project.
+10. Test rollback.
+
+## Journey F — Visual Companion
+
+1. Load the real 3D asset.
+2. Change presentation modes.
+3. Trigger actual companion states.
+4. Verify animation.
+5. Verify lip synchronization.
+6. Test low-GPU fallback.
+7. Test reduced motion.
+
+## Journey G — Voice and Vision
+
+1. Request microphone permission.
+2. Record and transcribe actual speech.
+3. Generate actual TTS.
+4. Interrupt speech.
+5. Capture a user-authorized image.
+6. Run real vision analysis.
+7. Verify permission and deletion.
+8. Verify no background capture without authorization.
+
+## Journey H — M7 Presence
+
+1. Start the persistent event worker.
+2. Generate a legitimate test event.
+3. Verify priority.
+4. Send a genuine test notification.
+5. Acknowledge it from a device.
+6. Verify other devices receive the updated state.
+7. Test quiet hours.
+8. Test duplicate suppression.
+9. Test a real call only with configured test credentials and an authorized destination.
+10. Verify actual delivery outcome and audit evidence.
+
+## Journey I — M8 Device Fabric
+
+1. Pair a real Windows device.
+2. Pair a real mobile device.
+3. Verify device identities.
+4. Review permissions.
+5. Test a low-risk operation.
+6. Revoke one device.
+7. Confirm access is denied.
+8. Repeat connection over private LAN.
+9. Repeat remote connection through private networking.
+10. Verify that reconnecting does not replay external actions.
+
+## Journey J — M9 Cloud and synchronization
+
+1. Deploy the cloud environment.
+2. Connect the Primary Node.
+3. Upload a test document.
+4. Verify encrypted object storage.
+5. Create a project on one device.
+6. Verify automatic synchronization.
+7. Disconnect another device.
+8. Modify permitted records offline.
+9. Reconnect.
+10. Verify conflict handling and no duplicate operations.
+11. Test deletion propagation.
+12. Interrupt a storage operation.
+13. Recover it.
+14. Restore an encrypted backup to a clean environment.
+15. Verify record integrity and permissions.
+
+## Journey K — Total system recovery
+
+Simulate:
+
+- Power failure.
+- Network outage.
+- Cloud outage.
+- Home-server restart.
+- Database failure.
+- Storage unavailability.
+- Provider credential revocation.
+- Device loss.
+- Queue interruption.
+
+Verify recovery, safe failure and correct reporting.
+
+---
+
+# 18. IMPLEMENTATION ORDER
+
+Build in controlled stages.
+
+### Stage 0 — Build recovery and audit
+Resolve runtime, dependencies, lockfile, installation, tests and production build.
+
+### Stage 1 — Security, identity and data architecture
+Complete owner authorization, device identity, shared data contracts and durable persistence.
+
+### Stage 2 — Core AI and Model Gateway
+Complete real Gemini/Ollama, routing, streaming, privacy and model management.
+
+### Stage 3 — Knowledge Vault and GIDEON
+Complete Google Drive, indexing, citations, memory provenance and recovery.
+
+### Stage 4 — Sandbox and execution
+Complete actual isolated workers, resource policies, approvals and artifact delivery.
+
+### Stage 5 — Visual companion and multimodal
+Complete original 3D asset, facial animation, lip sync, voice and vision.
+
+### Stage 6 — Cross-platform applications
+Complete web, PWA, Tauri Windows desktop and Android companion.
+
+### Stage 7 — Device Fabric
+Complete device cryptographic identity, LAN pairing, Tailscale access and real multi-device synchronization.
+
+### Stage 8 — Cloud and Storage Fabric
+Complete cloud deployment, shared database, object storage, encryption, synchronization, quotas and backups.
+
+### Stage 9 — Proactive Presence
+Complete persistent event monitoring, notifications, calling, messaging, briefings and check-ins.
+
+### Stage 10 — Production certification
+Complete end-to-end testing, external security review, installers, recovery and deployment.
+
+Parallel engineering is permitted where dependencies allow, but the final acceptance sequence must remain controlled.
+
+---
+
+# 19. COMPLETION MATRIX — 97 ACCEPTANCE CRITERIA
+
+Track every item separately.
+
+Use these statuses:
+
+- Not started.
+- In progress.
+- Implemented, not verified.
+- Verified.
+- Blocked by external prerequisite.
+- Deferred with owner approval.
+
+## M1 — Visual Companion: 8
+
+1. Original 3D character.
+2. Facial rigging and expressions.
+3. Body and gesture animation.
+4. Lip synchronization.
+5. Eye tracking and gaze.
+6. Adaptive environments.
+7. Five presentation modes.
+8. GPU scaling and fallback.
+
+## M2 — Core AI Intelligence: 9
+
+1. Private LORIN model infrastructure.
+2. Gemini and additional providers.
+3. Unified Model Gateway.
+4. Automatic/manual routing.
+5. Streaming and interruption.
+6. Model download and installation.
+7. Hardware detection.
+8. Embeddings and reranking.
+9. Model evaluation and controlled customization.
+
+## M3 — Knowledge and Memory: 8
+
+1. Google Drive OAuth and selection.
+2. Automatic synchronization.
+3. Local and remote Knowledge Vault.
+4. Hybrid retrieval.
+5. Accurate citations.
+6. Memory provenance and controls.
+7. Project-specific isolation.
+8. Export, deletion and backup recovery.
+
+## M4 — Sandbox and Execution: 8
+
+1. Isolated execution workers.
+2. Code and development environments.
+3. Browser research and testing.
+4. Terminal and live monitoring.
+5. Resource and network restrictions.
+6. Secure project workspaces.
+7. File diffs and verification.
+8. Approval, delivery and rollback.
+
+## M5 — Multimodal: 8
+
+1. Speech recognition.
+2. Speech synthesis.
+3. Voice activity and interruption.
+4. Foreground wake word.
+5. Image understanding.
+6. Authorized live vision.
+7. Screen and application understanding.
+8. Audio/visual context coordination.
+
+## M6 — Connected Environment: 8
+
+1. Windows companion.
+2. Android integration.
+3. Device pairing and revocation.
+4. Approved filesystem access.
+5. Connected service status.
+6. Smart-home integration.
+7. Permission-controlled actions.
+8. Cross-device continuity.
+
+## M7 — Presence: 9
+
+1. Persistent runtime.
+2. Event monitoring.
+3. Priority engine.
+4. Notifications and messaging.
+5. Outbound voice calling.
+6. Scheduled briefings.
+7. Contact follow-ups.
+8. Personal check-ins.
+9. Security and escalation.
+
+## M8 — Cross-Platform and Device Fabric: 10
+
+1. Web application.
+2. Installable PWA.
+3. Offline PWA and recovery.
+4. Windows desktop.
+5. Local Primary Node runtime.
+6. LAN discovery and pairing.
+7. Device identity and revocation.
+8. HTTPS LAN/private server.
+9. Multi-device synchronization.
+10. Platform security and signed updates.
+
+## M9 — Cloud and Storage Fabric: 12
+
+1. Cloud deployment.
+2. Private/home-server connectivity.
+3. Shared database.
+4. Cloud object storage.
+5. Encryption and key management.
+6. Automatic synchronization.
+7. Conflict resolution.
+8. Offline recovery.
+9. Backup and disaster recovery.
+10. Storage quotas and retention.
+11. Service redundancy and recovery.
+12. Cloud security and observability.
+
+**Total: 97 individual acceptance criteria.**
+
+Every item must have:
+- Implementation evidence.
+- Source file references.
+- Backend verification.
+- Test results.
+- Dependencies.
+- Known limitations.
+- Current status.
+
+Never mark an item Verified simply because code was generated.
+
+---
+
+# 20. REQUIRED FINAL DELIVERABLES
+
+Deliver the complete updated LORIN project, not merely a collection of changed source files.
+
+Include:
+
+1. Complete LORIN source archive.
+2. Web application.
+3. PWA implementation.
+4. Windows desktop application and installer when build tooling permits.
+5. Android companion source where implemented.
+6. Primary Node runtime.
+7. Cloud deployment configuration.
+8. Database schema and migrations.
+9. Cloud storage integration.
+10. Synchronization engine.
+11. Device security implementation.
+12. M7 Presence implementation.
+13. AI provider adapters.
+14. Google Drive connector.
+15. Knowledge and memory services.
+16. Sandbox control plane and workers.
+17. Visual companion assets and source.
+18. Voice and vision integration.
+19. Secure configuration templates.
+20. `.env.example` with safe placeholders.
+21. Architecture documentation.
+22. API and event contracts.
+23. Security and threat model.
+24. Cloud and home-server installation guides.
+25. Windows installation and update instructions.
+26. PWA installation instructions.
+27. Android installation instructions where supported.
+28. Network and Tailscale setup instructions.
+29. Cloud storage configuration.
+30. Backup and recovery guide.
+31. Automated tests.
+32. Test execution report.
+33. Security verification report.
+34. Changed-file manifest.
+35. Migration and rollback guide.
+36. 97-item completion matrix.
+37. Known limitations and required external configuration.
+
+Do not package real credentials, personal documents, private databases or production secrets.
+
+---
+
+# 21. RELEASE GATES
+
+A release must satisfy these gates.
+
+**Gate 1 — Build integrity**
+
+Clean dependency installation, semantic type-checking, lint, tests and production build.
+
+**Gate 2 — Security**
+
+Authorization, device identity, encryption, access isolation, secret protection and security regression tests.
+
+**Gate 3 — AI intelligence**
+
+Real local/cloud inference, routing, model attribution and privacy acceptance.
+
+**Gate 4 — Knowledge and memory**
+
+Real document ingestion, accurate retrieval, citations and recovery.
+
+**Gate 5 — Execution**
+
+Actual isolated sandbox execution and artifact verification.
+
+**Gate 6 — Visual and multimodal**
+
+Real companion rendering, voice, vision and platform testing.
+
+**Gate 7 — Cross-platform delivery**
+
+Real web/PWA, Windows desktop and supported Android installation and operation.
+
+**Gate 8 — Cloud and synchronization**
+
+Actual cloud deployment, authenticated storage, automatic synchronization, conflict resolution and restoration.
+
+**Gate 9 — Presence**
+
+Real event processing and verified delivery through configured notification and voice channels.
+
+**Gate 10 — Production**
+
+Security review, performance, accessibility, monitoring, recovery, installer and rollback.
+
+A failed gate must remain visible and block the corresponding production release.
+
+---
+
+# 22. FINAL IMPLEMENTATION INSTRUCTION
+
+Begin by inspecting the complete M8 source, running its current tests, resolving the build environment and establishing a protected baseline.
+
+Then proceed through the nine capability groups and all 97 acceptance criteria.
+
+Preserve existing functionality.
+
+Reuse existing architecture where sound.
+
+Implement real functionality.
+
+Connect every subsystem through shared contracts, identity, permissions and synchronization.
+
+Test every important workflow.
+
+Do not produce disconnected modules.
+
+Do not create fake integrations.
+
+Do not silently change data ownership.
+
+Do not expose private infrastructure.
+
+Do not claim production readiness without evidence.
+
+Where external credentials, physical hardware, paid provider accounts or owner configuration are required, implement the real integration pathway and provide exact setup instructions. Mark live acceptance as blocked until it can be tested.
+
+Maintain a complete implementation record, including commands executed, files changed, test evidence, failures, repairs and outstanding work.
+
+Do not stop after preparing documentation or creating UI screens.
+
+**The objective is to complete and deliver the actual LORIN application.**
+
+# FINAL PRODUCT STANDARD
+
+LORIN must be:
+
+- Genuinely intelligent.
+- Visually sophisticated.
+- Naturally interactive.
+- Persistent and context-aware.
+- Capable of real authorized execution.
+- Connected across devices.
+- Available through web and installable applications.
+- Supported by secure online infrastructure and local services.
+- Capable of automatic synchronization.
+- Proactive without being intrusive.
+- Secure by design.
+- Recoverable after failure.
+- Transparent and accountable.
+- Fully controlled by its owner.
+
+**One identity. One coordinated intelligence. One secure ecosystem. Every authorized device. Local and online. Always under the owner's control.**
+
+**LORIN — Personal Intelligence. Everywhere.**

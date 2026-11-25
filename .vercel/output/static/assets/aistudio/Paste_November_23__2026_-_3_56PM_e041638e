@@ -1,0 +1,490 @@
+PART A — OWNER SETUP IN GOOGLE CLOUD
+This section describes the Google account and Google Cloud configuration the owner must perform. The implementation agent must not invent Client IDs, Client Secrets, project numbers, API keys, domains or redirect URLs.
+A1. Choose the access model before creating credentials
+LORIN must support two clearly distinguished Drive access modes:
+Mode 1 — Selected files (recommended initial setup)
+Use Google Picker with the drive.file OAuth scope. The owner chooses the individual files (and any folders the integration can demonstrably access) that LORIN may use. This is the preferred first release because it grants per-file access instead of blanket access to all Drive content.
+
+Important limitation: drive.file does not mean “read every file in the owner's Drive.” It permits access to files created by the app or files explicitly opened/shared with the app through the supported picker/file-selection flow. The integration must check actual permissions/capabilities and must never infer that selecting a folder grants recursive access to every descendant. For a selected folder, inspect its metadata and capabilities.canListChildren; if child enumeration is unavailable, ask the owner to select the individual files or deliberately choose the broader access model.
+Mode 2 — Drive-wide read-only indexing (optional, separately approved)
+If the owner explicitly wants LORIN to discover and index all accessible files in My Drive or a configured shared drive without selecting each file, the developer must assess the drive.readonly scope.
+
+drive.readonly is a restricted scope. A production application using restricted scopes may require Google OAuth verification, and storing or transmitting restricted-scope Drive data on a server may require a security assessment. Do not silently add this scope. Present the scope, the practical benefit, the verification/security implications and a clear opt-in to the owner before implementing or requesting it.
+
+Default: Mode 1. Do not request broad Drive access merely because it is easier to code.
+A2. Create a Google Cloud project
+1. Open Google Cloud Console.
+2. Sign in with the Google account that will own or administer LORIN's integration.
+3. Open the project selector and choose New Project.
+4. Use a clear project name, for example LORIN Drive Integration - Development.
+5. Create the project and select it.
+6. Record the Project ID and Project Number. The project number is used by Google Picker as the Drive App ID; do not confuse it with the project ID.
+7. Keep development and production projects separate when the application is prepared for production. Use separate OAuth clients for distinct application platforms where appropriate.
+Official reference: https://developers.google.com/identity/protocols/oauth2/production-readiness/policy-compliance
+A3. Enable APIs
+In APIs & Services → Library, enable:
+- Google Drive API
+- Google Picker API
+Do not enable unrelated Google APIs unless a separately specified LORIN feature requires them.
+A4. Configure Google Auth Platform / OAuth consent
+In Google Cloud Console, open Google Auth Platform (the exact navigation label may differ slightly as Google updates the console).
+
+Configure:
+Branding
+- App name: LORIN or the final approved product name.
+- User support email: an email address controlled by the owner/team.
+- Developer contact email: an address monitored by the owner/team.
+- App logo: use the approved LORIN logo when available.
+- Homepage, privacy policy and terms URLs: use real pages hosted on domains the owner controls before production verification. Do not invent placeholder URLs for production.
+Audience
+- For a personal Gmail account or users outside one managed Google Workspace organization, choose External.
+- Choose Internal only if LORIN is restricted to users inside the owner's eligible Google Workspace organization.
+- During development, keep the app in testing and add the actual owner Google account as a test user when Google provides that option.
+- Do not claim that a development/testing consent screen is production-approved.
+Data Access / Scopes
+For the initial selected-file mode, request only the scopes needed for account identification and selected Drive files:
+openid
+email
+profile
+https://www.googleapis.com/auth/drive.file
+The exact scope strings and granted scopes must be checked at runtime. Do not request drive, drive.readonly, drive.metadata or drive.metadata.readonly in the initial configuration unless the owner has approved a documented requirement and the verification/security implications have been handled.
+
+Google documentation: https://developers.google.com/workspace/drive/api/guides/api-specific-auth
+A5. Create a Web OAuth Client ID
+In Google Auth Platform → Clients (or APIs & Services → Credentials, depending on the current Console layout):
+1. Choose Create Client / Create Credentials → OAuth client ID.
+2. Application type: Web application for the hosted/local web backend flow.
+3. Name it clearly, for example LORIN Web - Development.
+4. Add exact Authorized JavaScript origins for the actual environments, for example:
+http://localhost:8080
+https://YOUR-REAL-LORIN-DOMAIN
+5. Add the exact Authorized redirect URI implemented by the backend, for example:
+http://localhost:8080/api/integrations/google-drive/oauth/callback
+https://YOUR-REAL-LORIN-DOMAIN/api/integrations/google-drive/oauth/callback
+The developer must choose and implement one canonical callback route, then tell the owner the exact URI. The example above is not automatically correct for every deployment. The URI in Google Cloud must match the app's redirect URI exactly, including scheme, host, port, path and trailing-slash behaviour.
+6. Create the client.
+7. Copy the Client ID.
+8. Copy the Client Secret directly into the project's secure secret manager or the local backend secret file. Never paste it into a public issue, source code, browser JavaScript, chat transcript, screenshot or Git commit.
+The OAuth client secret is confidential. The Client ID is an identifier, not a password.
+
+Official reference: https://developers.google.com/identity/protocols/oauth2/web-server
+A6. Create a restricted API key for Google Picker
+Google Picker's web integration uses a developer API key and the Cloud project number (App ID), in addition to OAuth authorization.
+1. Open APIs & Services → Credentials.
+2. Choose Create Credentials → API key.
+3. Name it LORIN Google Picker - Development.
+4. Under Application restrictions, choose Websites / HTTP referrers.
+5. Add only the real development and production origins/referrers used by LORIN. Follow Google's Picker-specific requirement to include the application website and https://docs.google.com/* because Picker renders in an iframe hosted by Google Docs.
+6. Under API restrictions, restrict the key to Google Picker API and Google Drive API if the application uses Drive API calls from the relevant web client configuration.
+7. Save restrictions and test Picker after they take effect.
+The API key may be present in the browser only because it is a public, restricted key. It is not an OAuth Client Secret and must never be treated as authorization to private Drive content. Private files still require a valid OAuth access token.
+
+Official reference: https://developers.google.com/workspace/drive/picker/guides/web-picker
+A7. Values the owner supplies to the implementation
+The owner should provide the developer/secure configuration workflow with:
+- Google Cloud Project ID (for identification/documentation).
+- Google Cloud Project Number (Picker App ID).
+- OAuth Web Client ID.
+- OAuth Web Client Secret (entered directly into the secure secret manager, not sent in chat).
+- Restricted Google Picker API key.
+- Actual development origin.
+- Actual OAuth callback URL.
+- Actual production domain and callback later, when available.
+- The Google account that will be used as the first authorized owner/test user.
+- The approved access mode: selected files (drive.file) or explicitly approved Drive-wide read-only (drive.readonly).
+If a developer needs the values, use a secure secret-sharing mechanism or direct environment configuration. Do not send secrets in source archives.
+A8. Environment variable contract
+The developer must adapt names to the existing LORIN configuration system. Use a server-side secret store for confidential values.
+
+Example .env.example (placeholders only):
+# Public / non-secret configuration
+GOOGLE_OAUTH_CLIENT_ID=YOUR_WEB_CLIENT_ID
+GOOGLE_PICKER_API_KEY=YOUR_RESTRICTED_PICKER_KEY
+GOOGLE_CLOUD_PROJECT_NUMBER=YOUR_PROJECT_NUMBER
+GOOGLE_OAUTH_REDIRECT_URI=http://localhost:8080/api/integrations/google-drive/oauth/callback
+GOOGLE_DRIVE_ACCESS_MODE=selected-files
+GOOGLE_DRIVE_SCOPES=openid,email,profile,https://www.googleapis.com/auth/drive.file
+
+# Server-only secrets — configure in a secret manager or protected local backend environment
+GOOGLE_OAUTH_CLIENT_SECRET=SET_IN_SECRET_MANAGER
+GOOGLE_TOKEN_ENCRYPTION_KEY=SET_IN_SECRET_MANAGER
+GOOGLE_WEBHOOK_BASE_URL=SET_TO_PUBLIC_HTTPS_ORIGIN_WHEN_AVAILABLE
+Never commit a real .env, Client Secret, refresh token, encryption key or webhook secret. Keep .env.example sanitized. Ensure Vite/public environment variables contain only values intended to be public. Never prefix confidential values with VITE_ or expose them through client configuration.
+
+For a local Windows-only installation, store confidential tokens using Windows DPAPI/Credential Manager through a trusted local companion/backend. For hosted LORIN, use a managed secret/KMS facility and encrypted database token storage. Do not use browser localStorage/sessionStorage for refresh tokens.
+PART B — MASTER DEVELOPER IMPLEMENTATION PROMPT
+ROLE AND OBJECTIVE
+Act as the senior Google Workspace integration engineer, OAuth/security engineer, backend engineer, data-ingestion engineer and LORIN Knowledge/RAG engineer.
+
+Implement the complete production-quality Google Drive connection inside the existing LORIN source project. The integration must let the owner deliberately authorize Google Drive, select approved documents, synchronize changes, index content into LORIN's Knowledge Vault, retrieve it with source citations, and revoke/delete access safely.
+
+This is a real integration task. Do not create a decorative connection screen, mock Google account, fabricated file list, simulated sync percentage or fake connected badge.
+
+Do not replace LORIN's existing project structure. Inspect the actual codebase, route conventions, backend, auth/session system, database, queue, storage and existing Drive-related code before changes. Reuse working components and port only verified functionality from reference archives.
+B1. Architecture
+Implement these distinct components:
+1. Google Drive UI module — owner-facing connection and sync management.
+2. OAuth service — server-side authorization-code flow and token lifecycle.
+3. Google Picker client integration — browser file selection using Google's supported Picker API.
+4. Drive API adapter — authenticated Drive API v3 operations.
+5. Drive source registry — records account, selected files/folders, scopes, permissions and sync state.
+6. Sync coordinator — initial indexing and incremental change processing.
+7. Ingestion pipeline — download/export, validation, scanning, extraction and chunking.
+8. Knowledge index adapter — keyword/vector indexing and retrieval.
+9. Audit and policy layer — owner access, privacy, project separation and action history.
+10. Background job worker — durable indexing, retries, rate-limit handling and recovery.
+The browser must not communicate with Drive private-data endpoints using a refresh token or Client Secret. The backend owns the confidential OAuth flow and Drive API calls. The browser may receive only a short-lived access token needed to construct the Picker, held in memory and never persisted. The Google Picker developer key is restricted and public; it does not grant private Drive access.
+B2. OAuth security requirements
+Implement a server-side OAuth 2.0 authorization-code flow:
+- Generate high-entropy, single-use state tied to the authenticated LORIN owner session.
+- Validate state on callback and reject replay/CSRF attempts.
+- Use PKCE where supported by the chosen client flow.
+- Use exact registered redirect URIs; never accept arbitrary callback URLs.
+- Request offline access for long-running synchronization and incremental authorization where supported.
+- Store only necessary scopes and verify which scopes were actually granted.
+- Handle code exchange exclusively on the backend.
+- Encrypt refresh tokens at rest using KMS/secret-manager-backed encryption or a strong envelope-encryption design.
+- Never log access tokens, refresh tokens, authorization codes, Client Secrets or encryption keys.
+- Bind every Google connection to a verified LORIN owner ID and Google account subject.
+- Use secure, HttpOnly, SameSite cookies for LORIN session state.
+- Implement OAuth disconnect, token revocation where applicable, local credential destruction and connection status refresh.
+- Handle expired/revoked credentials without showing a false Connected state.
+- Make reauthorization explicit and explain why it is needed.
+Request initial scopes only:
+openid
+email
+profile
+https://www.googleapis.com/auth/drive.file
+Do not add broad scopes automatically. If drive.file is insufficient for a specific requested mode, stop and produce a scope-impact report for owner approval.
+B3. Google Picker
+Integrate the official Google Picker API in the web client.
+
+Requirements:
+- Load Picker only when the owner clicks Add files or Select from Drive.
+- Configure the restricted API key, Cloud Project Number/App ID and short-lived OAuth access token.
+- Support supported file type filters, multi-select and useful views.
+- Return selected file IDs and metadata to the backend; never trust client-provided names/MIME types without server verification.
+- Handle picker cancel, popup failure, blocked popup, token expiry, unavailable library and partial selection.
+- Present selected items in LORIN with name, type, source link, selected timestamp and current authorization status.
+- Do not assume a selected folder implies recursive access to all descendants. Verify the folder's actual capabilities and listability. When a child is inaccessible, report it and allow selecting that child individually or requesting a separately approved wider scope.
+- Never expose a fake file list when Picker or OAuth is unavailable.
+B4. Supported Drive file access
+Use Drive API v3.
+
+For ordinary binary files, use the supported media download method, such as files.get with alt=media, after verifying capabilities.canDownload.
+
+For Google Workspace-native files (Docs, Sheets, Slides and other supported Workspace types), use files.export or the appropriate documented download operation to obtain a supported export format. Keep the source MIME type and export MIME type in metadata. Never parse a .gdoc shortcut/pointer as if it contained the document body.
+
+Initial format support:
+- PDF
+- DOCX
+- TXT
+- Markdown
+- CSV
+- XLSX
+- PPTX
+- HTML
+- JSON
+- PNG/JPEG/WebP where supported by the vision/OCR pipeline
+- Google Docs exported as DOCX or PDF
+- Google Sheets exported as XLSX or CSV
+- Google Slides exported as PPTX or PDF
+Reject or quarantine unsupported, encrypted, malformed, over-limit or suspicious files. Report the exact reason. Do not execute scripts/macros from imported documents.
+B5. Initial synchronization algorithm
+Implement a race-safe initial scan:
+1. Verify the Google connection and granted scope.
+2. Obtain and store the current changes.getStartPageToken before the initial scan.
+3. Enumerate only files the selected-file access mode actually authorizes.
+4. For folder selections, call files.get and inspect mimeType, capabilities.canListChildren, download capability and parent metadata. If listing children is not authorized, do not imply that the folder was recursively indexed.
+5. List authorized files using pagination (nextPageToken).
+6. Exclude trashed files.
+7. Persist each file's source identity and metadata before processing.
+8. Enqueue idempotent processing jobs.
+9. Retrieve changes from the saved initial token after enumeration to catch concurrent edits, additions and deletions.
+10. Continue until the API provides the latest newStartPageToken; store it transactionally.
+11. Mark the initial sync complete only after all required enumeration pages and all required jobs reach their defined terminal states.
+Store Drive page tokens securely as opaque provider cursors. Do not expose them to the browser.
+B6. Incremental synchronization
+Use the Drive Changes API:
+- changes.getStartPageToken
+- changes.list
+- changes.watch (optional push notification optimization)
+- channels.stop when stopping/replacing channels
+For each change:
+- Fetch/confirm current file metadata where needed.
+- Detect new or modified content.
+- Detect rename/move metadata changes.
+- Detect trashed/deleted/removed or inaccessible files.
+- Reprocess changed content only when content/version/hash requires it.
+- Update the stored cursor only after processing/enqueue decisions are durably recorded.
+- Handle pagination and expired/rejected page tokens using documented recovery.
+- Use idempotency keys so duplicate notifications do not duplicate content or jobs.
+Push notification requirements:
+- Use a public HTTPS webhook in hosted mode.
+- Validate the channel ID/token and expected resource/account mapping.
+- Treat notifications as hints only; fetch the actual changes using changes.list.
+- Record channel expiration and renew before expiration.
+- Do not rely exclusively on notifications. Add periodic polling/reconciliation as a recovery path.
+- For local Windows-only mode without a public HTTPS endpoint, use scheduled polling and/or the trusted local Drive for desktop watcher fallback, without claiming push webhooks exist.
+B7. Ingestion, storage and indexing
+The processing pipeline must be:
+
+Authorize → Fetch metadata → Download/export → Validate → Malware scan → Parse → Extract → Normalize → Chunk → Embed → Index → Verify
+
+Security requirements:
+- Enforce configurable file-size, page-count, row-count and processing-time limits.
+- Inspect actual file signatures; do not trust extension or browser MIME alone.
+- Use malware scanning and isolated parsing workers.
+- Do not fetch arbitrary external URLs embedded in documents.
+- Treat document text as untrusted data and possible prompt injection.
+- Never treat file content as system/developer instructions or permission grants.
+- Keep original files and extracted content in private owner-controlled storage.
+- Use encryption at rest and tenant/owner separation.
+- Apply project-specific labels and access controls to every document/chunk.
+Each document record should include at minimum:
+- LORIN owner ID
+- Google connection ID
+- Google account subject
+- Drive file ID
+- Parent/folder IDs where available
+- Name and MIME type
+- Size and checksum/content hash where available
+- Drive modified time and revision/version metadata where available
+- Source URL
+- Export MIME type if exported
+- Selected/authorized state
+- Project ID or Knowledge Vault collection ID
+- Sensitivity classification
+- Processing/index state
+- Last successful sync
+- Parser and embedding versions
+- Error state and retry count
+Each chunk must retain the source document ID, heading/page/sheet/row locator where available, chunk index, source title, owner, project and permission metadata.
+
+Use LORIN's existing database architecture if it is sound. If a schema change is necessary, write versioned migrations and a rollback strategy. Use a durable job queue or an equivalent database-backed job mechanism. Do not store large extracted bodies or embeddings in one oversized metadata record.
+B8. RAG and LORIN intelligence integration
+When LORIN answers from Drive knowledge:
+1. Identify the question and relevant project/user context.
+2. Search only authorized knowledge collections.
+3. Apply owner, project and source-access filters before returning results to the model.
+4. Use hybrid keyword and vector retrieval.
+5. Rerank only if the reranker is configured and available.
+6. Send the minimum relevant excerpts to the selected model under the current privacy policy.
+7. Preserve document titles and source locators.
+8. Cite the actual Drive source and page/section/sheet/row where available.
+9. Distinguish retrieved facts from model inference.
+10. Never claim a document supports a statement if the cited excerpt does not support it.
+Private/local-only collections must not be routed to public models. If a cloud model would materially improve the answer, LORIN must first apply the configured data policy and request owner authorization where required.
+B9. Google Drive UI/UX
+Inside Knowledge → Connected Sources → Google Drive, build:
+Connection overview
+- Google Drive brand/icon and connection title.
+- Account email or safe display label.
+- Actual state: Not connected / Connecting / Connected / Reauthorization required / Error / Disconnected.
+- Granted access mode and exact granted scopes.
+- Last successful sync timestamp.
+- Selected file/folder count.
+- Indexed document count.
+- Pending processing count.
+- Failed item count.
+- Actual sync progress derived from jobs, not a timer.
+Actions
+- Connect Google Drive.
+- Select files.
+- Add more files.
+- Sync now.
+- Pause sync.
+- Resume sync.
+- Retry failed items.
+- View sync history.
+- View selected sources.
+- Remove selected file from LORIN index.
+- Disconnect Google account.
+- Revoke authorization.
+- Export LORIN's indexed data where owner policy permits.
+File/source list
+Each row should show file name, type, source, last modified time, last indexed time, processing state, project/collection, permissions and error details. Provide search/filter/sort and pagination. Provide a clear distinction between available in Drive, selected for LORIN, downloaded, indexed and available for retrieval.
+States
+Every view must implement loading, empty, connected, partial sync, syncing, paused, failed, reauthorization, disconnected and offline states. Do not display green Connected simply because a token record exists. Perform an actual lightweight authenticated status check.
+B10. Data lifecycle and owner controls
+Implement separate, explicit actions:
+- Remove from index: remove LORIN chunks/embeddings and mark source unselected while leaving the original Drive file untouched.
+- Disconnect Google: stop sync, revoke/retire tokens as appropriate, stop/expire channels, retain or delete already indexed data according to the owner's explicit choice.
+- Delete LORIN copy: remove stored downloaded originals, extracted text, chunks and embeddings under the configured retention policy.
+- Delete from Google Drive: not part of the initial release; if ever added, require separate explicit confirmation and verify Drive write permission.
+Never delete or modify the original Google Drive document as a side effect of removing it from LORIN.
+B11. Required backend interfaces
+Use the existing LORIN API conventions. Define typed service contracts equivalent to:
+GET    /api/integrations/google-drive/status
+POST   /api/integrations/google-drive/oauth/start
+GET    /api/integrations/google-drive/oauth/callback
+POST   /api/integrations/google-drive/oauth/disconnect
+POST   /api/integrations/google-drive/picker/session
+POST   /api/integrations/google-drive/sources
+GET    /api/integrations/google-drive/sources
+DELETE /api/integrations/google-drive/sources/:sourceId
+POST   /api/integrations/google-drive/sync
+GET    /api/integrations/google-drive/sync/jobs
+GET    /api/integrations/google-drive/sync/jobs/:jobId
+POST   /api/integrations/google-drive/sync/jobs/:jobId/retry
+POST   /api/integrations/google-drive/webhook
+GET    /api/knowledge/sources/:sourceId/documents
+GET    /api/knowledge/documents/:documentId
+DELETE /api/knowledge/documents/:documentId/index
+These are proposed contracts, not an instruction to duplicate routes that already exist. Inspect the codebase and adapt to current routing patterns. Protect every endpoint with authenticated owner authorization, CSRF protection where applicable, input validation, rate limits and audit logging.
+B12. Error handling and recovery
+Handle at least:
+- User cancels OAuth.
+- State mismatch or callback replay.
+- Redirect URI mismatch.
+- Client configuration missing.
+- API disabled.
+- Picker script blocked.
+- API key referrer restriction mismatch.
+- User denies scopes.
+- Refresh token absent or invalid.
+- Access token expires.
+- Consent revoked.
+- File deleted or trashed.
+- File moved or renamed.
+- File permission removed.
+- Folder children not listable.
+- canDownload false.
+- Unsupported MIME type.
+- Google Workspace export failure.
+- Rate limit / quota response.
+- Network outage.
+- Worker crash.
+- Malware or parser rejection.
+- Embedding model unavailable.
+- Vector index unavailable.
+- Partial indexing failure.
+- Change token invalid/rejected.
+- Webhook channel expires.
+Use bounded exponential backoff with jitter for retryable errors. Do not retry permanent authorization or validation failures indefinitely. Keep a dead-letter/failed-job record and a human-readable recovery action.
+B13. Observability
+Expose truthful metrics:
+- OAuth connection checks.
+- Last API check.
+- Files discovered/selected/downloaded/indexed/failed.
+- Bytes processed.
+- Processing latency.
+- Retry count.
+- Last change cursor update.
+- Last reconciliation.
+- Queue age/depth.
+- Token refresh result (never token values).
+- Per-file errors.
+Do not expose document contents, secrets or tokens in logs/telemetry.
+B14. Acceptance tests — required before completion
+OAuth and account
+- Owner can connect the intended Google account.
+- State/CSRF validation blocks invalid callbacks.
+- The backend exchanges the authorization code successfully.
+- Refresh token is encrypted and never reaches the browser.
+- Granted scopes are verified and shown accurately.
+- Reauthorization works after revocation/expiry.
+- Disconnect removes/invalidates stored credentials and stops jobs safely.
+Picker and permissions
+- Picker opens with the restricted key and correct project App ID.
+- Owner can select an accessible supported file.
+- Cancellation leaves the connection unchanged.
+- Selected file is accessible through Drive API.
+- Folder child enumeration is tested and based on actual canListChildren.
+- Inaccessible files are reported, not silently skipped as successful.
+Content and knowledge
+- PDF, DOCX, TXT, CSV, XLSX, PPTX and supported Workspace exports are processed.
+- Unsupported/oversized/malformed files are rejected safely.
+- File is indexed exactly once under duplicate retries.
+- LORIN can answer a test question from a selected document with a correct citation.
+- Retrieval respects owner/project/source permissions.
+Incremental sync
+- New file selected and indexed.
+- Existing file modified and reindexed.
+- Rename/move updates metadata.
+- Removed/trashed/inaccessible source is tombstoned and excluded from current retrieval.
+- Duplicate webhook notifications do not create duplicate work.
+- Pagination and multiple change pages are handled.
+- Token refresh and interrupted sync recover safely.
+- Reconciliation catches a missed webhook.
+Privacy and deletion
+- Unselected documents are never imported in selected-file mode.
+- No refresh token or client secret exists in frontend bundles, browser storage, source control or logs.
+- Private/local-only content is not sent to public LLMs.
+- Removing a source from the LORIN index does not delete the original Drive file.
+- Delete/export/recovery policies behave as documented.
+UI/UX
+- Every button works.
+- Every status maps to real backend state.
+- Progress comes from actual job records.
+- Errors identify the failed file and recovery action.
+- Desktop, tablet and mobile layouts work.
+- Accessibility and keyboard navigation pass.
+B15. Release gates
+Gate 1 — Owner configuration: APIs, consent screen, OAuth client, Picker key, origins and redirect URI configured.
+
+Gate 2 — Secure connection: Real OAuth connection, encrypted token storage and verified account status work.
+
+Gate 3 — Selected file ingestion: Picker-selected file downloads/exports, parses and indexes correctly.
+
+Gate 4 — Knowledge retrieval: LORIN answers with accurate, permission-filtered citations.
+
+Gate 5 — Synchronization: Incremental changes, deletions, recovery and reconciliation pass.
+
+Gate 6 — Production readiness: Verification, privacy review, operational monitoring and security tests pass.
+
+A gate cannot be marked complete because UI exists. Attach test evidence and describe the exact account, scopes and file types tested (without exposing personal file contents or tokens).
+B16. Required deliverables
+Return:
+1. Updated complete LORIN source ZIP, preserving the original project.
+2. Google Cloud setup guide specific to the actual LORIN dev/prod origins and callback routes.
+3. Sanitized .env.example.
+4. Database migrations and rollback notes.
+5. OAuth/security design and token-storage explanation.
+6. Google Drive UI and API implementation.
+7. Sync/ingestion workers and job recovery.
+8. Knowledge/RAG integration with source citations.
+9. Automated tests and test report.
+10. Setup troubleshooting guide.
+11. Changed-file manifest.
+12. Feature matrix with implemented, tested, blocked and not started statuses.
+Do not include secrets, refresh tokens, real personal documents or private database dumps in the ZIP.
+FINAL EXECUTION INSTRUCTION
+Start by auditing the existing LORIN Google Drive connector and Knowledge Vault implementation. Reuse and repair verified code. Do not create duplicate services or a second disconnected Drive screen.
+
+Implement the real integration against the owner's Google Cloud configuration when the owner has supplied it through secure configuration. Until credentials are available, complete the code, tests, sanitized configuration templates and exact setup instructions without pretending the account is connected.
+
+The finished result must let LORIN securely use the owner's approved Google Drive knowledge as a continuously maintained, searchable, permission-controlled source — with truthful synchronization, accurate citations, reliable recovery and complete owner control.
+PART C — FIRST CONNECTION CHECKLIST FOR THE OWNER
+Complete these Google-side actions before the developer performs the live connection test:
+- [ ] Create/select a Google Cloud project for LORIN development.
+- [ ] Record the Project ID and Project Number.
+- [ ] Enable Google Drive API.
+- [ ] Enable Google Picker API.
+- [ ] Configure OAuth Branding and Audience.
+- [ ] Add the owner Google account as a development test user when applicable.
+- [ ] Declare initial scopes: openid, email, profile, drive.file.
+- [ ] Create Web OAuth Client ID.
+- [ ] Add exact development JavaScript origin.
+- [ ] Add exact backend OAuth callback URI.
+- [ ] Create restricted Picker API key.
+- [ ] Restrict Picker key to website referrers, including https://docs.google.com/* as required by Picker.
+- [ ] Restrict the key to the required APIs.
+- [ ] Put Client ID and Project Number into the application's non-secret configuration.
+- [ ] Put Client Secret and token-encryption key into the backend secret manager.
+- [ ] Do not send Client Secret or refresh tokens through chat or commit them to Git.
+- [ ] Ask the developer to run the OAuth and Picker integration test.
+- [ ] Connect the intended Google account from LORIN.
+- [ ] Select one non-sensitive test PDF or document.
+- [ ] Verify that LORIN downloads/exports, indexes and answers a question with a correct source citation.
+Troubleshooting quick map
+Symptom	Likely check
+redirect_uri_mismatch	OAuth callback URI must match exactly in Google Cloud and app config.
+origin_mismatch	Add the exact scheme/host/port used by the browser.
+Picker says developer key invalid	Check API restrictions and add both LORIN's website referrer and https://docs.google.com/*.
+Picker opens but file import fails	Check actual granted scope, selected-file authorization, Drive API enablement and capabilities.canDownload.
+Refresh token missing	Verify server-side offline access, token exchange and consent flow; do not move token handling to browser storage.
+Some folder items missing	Check capabilities.canListChildren, per-file access and selected-file grants; do not assume recursive permission.
+Google Docs has no downloadable binary content	Use the Drive export operation and a supported export MIME type.
+Sync says connected but never updates	Check stored start page token, changes.list cursor, job queue, webhook expiry and reconciliation worker.
+Production says unverified app	Review scope sensitivity/restriction, consent branding, owned domains, privacy policy and Google verification requirements.

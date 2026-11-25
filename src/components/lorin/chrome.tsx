@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import {
   Activity,
-  AudioLines,
   BookOpen,
   BrainCircuit,
   ChevronRight,
@@ -12,7 +11,6 @@ import {
   FolderKanban,
   History,
   Home,
-  Laptop,
   Lock,
   Menu,
   MessageSquare,
@@ -20,6 +18,8 @@ import {
   MonitorSmartphone,
   PanelRight,
   Plug,
+  Search,
+  Settings,
   ShieldCheck,
   Sparkles,
   Terminal,
@@ -63,6 +63,7 @@ const GROUPS: { label: string; items: { id: View; label: string; icon: LucideIco
       { id: "connections", label: "Connected services", icon: Plug },
       { id: "devices", label: "Devices", icon: MonitorSmartphone },
       { id: "trust", label: "Security & trust", icon: ShieldCheck },
+      { id: "settings", label: "Settings", icon: Settings },
     ],
   },
 ];
@@ -84,6 +85,7 @@ const VIEW_META: Record<View, { title: string; subtitle: string }> = {
   connections: { title: "Connected services", subtitle: "Manage trusted sources and their permissions." },
   devices: { title: "Devices", subtitle: "Approved devices and companion connectivity." },
   trust: { title: "Security & trust", subtitle: "Permissions, policy boundaries and the audit trail." },
+  settings: { title: "Settings", subtitle: "Hardware diagnostics, privacy defaults and keyboard shortcuts." },
 };
 
 export const MODES: Mode[] = ["workspace", "companion", "compact", "immersive", "ambient"];
@@ -236,6 +238,17 @@ export function Shell({ children }: { children: ReactNode }) {
 
           <div className="topbar-actions">
             <span className="runtime-chip hidden sm:inline-flex"><span className="status-dot" /> Demo runtime</span>
+            <button
+              type="button"
+              className="topbar-button"
+              onClick={() => s.setCommandPaletteOpen(true)}
+              aria-label="Open command palette (Cmd+K)"
+              title="Open command palette (Cmd+K / Ctrl+K)"
+            >
+              <Search size={14} />
+              <span className="hidden sm:inline">Commands</span>
+              <kbd className="kbd-key hidden md:inline-flex">⌘K</kbd>
+            </button>
             <label className="sr-only" htmlFor="route">Model routing preference</label>
             <select
               id="route"

@@ -1,4 +1,5 @@
 export type Mode = "companion" | "compact" | "immersive" | "workspace" | "ambient";
+export type SyncProfile = "balanced" | "privacy-first" | "full-approved" | "manual";
 export type View =
   | "home"
   | "chat"
@@ -15,7 +16,8 @@ export type View =
   | "trust"
   | "intelligence"
   | "connections"
-  | "sandbox";
+  | "sandbox"
+  | "settings";
 
 export type RoutePref = "auto" | "gemini" | "ollama" | "local-only";
 export type Risk = "read" | "write" | "critical";

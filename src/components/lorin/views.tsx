@@ -12,6 +12,7 @@ import {
   Cloud,
   CloudOff,
   Code2,
+  Command,
   Cpu,
   Database,
   Download,
@@ -23,8 +24,10 @@ import {
   HardDrive,
   History,
   KeyRound,
+  Keyboard,
   Laptop,
   Lock,
+  MessageSquare,
   Mic,
   Network,
   Plug,
@@ -34,6 +37,7 @@ import {
   Server,
   Shield,
   ShieldCheck,
+  SlidersHorizontal,
   Sparkles,
   Terminal,
   Upload,
@@ -42,9 +46,11 @@ import {
   Zap,
   type LucideIcon,
 } from "lucide-react";
-import { CAPABILITIES, POLICY_AFTER, POLICY_BEFORE, SPECIALISTS } from "@/lib/lorin/engine";
+import { CAPABILITIES, POLICY_AFTER, POLICY_BEFORE, SPECIALISTS, type SyncProfile } from "@/lib/lorin/engine";
+import { NAVIGATION_SHORTCUTS } from "@/lib/lorin/shortcuts";
 import { useLorin, type View } from "@/lib/lorin/store";
-import { Face, faceCaption } from "./chrome";
+import { Face, MODES, faceCaption } from "./chrome";
+import { HardwareStatus } from "./HardwareStatus";
 import { useVoiceSession } from "./use-voice";
 
 type Tone = "teal" | "indigo" | "amber" | "red" | "neutral";
@@ -144,9 +150,6 @@ function EmptyState({ icon: Icon, title, description, action }: { icon: LucideIc
   );
 }
 
-function SectionLabel({ children, trailing }: { children: ReactNode; trailing?: ReactNode }) {
-  return <div className="flex items-center justify-between gap-3"><h2 className="section-label">{children}</h2>{trailing}</div>;
-}
 
 function HomeView() {
   const s = useLorin();
@@ -213,7 +216,7 @@ function HomeView() {
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium">{latestEvent.title}</p>
                   <p className="mt-1 text-sm text-muted">{latestEvent.detail}</p>
-                  <p className="mt-2 text-[11px] text-muted">{new Date(latestEvent.at).toLocaleString()}</p>
+                  <p className="mt-2 text-[11px] text-muted" suppressHydrationWarning>{new Date(latestEvent.at).toLocaleString()}</p>
                 </div>
               </div>
             ) : <EmptyState icon={History} title="No continuity records" description="Verified activity will appear here." />}
@@ -394,7 +397,7 @@ function TasksView() {
             </div>
             <p className="mt-3 text-sm leading-relaxed">{job.scope}</p>
             {job.args && <p className="mt-2 break-words rounded-control bg-bg px-3 py-2 font-mono text-xs text-muted">{job.args}</p>}
-            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted"><span>Fingerprint: {job.fingerprint}</span>{job.approvalId && <span>Approval: {job.approvalId}</span>}<span>{new Date(job.at).toLocaleString()}</span></div>
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-muted"><span>Fingerprint: {job.fingerprint}</span>{job.approvalId && <span>Approval: {job.approvalId}</span>}<span suppressHydrationWarning>{new Date(job.at).toLocaleString()}</span></div>
             {job.evidence && <div className="mt-3 rounded-control border border-line bg-elevated p-3 text-sm text-muted">{job.evidence}</div>}
             {job.state === "awaiting" && <div className="mt-4 flex flex-wrap gap-2"><ActionButton variant="primary" icon={Check} onClick={() => s.decide(job.id, true)}>Approve scoped action</ActionButton><ActionButton icon={X} onClick={() => s.decide(job.id, false)}>Deny</ActionButton></div>}
             {job.state === "running" && <div className="mt-4"><ActionButton icon={X} onClick={() => s.cancel(job.id)}>Cancel action</ActionButton></div>}
@@ -467,7 +470,7 @@ function GideonView() {
   return (
     <Page title="Continuity" eyebrow="GIDEON · PROJECT HISTORY" lede="GIDEON maintains the history of important events. It is an internal capability, not a second conversational assistant.">
       <Panel title="Recent events" description={`${s.events.length} recorded event${s.events.length === 1 ? "" : "s"} in this session`}>
-        {s.events.length ? <ol className="timeline-list">{s.events.map((event) => <li key={event.id} className="timeline-item"><span className="timeline-dot" /><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center justify-between gap-2"><p className="text-sm font-medium">{event.title}</p><time className="text-[11px] text-muted">{new Date(event.at).toLocaleString()}</time></div><p className="mt-1 text-sm leading-relaxed text-muted">{event.detail}</p></div></li>)}</ol> : <EmptyState icon={History} title="No events recorded" description="Verified activities will appear here." />}
+        {s.events.length ? <ol className="timeline-list">{s.events.map((event) => <li key={event.id} className="timeline-item"><span className="timeline-dot" /><div className="min-w-0 flex-1"><div className="flex flex-wrap items-center justify-between gap-2"><p className="text-sm font-medium">{event.title}</p><time className="text-[11px] text-muted" suppressHydrationWarning>{new Date(event.at).toLocaleString()}</time></div><p className="mt-1 text-sm leading-relaxed text-muted">{event.detail}</p></div></li>)}</ol> : <EmptyState icon={History} title="No events recorded" description="Verified activities will appear here." />}
       </Panel>
     </Page>
   );
@@ -585,7 +588,7 @@ function TrustView() {
         <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">{SPECIALISTS.map((specialist) => <div key={specialist.name} className="specialist-card"><span className="specialist-avatar">{specialist.name.slice(0, 1)}</span><div><p className="text-sm font-medium">{specialist.name}</p><p className="mt-1 text-xs leading-relaxed text-muted">{specialist.role}</p></div></div>)}</div>
       </Panel>
       <Panel title="Audit trail" description={`${s.audit.length} local audit event${s.audit.length === 1 ? "" : "s"}`}>
-        <div className="audit-list">{s.audit.slice(0, 16).map((entry) => <div key={entry.id} className="audit-row"><span className="audit-dot" /><div className="min-w-0 flex-1"><p className="text-sm">{entry.text}</p><p className="mt-1 text-[11px] text-muted">{new Date(entry.at).toLocaleString()}</p></div></div>)}</div>
+        <div className="audit-list">{s.audit.slice(0, 16).map((entry) => <div key={entry.id} className="audit-row"><span className="audit-dot" /><div className="min-w-0 flex-1"><p className="text-sm">{entry.text}</p><p className="mt-1 text-[11px] text-muted" suppressHydrationWarning>{new Date(entry.at).toLocaleString()}</p></div></div>)}</div>
       </Panel>
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-panel border border-danger/30 bg-danger/5 p-4"><div><p className="text-sm font-medium">Reset local demo data</p><p className="mt-1 text-xs text-muted">This clears the browser's persisted LORIN demo session.</p></div><ActionButton onClick={() => s.reset()} icon={RefreshCw}>Reset demo</ActionButton></div>
     </Page>
@@ -649,16 +652,16 @@ function IntelligenceView() {
         <ProviderCard icon={Workflow} name="vLLM private server" category="Future self-hosted inference" status="Not configured" description="For dedicated GPU infrastructure after local model serving and privacy controls are established." />
       </div>}
 
-      {tab === "hardware" && <div className="grid gap-4 xl:grid-cols-[minmax(0,1.2fr)_minmax(300px,0.8fr)]">
-        <Panel title="Device capability report" description="Hardware facts must come from a trusted local companion, not browser guesses.">
-          <div className="hardware-grid">{[
-            ["Processor", "Unknown", Cpu], ["System memory", "Unknown", Database], ["GPU", "Unknown", Laptop], ["VRAM", "Unknown", HardDrive], ["Free storage", "Unknown", HardDrive], ["Operating system", "Unknown", Laptop],
-          ].map(([label, value, Icon]) => { const Symbol = Icon as LucideIcon; return <div key={label as string} className="hardware-cell"><Symbol size={16} className="text-muted" /><p className="mt-3 text-xs text-muted">{label as string}</p><p className="mt-1 text-sm font-semibold">{value as string}</p></div>; })}</div>
-          <div className="mt-4"><Badge tone="amber">Hardware probe not connected</Badge></div>
+      {tab === "hardware" && <div className="grid gap-4 xl:grid-cols-[minmax(0,1.25fr)_minmax(300px,0.75fr)]">
+        <Panel title="Device capability report" description="Sanitized browser capabilities are reported live; companion-only specs remain Unknown until a trusted local probe is paired.">
+          <HardwareStatus />
         </Panel>
         <Panel title="Why hardware matters" description="Model selection will be based on measured capacity.">
           <ul className="principle-list"><li>RAM determines how much model data can be loaded when using system memory.</li><li>VRAM affects GPU-resident model size and inference speed.</li><li>Disk space must account for downloads, quantized variants and temporary files.</li><li>Compatibility checks must use the selected model's actual requirements.</li></ul>
-          <div className="mt-4"><ActionButton icon={Plug} onClick={() => s.setView("devices")}>View device connections</ActionButton></div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <ActionButton icon={Plug} onClick={() => s.setView("devices")}>View device connections</ActionButton>
+            <ActionButton variant="quiet" icon={SlidersHorizontal} onClick={() => s.setView("settings")}>Open Settings</ActionButton>
+          </div>
         </Panel>
       </div>}
     </Page>
@@ -728,6 +731,167 @@ function SandboxView() {
   );
 }
 
+const SYNC_PROFILES: { id: SyncProfile; label: string; detail: string }[] = [
+  { id: "balanced", label: "Balanced", detail: "Sync approved project context and preferences when a trusted backend is connected." },
+  { id: "privacy-first", label: "Privacy-first", detail: "Keep private notes and local memories strictly on-device unless explicitly exported." },
+  { id: "full-approved", label: "Full approved", detail: "Synchronize all owner-approved records across paired devices." },
+  { id: "manual", label: "Manual only", detail: "Hold all remote synchronization until explicitly triggered by the owner." },
+];
+
+function SettingsView() {
+  const s = useLorin();
+  const activeSync = SYNC_PROFILES.find((item) => item.id === s.syncProfile) ?? SYNC_PROFILES[0];
+
+  return (
+    <Page
+      title="Settings"
+      eyebrow="WORKSPACE CONFIGURATION"
+      lede="Inspect sanitized local hardware readiness, configure routing and synchronization defaults, and review global keyboard shortcuts."
+      actions={
+        <ActionButton variant="primary" icon={Command} onClick={() => s.setCommandPaletteOpen(true)}>
+          Command palette
+        </ActionButton>
+      }
+    >
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.25fr)_minmax(320px,0.75fr)]">
+        <Panel
+          title="Hardware & system status"
+          description="Sanitized browser capabilities (CPU, RAM pressure, GPU availability and battery). Sensitive device identifiers are never collected."
+          action={<Badge tone="teal">Sanitized probe</Badge>}
+        >
+          <HardwareStatus />
+        </Panel>
+
+        <div className="flex flex-col gap-4">
+          <Panel
+            title="Privacy, routing & sync defaults"
+            description="These preferences govern how LORIN routes inference and prepares synchronization boundaries."
+          >
+            <div className="flex flex-col gap-3">
+              <div>
+                <label className="field-label" htmlFor="settings-route">Default model routing</label>
+                <select
+                  id="settings-route"
+                  className="field-input mt-1.5"
+                  value={s.route}
+                  onChange={(event) => s.setRoute(event.target.value as typeof s.route)}
+                >
+                  <option value="auto">Automatic routing (local-first)</option>
+                  <option value="ollama">Prefer local (Ollama)</option>
+                  <option value="gemini">Request Gemini (requires verified backend)</option>
+                  <option value="local-only">Local only (block cloud routing)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="field-label" htmlFor="settings-sync">Synchronization profile</label>
+                <select
+                  id="settings-sync"
+                  className="field-input mt-1.5"
+                  value={s.syncProfile}
+                  onChange={(event) => s.setSyncProfile(event.target.value as SyncProfile)}
+                >
+                  {SYNC_PROFILES.map((profile) => (
+                    <option key={profile.id} value={profile.id}>
+                      {profile.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-1.5 text-xs leading-relaxed text-muted">{activeSync.detail}</p>
+              </div>
+
+              <div>
+                <label className="field-label" htmlFor="settings-project">Active workspace boundary</label>
+                <select
+                  id="settings-project"
+                  className="field-input mt-1.5"
+                  value={s.projectId}
+                  onChange={(event) => s.setProject(event.target.value)}
+                >
+                  {s.projects.map((project) => (
+                    <option key={project.id} value={project.id}>
+                      {project.name} ({project.id === "p2" ? "Public isolated" : "Private owner"})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="privacy-note mt-4">
+              <ShieldCheck size={15} className="shrink-0" />
+              <span>Cloud sync and remote inference remain inactive in this demo build until explicitly configured and verified.</span>
+            </div>
+          </Panel>
+
+          <Panel
+            title="Presentation & session"
+            description="Switch workspace density or reset local browser demo state."
+          >
+            <div className="flex flex-wrap gap-2">
+              {MODES.map((mode) => (
+                <ActionButton
+                  key={mode}
+                  variant={s.mode === mode ? "primary" : "secondary"}
+                  onClick={() => s.setMode(mode)}
+                >
+                  {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                </ActionButton>
+              ))}
+            </div>
+            <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-4">
+              <ActionButton
+                variant="secondary"
+                onClick={() => s.setInspector(!s.inspector)}
+              >
+                {s.inspector ? "Hide context inspector" : "Show context inspector"}
+              </ActionButton>
+              <ActionButton icon={RefreshCw} onClick={() => s.reset()}>
+                Reset local session
+              </ActionButton>
+            </div>
+          </Panel>
+        </div>
+      </div>
+
+      <Panel
+        title="Keyboard shortcuts & command palette"
+        description="Press Cmd+K (or Ctrl+K) anywhere to search commands, or type a two-key navigation chord outside text fields."
+        action={
+          <ActionButton icon={Keyboard} onClick={() => s.setCommandPaletteOpen(true)}>
+            Open palette
+          </ActionButton>
+        }
+      >
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="shortcut-row">
+            <span className="text-xs font-medium">Open Command Palette</span>
+            <span className="flex items-center gap-1">
+              <kbd className="kbd-key">⌘/Ctrl</kbd>
+              <kbd className="kbd-key">K</kbd>
+            </span>
+          </div>
+          {NAVIGATION_SHORTCUTS.map((item) => (
+            <button
+              key={item.chord}
+              type="button"
+              className="shortcut-row text-left transition-colors hover:border-teal/40"
+              onClick={() => s.setView(item.view)}
+            >
+              <span className="truncate text-xs font-medium">{item.label}</span>
+              <span className="flex shrink-0 items-center gap-1">
+                {item.chord.split(" ").map((keyPart, keyIdx) => (
+                  <kbd key={`${item.chord}-${keyIdx}-${keyPart}`} className="kbd-key">
+                    {keyPart}
+                  </kbd>
+                ))}
+              </span>
+            </button>
+          ))}
+        </div>
+      </Panel>
+    </Page>
+  );
+}
+
 export function MainView() {
   const mode = useLorin((state) => state.mode);
   const view = useLorin((state) => state.view);
@@ -748,6 +912,7 @@ export function MainView() {
   if (view === "intelligence") return <IntelligenceView />;
   if (view === "connections") return <ConnectionsView />;
   if (view === "sandbox") return <SandboxView />;
+  if (view === "settings") return <SettingsView />;
   return <HomeView />;
 }
 

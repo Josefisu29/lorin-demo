@@ -16,6 +16,7 @@ import {
   type Mode,
   type Risk,
   type RoutePref,
+  type SyncProfile,
   type View,
   type VoicePhase,
   type VoiceSource,
@@ -28,6 +29,7 @@ export type {
   Memory,
   Mode,
   RoutePref,
+  SyncProfile,
   View,
   VoicePhase,
   VoiceSource,
@@ -78,8 +80,10 @@ type Data = {
   view: View;
   drawer: boolean;
   inspector: boolean;
+  commandPaletteOpen: boolean;
   projectId: string;
   route: RoutePref;
+  syncProfile: SyncProfile;
   geminiVerified: boolean;
   online: boolean;
   micGranted: boolean;
@@ -106,8 +110,10 @@ type Actions = {
   setView: (v: View) => void;
   setDrawer: (v: boolean) => void;
   setInspector: (v: boolean) => void;
+  setCommandPaletteOpen: (v: boolean) => void;
   setProject: (id: string) => void;
   setRoute: (r: RoutePref) => void;
+  setSyncProfile: (p: SyncProfile) => void;
   verifyGemini: () => void;
   setOnline: (v: boolean) => void;
   noteMic: (granted: boolean, detail?: string) => void;
@@ -199,8 +205,10 @@ function fresh(): Data {
     view: "home",
     drawer: false,
     inspector: true,
+    commandPaletteOpen: false,
     projectId: "p1",
     route: "auto",
+    syncProfile: "balanced",
     geminiVerified: false,
     online: true,
     micGranted: false,
@@ -347,11 +355,17 @@ export const useLorin = create<Store>()(
       setView: (view) => set({ view, drawer: false }),
       setDrawer: (drawer) => set({ drawer }),
       setInspector: (inspector) => set({ inspector }),
+      setCommandPaletteOpen: (commandPaletteOpen) => set({ commandPaletteOpen }),
       setProject: (projectId) => {
         const name = get().projects.find((p) => p.id === projectId)?.name ?? projectId;
         set((s) => ({ projectId, audit: pushAudit(s.audit, `Active project is ${name}.`) }));
       },
       setRoute: (route) => set({ route }),
+      setSyncProfile: (syncProfile) =>
+        set((s) => ({
+          syncProfile,
+          audit: pushAudit(s.audit, `Sync profile preference set to ${syncProfile}.`),
+        })),
       verifyGemini: () =>
         set((s) => ({
           // This demo has no server-side Gemini verification endpoint. Never
@@ -608,7 +622,7 @@ export const useLorin = create<Store>()(
             ...s.messages,
             {
               id: uid("l"),
-              role: "lorin",
+              role: "lorin" as const,
               text: `Snapshot noted: ${fileName}. The file stays on this device. No vision model was called, and nothing is watched in the background.`,
               model: "ollama-local",
               specialists: ["Iris"],
@@ -660,6 +674,13 @@ export const useLorin = create<Store>()(
         set({ ...fresh(), epoch: get().epoch + 1 });
       },
     }),
-    { name: "lorin-m0-m6", skipHydration: true },
+    {
+      name: "lorin-m0-m6",
+      skipHydration: true,
+      partialize: (state) => {
+        const { commandPaletteOpen: _commandPaletteOpen, ...rest } = state;
+        return rest;
+      },
+    },
   ),
 );

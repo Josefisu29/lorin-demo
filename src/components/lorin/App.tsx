@@ -1,10 +1,15 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { useGlobalShortcuts } from "@/lib/lorin/shortcuts";
+import { useLorin, type View } from "@/lib/lorin/store";
 import { Shell } from "./chrome";
-import { useLorin } from "@/lib/lorin/store";
+import { CommandPalette } from "./CommandPalette";
 import { Ambient, Immersive, MainView } from "./views";
 
 export function LorinApp() {
   const mode = useLorin((s) => s.mode);
+  const paletteOpen = useLorin((s) => s.commandPaletteOpen);
+  const setCommandPaletteOpen = useLorin((s) => s.setCommandPaletteOpen);
+
   useEffect(() => {
     void useLorin.persist.rehydrate().then(() => {
       const s = useLorin.getState();
@@ -18,11 +23,52 @@ export function LorinApp() {
     });
   }, []);
 
-  if (mode === "ambient") return <Ambient />;
-  if (mode === "immersive") return <Immersive />;
+  const handleNavigate = useCallback((view: View) => {
+    const state = useLorin.getState();
+    if (state.mode === "ambient" || state.mode === "immersive" || state.mode === "compact") {
+      state.setMode("workspace");
+    }
+    state.setView(view);
+  }, []);
+
+  const handleTogglePalette = useCallback(() => {
+    setCommandPaletteOpen(!useLorin.getState().commandPaletteOpen);
+  }, [setCommandPaletteOpen]);
+
+  const handleClosePalette = useCallback(() => {
+    setCommandPaletteOpen(false);
+  }, [setCommandPaletteOpen]);
+
+  const { pendingPrefix } = useGlobalShortcuts({
+    onNavigate: handleNavigate,
+    onTogglePalette: handleTogglePalette,
+    onClosePalette: handleClosePalette,
+    paletteOpen,
+  });
+
+  const content =
+    mode === "ambient" ? (
+      <Ambient />
+    ) : mode === "immersive" ? (
+      <Immersive />
+    ) : (
+      <Shell>
+        <MainView />
+      </Shell>
+    );
+
   return (
-    <Shell>
-      <MainView />
-    </Shell>
+    <>
+      {content}
+      <CommandPalette />
+      {pendingPrefix && (
+        <div className="chord-indicator" role="status" aria-live="polite">
+          <span className="text-muted">Shortcut</span>
+          <kbd className="kbd-key">{pendingPrefix}</kbd>
+          <span className="text-muted">then h / s / c / i …</span>
+        </div>
+      )}
+    </>
   );
 }
+

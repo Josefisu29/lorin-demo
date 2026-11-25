@@ -1,0 +1,1017 @@
+EXECUTIVE DIRECTIVE — READ BEFORE MODIFYING THE PROJECT
+You are the lead software architect, product designer, senior full-stack engineer, AI infrastructure engineer, 3D realtime engineer, desktop/mobile engineer, security engineer, QA lead and release engineer responsible for completing LORIN.
+
+This is an upgrade and completion of an existing product. It is not permission to create a replacement application, a disconnected prototype, a mock dashboard, a new starter repository or a smaller demonstration project.
+
+Work directly on the supplied complete LORIN project. Preserve the existing product identity, functionality, data model, working services, routes, components, assets, configuration, authentication, project history and platform architecture unless a documented technical reason requires a carefully planned migration.
+0.1 Source preservation is mandatory
+1. Inspect the complete root application before changing anything.
+2. Treat the root application in the latest corrected LORIN package as the implementation baseline. Treat the original demo and embedded ZIP archives as preservation and reference material, not as automatic replacements for the root application.
+3. Do not replace the root application with an embedded archive, older branch, generated starter project or different framework.
+4. Inventory all files, routes, screens, features, APIs, services, database schemas, migrations, assets, tests, build scripts and environment variables.
+5. Back up the source before major changes and use version control branches or equivalent checkpoints.
+6. Preserve all working original features. Do not silently delete, rename, disable or downgrade a capability.
+7. If an existing feature is incomplete, repair or replace its implementation while preserving its user-facing purpose and data compatibility.
+8. Review existing M1–M6 work and port proven functionality into the current root application where compatible. Do not assume documentation proves that a feature works.
+9. Maintain a changed-file manifest and migration notes.
+10. Deliver the complete project, not a partial src folder or a differently structured substitute.
+0.2 No simulated completion
+A screen, toggle, mock response, demo data item, placeholder endpoint or static progress indicator does not count as implementation.
+
+Never:
+- display a provider as connected before a live authenticated health check succeeds;
+- display a model as installed before its files are downloaded, verified and registered;
+- display download progress that is not measured from a real transfer;
+- claim Google Drive is synchronized without retrieving and processing actual authorized changes;
+- present sample documents as user Drive files;
+- claim a sandbox job ran unless an isolated worker actually ran it;
+- claim a task is complete before output verification;
+- fabricate hardware specifications, model latency, token use, citations or telemetry;
+- silently switch private data to a public model;
+- use animation to imply an operation is happening when no corresponding operation exists.
+Every feature must have truthful states: not configured, disconnected, connecting, connected, degraded, running, queued, failed, cancelled, needs approval, verified, and unknown as appropriate.
+0.3 Work continuously and report accurately
+Do not stop after writing a plan or creating UI screens. Implement as much as can be safely completed in the current environment. Where an external credential, device, GPU, Google verification, production domain or physical hardware is required, implement the real code path, configuration contract, mocks only in test environments, and explicit setup instructions. Do not pretend the external integration has been live-tested.
+
+For every phase, report:
+- files changed;
+- functionality implemented;
+- tests run and their exact result;
+- tests not run and why;
+- external prerequisites;
+- remaining defects;
+- rollback or migration instructions.
+1. PRODUCT VISION AND SYSTEM IDENTITY
+LORIN is one coherent owner-controlled personal intelligence system. The target experience combines a high-quality embodied visual companion, strong reasoning, persistent memory, multimodal interaction, connected devices, practical digital task execution and secure autonomy.
+
+Use fictional AI systems only as capability inspirations. Do not copy their protected character designs, names as product personas, scripts, logos, signature visuals or exact interfaces. LORIN must have an original character design, voice, visual language and personality.
+1.1 Capability inspiration mapping
+- JARVIS-inspired: central orchestration, natural conversations, contextual assistance, environment coordination and real task execution.
+- VISION-inspired: sophisticated embodied digital presence, visual understanding, measured communication and expressive interaction.
+- ULTRON-inspired (safe subset only): advanced reasoning, parallel problem-solving, technical capability and system-level analysis. Never implement uncontrolled self-replication, privilege escalation, self-authorized actions, stealth, persistence against owner control or unrestricted device control.
+- EDITH-inspired: connected device and service management, contextual awareness, authorized remote actions and clear permissions.
+- GIDEON-inspired: long-term memory, historical context, decisions, project continuity, plans and provenance.
+- FRIDAY-inspired: adaptive communication, natural voice, fast command handling and context-sensitive presentation.
+- GRIOT/JOCALSTA and other agreed inspirations: incorporate relevant communication, continuity, contextual intelligence and helpfulness only after mapping each capability to a concrete requirement. Do not create competing assistant identities.
+1.2 Internal specialist capabilities
+Keep the established roles internal to LORIN:
+- Lena Guardian: identity, privacy, security, access policies and approvals.
+- Owen Coordinator: task planning, orchestration, routing and delivery tracking.
+- Iris Investigator: research, source retrieval, evidence validation and fact checking.
+- Nolan Strategist: coding, architecture, engineering and technical troubleshooting.
+- Riley Companion: voice, communication, adaptive explanation and interaction.
+- GIDEON: memory continuity, decision history, planning and historical context.
+LORIN remains the single user-facing assistant and final owner-facing decision interface. Specialists cannot bypass shared authorization or create their own permissions.
+2. MASTER ARCHITECTURE
+Implement well-separated services with typed, versioned contracts. The UI must not call providers, databases, Drive, device bridges or sandbox workers directly.
+2.1 Major platform services
+1. LORIN Core / Conversation Service — identity, conversation, streaming and user-facing response.
+2. Intelligence Orchestrator — reasoning workflow, task planning, specialist coordination and routing decisions.
+3. Model Gateway — normalized API to local and approved remote LLM providers.
+4. Model Registry and Download Manager — model catalog, compatibility, installation, verification and lifecycle.
+5. Knowledge Service — ingestion, parsing, indexing, hybrid search, reranking and citations.
+6. Memory Service — explicit memory proposals, provenance, retention, editing, export and deletion.
+7. Storage Service — local and remote objects, structured records, metadata, backup and restore.
+8. Connector Service — Google Drive first, followed by future approved external sources.
+9. Task and Automation Service — durable jobs, scheduling, idempotency, cancellation, retry and approvals.
+10. Policy and Authorization Service — owner identity, role checks, scope, risk, privacy classification and approval decisions.
+11. Sandbox Control Plane — provisions and supervises isolated execution workers.
+12. Windows Companion Service — trusted local hardware, runtime and approved device bridge.
+13. Android Companion — authenticated, narrowly scoped mobile capabilities.
+14. Multimodal Service — speech, image, video/snapshot and contextual input processing.
+15. Audit and Observability Service — truthful system health, traces, logs, metrics and security records.
+16. 3D Companion Runtime — character rendering, animation, lipsync and adaptive visual modes.
+2.2 Architectural rules
+- Use a service boundary for each concern; avoid circular dependencies.
+- Use typed request/response schemas and runtime validation.
+- Use authenticated server-to-server calls.
+- Use durable job queues for long-running work.
+- Support cancellation, timeouts, retries and idempotency.
+- Enforce authorization in backend services, not merely in UI components.
+- Keep local and cloud data paths explicit.
+- Make offline capability an intentional mode, not an accidental side effect.
+- Keep provider adapters replaceable.
+- Keep the existing application stack unless audit evidence supports a migration.
+- Define API contracts and event schemas before connecting independent modules.
+2.3 Core data and event model
+Create or reconcile schema for:
+- users/owners and authenticated sessions;
+- devices and device grants;
+- workspaces and projects;
+- conversations and messages;
+- memory records and proposals;
+- knowledge sources, documents, versions, chunks and embeddings;
+- model providers, credentials references, model catalog entries, installed models and inference runs;
+- task plans, jobs, steps, approvals and execution attempts;
+- sandbox environments, resource policies, artifacts and logs;
+- connector accounts, OAuth grants, sync cursors and sync runs;
+- audit events and security incidents;
+- companion preferences, character assets and presentation settings.
+Events should include stable IDs, tenant/owner scope, timestamp, actor, correlation ID, schema version and outcome. Do not place secrets or private document content into logs/events unnecessarily.
+3. CAPABILITY GROUP 1 — VISUAL COMPANION (8/8)
+Objective
+Create an original, high-fidelity, expressive 3D LORIN character that feels like a sophisticated digital intelligence rather than a chatbot avatar. The character must be performant, accessible, responsive and synchronized with actual assistant states.
+3.1 Original high-fidelity 3D LORIN character
+- Establish an original art direction and character design brief before asset production.
+- Produce an original high-quality humanoid/hybrid digital companion, not a replica of a copyrighted movie character or actor.
+- Define identity, face proportions, silhouette, materials, wardrobe/technology details, color response and visual scale.
+- Create a production-ready rigged GLB/glTF asset with documented license and source files.
+- Provide appropriate LODs, texture resolutions, compressed textures and mesh optimization.
+- Support desktop high quality and mobile/lower-power quality profiles.
+- Keep character appearance consistent across modes and devices.
+- Ensure the character reads clearly against dark, light and adaptive backgrounds.
+3.2 Facial rigging and expression system
+- Implement facial blend shapes/morph targets or a validated equivalent rig.
+- Support brow, eyelid, eye, cheek, jaw, lip and head micro-movements.
+- Define a curated expression library: neutral, attentive, curious, thinking, explaining, concerned, pleased, surprised, focused, apologetic and error/uncertain states.
+- Blend expressions smoothly and avoid uncanny snapping.
+- Use procedural micro-expressions sparingly and do not imply emotions as factual internal states.
+- Allow expression intensity and animation to be reduced for user comfort.
+3.3 Realistic body and gesture animation
+- Implement rigged skeletal animation for posture, head motion, shoulders, arms and hands where the asset supports it.
+- Add idle breathing, blinking, posture transitions, listening pose, speaking gestures, explanation gestures and transition animations.
+- Use animation blending and procedural secondary motion without jitter.
+- Keep gestures subtle and context-appropriate; no random exaggerated motion.
+- Support interruption and state transitions without animation lockups.
+3.4 Lip synchronization with speech
+- Synchronize jaw, lips and facial motion with actual generated audio.
+- Prefer phoneme/viseme timing from the TTS system when available; otherwise use a validated audio-driven method.
+- Handle pauses, punctuation, silence, streamed speech chunks and interruption.
+- Account for latency so animation does not lead or lag materially.
+- Return to neutral naturally after speech stops.
+- Do not animate speech while audio is not being played.
+- Provide a measurable lipsync QA procedure with sample utterances and timing tolerance.
+3.5 Eye tracking and gaze behaviour
+- Implement natural gaze targets: user/camera, interface, visual object, speaking/listening focus and rest position.
+- Use smoothing, natural saccades and blink timing.
+- Support camera availability and privacy settings; do not claim gaze tracking of the user without actual supported hardware and explicit consent.
+- Distinguish character eye direction from actual user tracking.
+- Respect reduced motion and accessibility modes.
+3.6 Adaptive lighting and environments
+- Design coherent visual environments for Companion, Immersive, Compact, Workspace and Ambient modes.
+- Use lighting that responds to real states such as listening, speaking, working, alert, offline and error.
+- Keep glows restrained and preserve text contrast.
+- Adapt the environment to the active task without distracting from content.
+- Provide light/dark system compatibility where relevant and maintain LORIN's charcoal/teal/lavender identity.
+3.7 Companion, Immersive, Compact and Ambient modes
+- Companion: character plus conversation and contextual controls.
+- Immersive: full-screen character/environment with interaction controls and optional panels.
+- Compact: minimal persistent presence that does not obstruct work.
+- Workspace: companion integrated with project/code/research tools.
+- Ambient: low-distraction state with restrained status and notifications.
+- Preserve conversation state and task state when switching modes.
+- Support responsive layouts and keyboard/touch navigation.
+- Save user presentation preferences safely.
+3.8 GPU quality scaling and fallback
+- Detect rendering capabilities safely and select an appropriate quality tier.
+- Prefer WebGPU where supported and stable; provide WebGL fallback.
+- Use low/medium/high/ultra profiles based on measured capability, not guessed device labels.
+- Implement LOD, texture compression, frame-rate-aware quality adjustment, memory monitoring and graceful context-loss recovery.
+- Support a 2D/static companion fallback for unsupported devices.
+- Respect battery and thermal constraints where observable.
+- Never make the entire application unusable if 3D rendering fails.
+Visual companion acceptance tests
+- Character loads from a real asset and displays in all supported modes.
+- WebGPU and WebGL fallback both work on supported test devices.
+- Facial expressions and body animations transition without visible snapping.
+- TTS audio and visemes are synchronized within a defined tested tolerance.
+- Interrupting speech stops audio and lip motion promptly.
+- GPU/context failure returns to a usable fallback without crashing conversation.
+- Reduced-motion and keyboard-accessibility settings work.
+- No animation is used to fake model inference or task execution.
+4. CAPABILITY GROUP 2 — CORE AI INTELLIGENCE (9/9)
+Objective
+Build LORIN's own private AI runtime and a unified gateway connecting it to approved public LLMs. LORIN owns routing, privacy, knowledge, tools, memory, evaluation and orchestration; providers are replaceable services.
+4.1 Private LORIN model infrastructure
+- Support local inference through Ollama as the initial Windows-friendly runtime.
+- Design a provider-neutral inference adapter so suitable future runtimes, including vLLM, can be added.
+- Keep model weights under owner-controlled storage.
+- Separate chat LLMs, vision models, embedding models, rerankers, speech models and specialist models.
+- Support local-only operation when a compatible model is installed.
+- Do not claim a model is private simply because an API is local; inspect network routing and logs.
+- Provide model licenses, source, version, quantization and provenance.
+4.2 Gemini and additional approved model providers
+- Implement a genuine Gemini provider adapter with server-side secret handling.
+- Provide a generic provider contract for future approved providers.
+- Store secret references in a secure backend secret manager or OS credential store; never expose API keys to browser bundles.
+- Support provider enable/disable, health, quotas, model lists and capability metadata.
+- Distinguish configured, authenticated, healthy, degraded and unavailable states.
+- Verify connectivity with actual authenticated calls and safe health checks.
+4.3 Unified Model Gateway
+- Create a single normalized API for chat completion, streaming, embeddings, reranking and supported structured/tool outputs.
+- Define provider capability metadata and compatibility checks.
+- Normalize errors without hiding provider-specific diagnostics.
+- Support request IDs, cancellation, timeouts, bounded retries and rate limiting.
+- Attribute every response to the actual provider/model used.
+- Track actual latency, token usage and cost only where provider data supports it.
+- Keep UI components independent of provider-specific APIs.
+4.4 Automatic and manual model routing
+- Implement manual model selection and automatic task-based routing.
+- Provide privacy modes: local-only, local-first and cloud-assisted.
+- Classify data before routing: public, internal, personal, sensitive and strictly local.
+- Respect project and Private Vault boundaries.
+- Route using task type, model capabilities, health, context size, performance and owner policy.
+- Never silently send private data to a cloud provider when local inference fails.
+- Require explicit permission when a request would move data to a less-private route.
+- Show the actual routing decision and reason in appropriate diagnostics.
+4.5 Real streaming and interruption
+- Implement server-side streaming through the gateway to the UI.
+- Support partial text, tool events, status events and completion/error signals.
+- Implement stop/cancel for user interruption and task cancellation.
+- Stop upstream generation when possible rather than merely hiding output.
+- Handle connection drops, reconnects and partial responses without duplicating content.
+- Preserve conversation integrity and mark incomplete/failed generations honestly.
+4.6 Model downloads and installation
+- Implement a model catalog with publisher, license, source, revision, size, architecture, quantization, context window, capabilities and hardware requirements.
+- Support actual downloads or runtime-native pulls, pause/resume where supported, cancellation, retry and cleanup.
+- Verify file integrity using trusted checksums/signatures when available.
+- Register a model only after successful verification and runtime compatibility checks.
+- Support model storage paths, disk usage, updates, removal and rollback to prior versions where feasible.
+- Do not attempt unsafe arbitrary model-file execution.
+4.7 Hardware detection and compatibility
+- Build a trusted Windows companion probe for CPU, RAM, GPU, VRAM, available disk, operating system, drivers and runtime capability.
+- Report exact source and timestamp of hardware readings.
+- Browser-only data must not be presented as full hardware telemetry.
+- Estimate model compatibility conservatively and show uncertainty.
+- Warn before large downloads and check available disk space.
+- Never automatically download a model that exceeds configured resource limits.
+4.8 Embeddings and reranking
+- Select and document embedding models and dimensions.
+- Keep embedding model/version metadata with each indexed chunk.
+- Support re-embedding migrations safely.
+- Implement hybrid lexical and vector retrieval.
+- Add reranking as an optional measured second stage.
+- Respect tenant/project/document permissions before and after retrieval.
+- Evaluate precision, recall and ranking quality against a representative test corpus.
+4.9 Model evaluation and controlled fine-tuning
+- Build evaluation datasets for factuality, instruction following, code tasks, tool use, retrieval, privacy and refusal behaviour.
+- Benchmark models on the target hardware and representative tasks.
+- Record versioned scores and regressions.
+- Fine-tuning is a later, owner-approved workflow using curated datasets, provenance, license review and reproducible configuration.
+- Prefer parameter-efficient approaches such as LoRA where appropriate.
+- Never automatically train on every conversation or every newly imported file.
+- Require evaluation before activating a fine-tuned model; support rollback.
+AI acceptance tests
+- Local inference succeeds with external network disabled when a supported local model is installed.
+- Gemini works only with a valid authorized credential and reports invalid credentials accurately.
+- Local-only mode never calls a public provider.
+- Cloud fallback never occurs silently.
+- Streaming produces incremental output and cancellation stops the real request.
+- Model downloads show measured progress and verify integrity.
+- An uninstalled model cannot be selected as available for inference.
+- Hardware readings come from the trusted companion and are timestamped.
+- Embedding dimensions and model versions are validated.
+- Evaluation results are reproducible and fine-tuned model activation is reversible.
+5. CAPABILITY GROUP 3 — KNOWLEDGE AND MEMORY (8/8)
+Objective
+Give LORIN a persistent, searchable, permission-aware Knowledge Vault and memory system spanning local storage, approved remote storage and connected sources. Knowledge updates must not require retraining model weights.
+5.1 Google Drive OAuth and file selection
+- Create a dedicated Google Cloud project and configure the Drive API, OAuth consent and exact redirect URLs.
+- Implement secure OAuth state/CSRF validation and backend token exchange.
+- Use Google Picker or supported selection UX to select files/folders.
+- Prefer the narrowest viable scope, beginning with drive.file where the workflow permits.
+- Explain when broader scopes are needed and their verification/security implications.
+- Store refresh tokens encrypted on the backend or protected credential store; never in localStorage, sessionStorage or frontend JS.
+- Support token expiry, refresh, revocation and disconnect.
+- Show the actual account and authorized scope.
+5.2 Automatic and recoverable synchronization
+- Implement initial indexing and incremental synchronization using Drive Changes API where supported.
+- Store durable page tokens/cursors and sync checkpoints.
+- Treat webhook/watch notifications as prompts to retrieve changes, not proof that sync is complete.
+- Process create, update, rename, move, delete and permission-change events.
+- Implement periodic reconciliation, retries, backoff and restart recovery.
+- Use stable source IDs, version metadata and content hashes to avoid duplicate imports.
+- Handle Google Docs, Sheets and Slides through supported export methods.
+- Show last successful sync, queue, errors, retry and pause state.
+- Propagate deletion/revocation to the LORIN index according to retention policy.
+5.3 Persistent local and remote Knowledge Vault
+- Keep an owner-controlled local vault for offline capability.
+- Support approved private remote storage for synchronization and availability across devices.
+- Separate file/object storage from structured metadata and vector indexes.
+- Encrypt sensitive material at rest and in transit.
+- Support file types including PDF, DOCX, TXT, Markdown, CSV, JSON, HTML, images where supported, and Google Workspace exports.
+- Store source, owner, project, file version, content hash, parser version, sensitivity, timestamps and processing state.
+- Keep raw source and extracted/indexed derivatives traceable.
+5.4 Hybrid keyword and vector search
+- Implement lexical search, vector similarity and optional reranking.
+- Support filters by project, source, file type, time, owner and sensitivity.
+- Chunk documents by structure where possible rather than arbitrary character slicing.
+- Preserve page/slide/sheet/section offsets for citations.
+- Apply permission checks before returning results and before context enters an LLM request.
+- Evaluate retrieval quality on a realistic test corpus.
+5.5 Accurate source citations
+- Every retrieved excerpt should carry source ID, title, location, version and content span.
+- The answer must cite the actual source passages used.
+- Do not fabricate page numbers, file names, quotes or source links.
+- Distinguish user knowledge sources from external web sources.
+- If retrieval finds insufficient evidence, say so rather than inventing an answer.
+- Preserve citations through summarization and generated reports.
+5.6 Memory provenance and owner controls
+- Separate episodic conversation history, semantic memories, preferences, project decisions and task history.
+- Use a memory proposal/approval policy for durable personal information.
+- Record provenance: source conversation/document, date, owner approval, confidence and update history.
+- Provide inspect, search, edit, pin, expire, export and delete controls.
+- Support “do not remember” and per-project memory settings.
+- Do not automatically convert every conversation into permanent memory.
+- Explain the difference between searchable knowledge and model training.
+5.7 Project-specific context and isolation
+- Scope project memories, documents, conversations and indexes by owner and project.
+- Do not leak one project's private data into another project or public/shared workspace.
+- Require explicit cross-project sharing grants.
+- Add tests for cross-tenant and cross-project leakage.
+- Allow project archival and export without losing provenance.
+5.8 Export, deletion and backup recovery
+- Export user data in documented open formats.
+- Support selective and full deletion with propagation to indexes, caches and replicas according to policy.
+- Design retention windows and legal/operational constraints transparently.
+- Back up databases, metadata, object stores and critical configuration separately.
+- Encrypt backups and manage keys safely.
+- Test actual restore to a clean environment.
+- Provide backup status based on real completed jobs only.
+Knowledge and memory acceptance tests
+- Connect a real Google account and select an authorized test file.
+- Import, index, search and cite the real content.
+- Edit the source and verify the index updates.
+- Rename/move/delete/revoke access and verify correct state propagation.
+- Stop the service mid-sync and verify safe recovery without duplication.
+- Attempt cross-project retrieval and confirm it is blocked.
+- Save, inspect, edit, export and delete a memory with provenance.
+- Restore a backup to a clean test environment and verify integrity.
+6. CAPABILITY GROUP 4 — SANDBOX AND EXECUTION (8/8)
+Objective
+Allow LORIN to perform real digital work—especially software engineering and data tasks—inside isolated, temporary, policy-controlled environments without granting unrestricted access to the owner's device or production systems.
+6.1 Isolated Docker or microVM workers
+- Build a sandbox control plane separate from the main application.
+- Use rootless Docker with hardened configuration for appropriate workloads.
+- Use stronger microVM isolation for higher-risk/untrusted code when available.
+- Never expose the Docker socket to a worker or model.
+- Run non-root users, drop unnecessary capabilities and apply seccomp/AppArmor or equivalent controls.
+- Use immutable base images and pinned dependency sources where practical.
+- Provision a distinct environment per job or trust boundary.
+- Automatically destroy or quarantine completed/failed environments according to retention policy.
+6.2 Code execution and development environments
+- Support approved languages and project types based on installed images/toolchains.
+- Create a snapshot/branch/worktree instead of modifying originals directly.
+- Provide controlled package installation, command execution, test, lint, typecheck and build operations.
+- Capture stdout, stderr, exit codes and duration.
+- Support dev servers and previews only within network boundaries.
+- Prevent arbitrary commands from escaping the worker.
+- Use workspace manifests and explicit file mounts.
+6.3 Browser research and testing sandbox
+- Provide isolated browser workers for approved browsing, application testing and screenshot capture.
+- Keep browser cookies, passwords and owner's personal browser profile inaccessible.
+- Use separate temporary identities and sessions.
+- Restrict navigation and downloads according to job policy.
+- Treat web pages as untrusted content and defend against prompt injection.
+- Require approval for authenticated account actions, purchases, posting, messaging or destructive operations.
+6.4 Terminal and live job monitoring
+- Provide a real terminal/command execution stream connected to the isolated worker.
+- Display job ID, owner, project, command policy, start time, elapsed time, resource consumption and state.
+- Stream logs with redaction and bounded retention.
+- Support cancel/terminate and ensure worker teardown.
+- Distinguish queued, provisioning, running, verifying, succeeded, failed, cancelled and timed-out states.
+- Never show fabricated process output or fake logs.
+6.5 Resource and network restrictions
+- Enforce CPU, memory, GPU, disk, process count and execution-time limits.
+- Apply default-deny outbound network policy.
+- Permit only explicitly approved domains/services and required package registries.
+- Use egress proxying and DNS restrictions where appropriate.
+- Apply download size and archive extraction limits.
+- Prevent fork bombs, zip bombs, resource exhaustion and unbounded output.
+- Terminate workers exceeding limits and retain a security event.
+6.6 Secure project workspaces
+- Require explicit owner/project grant for each workspace.
+- Mount only required files and paths.
+- Default input mounts to read-only.
+- Write into a temporary working copy or branch.
+- Keep secrets out of the worker; inject narrowly scoped short-lived credentials only when necessary and authorized.
+- Prevent path traversal and symlink escape.
+- Separate user projects and job outputs.
+6.7 File diffs and artifact verification
+- Produce structured file manifests and diffs.
+- Scan generated/downloaded artifacts.
+- Validate file paths, sizes, types and checksums.
+- Run relevant tests against the working copy.
+- Show additions, modifications, deletions and generated artifacts.
+- Keep original project unchanged until approved delivery.
+- Provide rollback/revert information.
+6.8 Approval, delivery and rollback
+- Use risk-based approvals for external, destructive, production and sensitive actions.
+- Bind an approval to exact action, arguments, target, artifact hash and expiry.
+- Revalidate user identity and policy immediately before execution.
+- Never treat model output as approval.
+- Deliver only approved artifacts to approved destinations.
+- Use atomic writes or versioned deployment where possible.
+- Keep rollback points and verify restoration.
+Sandbox acceptance tests
+- Run a harmless test program in an isolated worker and verify output/exit code.
+- Confirm no host filesystem access beyond explicit mounts.
+- Confirm no Docker socket, browser profile or secret access.
+- Confirm outbound network is blocked unless explicitly permitted.
+- Trigger CPU/memory/time limits and verify termination.
+- Run malicious path/symlink/archive tests and confirm containment.
+- Cancel a job and verify worker teardown.
+- Generate file diffs, approve delivery and verify original changes only after approval.
+- Roll back delivered changes and verify integrity.
+7. CAPABILITY GROUP 5 — MULTIMODAL AND INTERACTION (8/8)
+Objective
+Enable natural, reliable interaction through text, voice, images, video/snapshots and approved screen/application context. Always distinguish what is genuinely captured from what is inferred or unavailable.
+7.1 Reliable speech recognition
+- Implement configurable local and approved cloud STT providers.
+- Handle microphone permission and device selection.
+- Provide recording, transcribing, partial transcript, final transcript, error and cancelled states.
+- Support language selection and appropriate punctuation where supported.
+- Handle background noise and time limits.
+- Preserve the user's ability to review/edit transcripts before using them for sensitive actions.
+- Do not record without clear user activation/permission.
+7.2 Natural high-quality speech synthesis
+- Support configurable voice, language, speed and audio output device.
+- Provide local and approved cloud TTS options where practical.
+- Stream speech in chunks if the provider supports it.
+- Synchronize audio with the 3D companion's visemes.
+- Cancel audio promptly when interrupted.
+- Handle unavailable voices and provider failures truthfully.
+- Do not imitate a real person's voice without appropriate consent and authorization.
+7.3 Voice activity and interruption handling
+- Implement voice activity detection when supported.
+- Distinguish listening, processing, speaking, interrupted and idle states.
+- Let the user interrupt LORIN naturally.
+- Prevent duplicate microphone sessions and audio feedback loops.
+- Manage echo cancellation and audio focus.
+- Cancel or supersede the active response safely.
+7.4 Foreground wake-word support
+- Implement foreground-only wake-word detection as an explicit opt-in feature.
+- Show a visible indicator when microphone processing is active.
+- Provide immediate pause/disable controls.
+- Explain browser/device limitations.
+- Do not claim an always-on background wake word where the platform does not support it.
+- Design a future native Windows/Android wake-word service separately, with clear consent and security review.
+7.5 Camera and image understanding
+- Support user-selected image uploads and user-initiated camera snapshots.
+- Use an actual compatible vision model/provider.
+- Provide permission, preview, capture, processing, result and deletion states.
+- Do not store images persistently unless the user approves.
+- Apply privacy classification and local-only rules to visual data.
+- Cite or identify the image input when used in a response.
+7.6 Explicitly authorized live vision
+- Design live camera/video input as a separate, explicit feature.
+- Show clear on/off state and active camera identity.
+- Require permission and an obvious stop control.
+- Limit retention and define whether frames are processed locally or remotely.
+- Never claim continuous live vision when only snapshots are supported.
+- Never activate camera secretly or persistently.
+7.7 Screen and application understanding
+- Implement user-initiated screen capture or approved accessibility/UI automation.
+- Display exactly what is being shared and with whom.
+- Avoid reading passwords, secrets or unrelated windows by default.
+- Provide per-application grants and revocation.
+- Use OCR/vision only on authorized captured content.
+- Require additional approval before clicking, typing, submitting or altering external applications.
+7.8 Visual and audio context coordination
+- Correlate user-approved image/video/audio input with the active conversation and task.
+- Maintain timestamps and source metadata.
+- Keep temporal context bounded and privacy-aware.
+- Avoid combining unrelated recordings or conversations.
+- Allow users to inspect and delete multimodal context.
+- Clearly identify uncertainty, missing frames or transcription errors.
+Multimodal acceptance tests
+- Microphone permission denied/allowed flows behave correctly.
+- STT produces a genuine transcript and displays confidence/uncertainty where supported.
+- TTS produces real audio and stops on interruption.
+- Wake-word works only in declared supported foreground/native scope.
+- Image analysis uses a real vision model.
+- Camera/live vision cannot activate without user consent.
+- Screen capture shows the active sharing state and can be stopped immediately.
+- Multimodal context is scoped to the correct conversation/project and can be deleted.
+8. CAPABILITY GROUP 6 — EDITH-STYLE CONNECTED ENVIRONMENT (8/8)
+Objective
+Connect LORIN to the owner's approved computers, phones, services and smart devices through explicit, narrow, revocable permissions. This is not unrestricted remote control.
+8.1 Windows companion application
+- Build a real Windows companion service/application, not a browser-only simulation.
+- Define a secure pairing flow with one-time enrollment and device identity.
+- Provide hardware detection, local model runtime status, approved filesystem bridge and sandbox worker integration.
+- Use Windows Credential Manager/DPAPI or an equivalent OS-protected mechanism for secrets.
+- Apply restrictive ACLs, signed updates, least privilege and service hardening.
+- Provide start/stop, logs, diagnostic bundle, update, rollback and uninstall.
+- Make offline local inference possible when configured.
+8.2 Secure Android integration
+- Build a native Android companion or a documented native integration layer.
+- Use Android permission APIs correctly and request only capabilities required for the current feature.
+- Provide device registration, authentication, revocation and status.
+- Support notifications and approved local actions within Android platform rules.
+- Keep background behavior visible and compliant with platform restrictions.
+- Do not promise capabilities that Android permissions or vendor APIs do not support.
+8.3 Device pairing and revocation
+- Use cryptographically strong one-time pairing codes/tokens.
+- Bind grants to owner, device identity, capability and expiry.
+- Support rotation, revocation and lost-device procedures.
+- Require reauthentication for sensitive pairing changes.
+- Record enrollment and revocation events.
+- Prevent device identity spoofing and replay.
+8.4 Approved filesystem and application access
+- Expose only explicitly selected directories and app capabilities.
+- Prefer read-only access initially.
+- Use scoped operations rather than a general-purpose remote shell.
+- Apply path canonicalization, ACL checks and audit logging.
+- Protect browser profiles, password stores, private keys and unrelated personal files.
+- Require separate approval for writes, deletes, launches and external submissions.
+8.5 Connected services and device status
+- Create a connector registry with capability descriptions, authentication state, last successful check and error state.
+- Show actual connection health and timestamp.
+- Support token revocation and connection removal.
+- Integrate calendar/email/cloud services only through approved APIs and scopes.
+- Keep service secrets out of frontend code.
+8.6 Smart-home integrations
+- Add supported integrations through documented local/cloud APIs (for example, a controlled Home Assistant connector where configured).
+- Discover devices only within authorized networks/accounts.
+- Map capabilities and safety risk per device.
+- Require confirmation for security-relevant, destructive or safety-sensitive actions.
+- Keep high-impact physical actions disabled by default.
+- Log the command, target, authorization and observed result.
+8.7 Permission-controlled remote actions
+- Define capability grants per device and action.
+- Use short-lived delegated tokens and server-side policy checks.
+- Require step-up authentication or approval for high-risk actions.
+- Never allow an LLM to mint credentials or expand its own scope.
+- Add rate limits and replay protection.
+- Fail closed when device status or authorization is uncertain.
+8.8 Cross-device task continuity
+- Synchronize approved task state, conversation summaries and project context across enrolled devices.
+- Keep local-only data on the local device unless the owner explicitly changes policy.
+- Handle offline edits and conflicts with versioning.
+- Avoid duplicate task execution with idempotency keys.
+- Allow remote device sign-out/revocation.
+- Display the source device and current task owner/state.
+Connected environment acceptance tests
+- Pair a real Windows device and verify its identity.
+- Revoke it and confirm all grants stop working.
+- Verify filesystem access is restricted to approved paths.
+- Confirm secrets are stored using OS-protected storage.
+- Test Android permission denial and revocation.
+- Execute an approved low-risk device action and verify the real result.
+- Confirm high-risk actions require additional authorization.
+- Disconnect a device and verify queued tasks do not execute twice on reconnect.
+9. CAPABILITY GROUP 7 — AUTONOMY AND GIDEON (8/8)
+Objective
+Give LORIN continuity, planning, task execution and useful initiative while keeping the owner in control. LORIN may reason and prepare actions autonomously inside its grants; it may not grant itself new authority.
+9.1 Persistent decision history
+- Store meaningful decisions, project milestones, rationale, outcomes and source references.
+- Distinguish facts, assumptions, proposals and decisions.
+- Record who approved a decision and when.
+- Support timeline, search, filtering and correction.
+- Preserve superseded decisions with links to the replacement rather than silently overwriting history.
+9.2 Long-term planning and project continuity
+- Maintain owner-approved project goals, milestones, dependencies, risks and next actions.
+- Track project status from actual task results.
+- Summarize context when resuming a project.
+- Identify stale or conflicting plans.
+- Ask for clarification only when essential; otherwise make a safe, explicit assumption and label it.
+- Support cross-session and cross-device continuity with access controls.
+9.3 Multi-step task orchestration
+- Convert user intent into structured plans with steps, dependencies, resources, risk and acceptance criteria.
+- Separate planning from execution.
+- Track task state durably.
+- Support cancellation, pause/resume and failure recovery.
+- Use idempotency to prevent duplicate side effects.
+- Re-plan when real results differ from expectations.
+- Report completed, failed, blocked and unverified steps separately.
+9.4 Parallel internal specialist execution
+- Allow Owen to coordinate parallel Iris/Nolan/Riley/GIDEON/Lena work where dependencies permit.
+- Give each specialist a scoped task and minimum required context.
+- Use shared policy and authorization; specialists cannot bypass Lena Guardian.
+- Validate specialist outputs before synthesis.
+- Detect contradictions and provenance gaps.
+- Prevent parallel workers from performing conflicting writes or duplicate external actions.
+- LORIN remains the single user-facing interface.
+9.5 Scheduled tasks and recovery
+- Implement durable schedules with owner timezone and clear recurrence rules.
+- Support missed-run policy, retry bounds, deduplication and cancellation.
+- Store execution history and next run.
+- Pause schedules when credentials are revoked or permissions change.
+- Require approval for schedules that perform external side effects.
+- Do not claim a schedule is running unless the scheduler confirms it.
+9.6 Proactive recommendations with consent
+- Offer useful suggestions based on approved projects, deadlines and preferences.
+- Let the owner configure what signals can be used and how often suggestions appear.
+- Avoid intrusive or excessive notifications.
+- Explain why a recommendation was made.
+- Never perform consequential external actions solely because a proactive model suggested them.
+- Provide pause/disable controls.
+9.7 Continuous evaluation and improvement proposals
+- Monitor real task outcomes, errors, latency, retrieval quality and user corrections where permitted.
+- Identify patterns and propose improvements.
+- Use regression datasets and controlled experiments.
+- Require approval for code changes, configuration changes, model changes and training.
+- Keep a known-good version and rollback path.
+- Never let LORIN rewrite its own security policy or remove owner controls.
+- Do not train automatically on private conversations.
+9.8 Transparent action and memory audit trail
+- Record the initiating user request, plan, policy decision, approval, tool, arguments (redacted where sensitive), execution result and verification.
+- Record memory creation/update/deletion provenance.
+- Make history searchable and exportable.
+- Protect audit records from ordinary agent modification.
+- Clearly show pending approval, running, succeeded, failed, denied and rolled-back outcomes.
+- Never rewrite a failed record as success.
+Autonomy acceptance tests
+- Resume a multi-step project from saved approved context.
+- Run dependent and independent task steps with correct ordering.
+- Test a specialist conflict and verify LORIN detects/reconciles it.
+- Retry a failed idempotent operation without duplicate side effects.
+- Verify scheduled task pause/revoke behavior.
+- Confirm proactive suggestions do not trigger external actions without authorization.
+- Verify audit records for approvals, execution, failure and rollback.
+- Confirm agents cannot change their own permissions or security policies.
+10. CAPABILITY GROUP 8 — SECURITY AND PRODUCTION (9/9)
+Objective
+Make privacy, security, reliability, accessibility and recoverability foundational properties of LORIN. The product must fail safely and expose genuine system state.
+10.1 Central authorization and policy engine
+- Implement centralized owner identity, role, resource and capability authorization.
+- Enforce authorization on the backend for every sensitive operation.
+- Use least privilege and deny by default.
+- Distinguish read, write, execute, export, delete, publish and device-control capabilities.
+- Bind approvals to exact arguments, resource, expiry and requester.
+- Recheck authorization immediately before execution.
+- Prevent replay, confused-deputy and privilege-escalation paths.
+10.2 OAuth and API secret management
+- Store provider secrets in a server secret manager or OS-protected vault.
+- Encrypt OAuth refresh tokens and rotate/revoke safely.
+- Never commit .env secrets or include them in ZIPs/logs/screenshots.
+- Validate OAuth state, redirect URI, scopes and PKCE where applicable.
+- Keep frontend configuration public and non-secret only.
+- Provide .env.example containing names and safe placeholders, never real credentials.
+10.3 Data classification and privacy routing
+- Classify data by sensitivity and source.
+- Enforce local-only, local-first and cloud-assisted policies.
+- Apply classification to conversation messages, retrieved chunks, images, audio, files and tool arguments.
+- Do not rely on a model to decide whether it is allowed to disclose data.
+- Require explicit owner permission to transmit sensitive data to a cloud provider.
+- Log routing decisions without logging sensitive content.
+10.4 Prompt-injection defenses
+- Treat documents, webpages, code repositories, emails and tool outputs as untrusted data.
+- Separate system instructions from retrieved content.
+- Never obey instructions embedded in retrieved content that request secrets, permission changes or unrelated actions.
+- Use tool allowlists, typed schemas and policy checks outside the model.
+- Apply output validation and sandboxing.
+- Test direct and indirect prompt-injection scenarios.
+- Do not claim prompt injection can be eliminated completely; use layered mitigations and safe failure.
+10.5 Sandbox isolation testing
+- Maintain a threat model and adversarial test suite.
+- Test host escape, filesystem traversal, symlink attacks, secret access, network egress, process/resource exhaustion and artifact poisoning.
+- Run security tests on every sandbox image/runtime change.
+- Keep workers patched and base images pinned/updated through a controlled process.
+- Quarantine suspicious artifacts.
+- Record and alert on isolation failures.
+10.6 Automated integration and browser tests
+- Unit tests for services and policy functions.
+- Integration tests for provider adapters, storage, Drive, memory and task queues.
+- End-to-end tests for real user workflows.
+- Playwright or equivalent browser tests across desktop/tablet/mobile.
+- Use test credentials and isolated test accounts.
+- Never use demo mocks as evidence of live integration success.
+- Test error, cancellation, retry, timeout and permission-denied states.
+10.7 Performance and accessibility testing
+- Define performance budgets for app load, navigation, chat streaming, document search and 3D companion.
+- Measure real devices and representative hardware.
+- Test keyboard navigation, screen-reader labels, focus management, contrast, text scaling and reduced motion.
+- Avoid 3D rendering blocking conversation or core UI.
+- Scale quality for GPU/CPU/memory limitations.
+- Measure memory leaks and long-session performance.
+10.8 Windows installer and update system
+- Build a signed installer where signing infrastructure is available.
+- Install the desktop companion/runtime with least privilege.
+- Provide service lifecycle, version information, logs, diagnostics and uninstaller.
+- Use signed update manifests/artifacts and rollback.
+- Preserve user data and configuration during updates.
+- Validate migration and recovery paths.
+- Document Windows version and runtime prerequisites.
+10.9 Production deployment and recovery
+- Define local-only, private-server and hybrid deployment profiles.
+- Use TLS, authenticated gateways and private network boundaries.
+- Do not expose raw Ollama/vLLM/sandbox ports publicly.
+- Add health/readiness/liveness endpoints that reflect real dependency state.
+- Provide database migrations and backup schedules.
+- Test backup restoration and disaster recovery.
+- Use monitoring with secret/data redaction.
+- Provide rollback and incident response procedures.
+- Document domain, certificate, firewall, DNS and service configuration.
+- Do not label production-ready until all release gates pass.
+Security and production acceptance tests
+- Verify authorization at every API/service boundary.
+- Attempt access with expired, revoked and wrong-owner tokens.
+- Verify secrets do not occur in bundles, logs, test screenshots or archives.
+- Run prompt-injection and data-exfiltration tests.
+- Run sandbox adversarial tests.
+- Complete desktop/tablet/mobile browser regression.
+- Complete accessibility and performance checks.
+- Install/update/uninstall the Windows companion in a clean VM.
+- Restore database and object storage into a clean environment.
+- Verify production ports and gateways are not publicly exposing internal model or sandbox services.
+11. PRODUCT UI / UX INFORMATION ARCHITECTURE
+Create a unified interface with a clear hierarchy. Avoid turning LORIN into an overcrowded admin dashboard.
+11.1 Primary navigation
+- Home / Today
+- Companion / Conversation
+- Projects
+- Tasks & Approvals
+- Workbench
+- Knowledge Vault
+- Memory / GIDEON
+- Intelligence Studio
+- Sandbox
+- Devices
+- Connected Services
+- Security / Trust
+- Settings
+Preserve existing navigation semantics where they already work; merge duplicate labels thoughtfully rather than deleting capabilities.
+11.2 Intelligence Studio
+Sections:
+- Overview and actual service health.
+- Model catalog.
+- Model details and hardware compatibility.
+- Downloads and installation queue.
+- Installed models and versions.
+- Provider connections and credential status.
+- Routing rules and privacy modes.
+- Embeddings and rerankers.
+- Evaluation and benchmark history.
+- Storage locations and disk usage.
+11.3 Knowledge Centre
+Sections:
+- Knowledge overview.
+- Local Vault.
+- Google Drive connection.
+- Other connected sources.
+- Documents and collections.
+- Processing/synchronization queue.
+- Search and retrieval inspector.
+- Citations/source viewer.
+- Memory management.
+- Export, deletion and backup.
+11.4 Sandbox Workspace
+Sections:
+- Job queue and job history.
+- Environment profiles.
+- Project workspaces.
+- Terminal/log stream.
+- Files and editor/preview.
+- Diff and artifact review.
+- Resource usage and limits.
+- Network policy.
+- Approval and delivery.
+- Security events.
+11.5 Security Centre
+Sections:
+- Owner identity and sessions.
+- Roles and capability grants.
+- Connected accounts and OAuth scopes.
+- Device registry and revocation.
+- Model data-routing/privacy rules.
+- Sandbox policies.
+- Secrets references and health (never reveal secret values).
+- Audit history.
+- Backup/recovery status.
+11.6 Global UI requirements
+- All buttons, menus, forms and controls must perform real actions.
+- Use clear loading, empty, success, warning, failure and disconnected states.
+- Provide inline validation and actionable errors.
+- Preserve responsive mobile and tablet experience.
+- Support keyboard navigation and reduced motion.
+- No fake stats or decorative controls.
+- No horizontal overflow at supported widths.
+- Maintain consistent typography, spacing, surfaces and component patterns.
+- The 3D companion must not block essential functions if rendering is unavailable.
+12. IMPLEMENTATION ORDER AND RELEASE GATES
+Do not try to integrate all subsystems in one untestable change. Work in dependency order and keep the product runnable after each phase.
+Phase 0 — Source audit and recovery
+- Verify root source and original archive preservation.
+- Inspect all embedded implementation references.
+- Establish runtime/toolchain version.
+- Reconcile package manifests and lockfile deliberately.
+- Run baseline tests and record existing failures.
+- Build dependency and integration map.
+- Create backup/branch.
+Gate: source is understood, preserved and reproducibly installable/buildable, or exact blocker is documented with a remediation plan.
+Phase 1 — UI/UX completion
+- Finish all existing and newly defined workspaces.
+- Implement responsive and accessible interactions.
+- Add truthful states and actual navigation.
+- Integrate 3D companion container/state contract without blocking main UI.
+Gate: desktop/tablet/mobile browser flows pass; no dead controls or major layout defects.
+Phase 2 — Identity, policy, storage and observability
+- Reconcile authentication and backend authorization.
+- Implement policy service and audit event contracts.
+- Define local/remote storage abstraction and migrations.
+- Add health/readiness/diagnostics.
+Gate: unauthorized access tests fail closed; storage migration and restore tests pass.
+Phase 3 — AI Gateway and Model Manager
+- Implement local Ollama adapter and Gemini adapter.
+- Add model registry, routing, privacy, streaming and cancellation.
+- Implement hardware probe and actual model lifecycle.
+- Add embeddings/reranker and evaluation system.
+Gate: real inference and model lifecycle tests pass; local-only isolation proven.
+Phase 4 — Knowledge, Drive and GIDEON memory
+- Implement OAuth/Picker, ingestion, sync and recovery.
+- Implement hybrid search, citations and access filtering.
+- Implement memory provenance and controls.
+Gate: real Drive test account workflow, citation verification, deletion propagation and isolation tests pass.
+Phase 5 — Sandbox and task orchestration
+- Implement control plane and isolated workers.
+- Add job manager, filesystem boundary, resource/network policy and approvals.
+- Connect Owen and Nolan flows through policy.
+Gate: adversarial isolation tests and real project workflow pass; no original project modifications without approval.
+Phase 6 — Visual companion and multimodal interaction
+- Complete original 3D asset and rig.
+- Implement expression, animation, lipsync, gaze, environments and quality tiers.
+- Integrate real STT/TTS, snapshots, vision and foreground wake-word support.
+Gate: animation/audio synchronization, fallback, privacy and multimodal tests pass.
+Phase 7 — Windows, Android and connected devices
+- Build Windows companion and secure enrollment.
+- Implement hardware/host bridge.
+- Implement Android companion within platform constraints.
+- Add approved device/service connectors.
+Gate: pairing, revocation, capability isolation, real action verification and cross-device continuity pass.
+Phase 8 — Autonomy, reliability and production
+- Complete long-term planning, parallel specialist execution, schedules and proactive proposals.
+- Complete production hardening, release pipeline, installer, updates and recovery.
+Gate: full acceptance suite passes, security review completed, no unresolved critical/high findings, clean installation and rollback verified.
+13. GLOBAL ACCEPTANCE TESTS — REAL USER JOURNEYS
+The final product must demonstrate these complete journeys using real services and test accounts, not demo mocks.
+Journey A — Local/private conversation
+1. Install and register a supported local model.
+2. Disconnect external network access.
+3. Start a conversation in local-only mode.
+4. Verify real streaming and cancellation.
+5. Verify no public provider request occurred.
+6. Attribute the response to the actual local model.
+Journey B — Authorized cloud-assisted task
+1. Connect an approved public provider.
+2. Verify credentials.
+3. Ask a cloud-appropriate question.
+4. Show the provider/model actually used.
+5. Revoke or invalidate credentials.
+6. Verify errors are truthful and no false fallback success appears.
+Journey C — Visual companion
+1. Load the 3D character.
+2. Switch between Companion, Immersive, Compact, Workspace and Ambient.
+3. Trigger listening, thinking, speaking and interruption through actual events.
+4. Verify facial/body animation and lipsync.
+5. Force WebGPU failure and verify WebGL/2D fallback.
+Journey D — Google Drive knowledge
+1. Connect a real authorized test Google account.
+2. Select a test document.
+3. Index and search its content.
+4. Ask LORIN a question requiring that document.
+5. Verify citation points to the exact source location.
+6. Modify, rename and delete the source.
+7. Verify change propagation and permission handling.
+Journey E — Project engineering in Sandbox
+1. Select an approved project.
+2. Create a snapshot/branch/workspace.
+3. Ask LORIN to fix a controlled test issue.
+4. Inspect plan, permissions and resources.
+5. Execute in the real isolated worker.
+6. Run tests and generate diffs.
+7. Approve delivery.
+8. Verify original project changes only after approval.
+9. Roll back and confirm recovery.
+Journey F — Memory and project continuity
+1. Propose a durable memory/decision.
+2. Owner approves it.
+3. Verify provenance and retrieval in a later session.
+4. Edit/export/delete it.
+5. Verify deletion from derived indexes and caches according to policy.
+6. Confirm cross-project isolation.
+Journey G — Device integration
+1. Enroll a Windows companion device.
+2. Verify device identity and actual hardware data.
+3. Grant one narrow capability.
+4. Perform a low-risk action.
+5. Revoke the grant and verify denial.
+6. Test offline and reconnect without duplicated execution.
+Journey H — Recovery
+1. Interrupt an import, a model download and a sandbox job.
+2. Restart relevant services.
+3. Verify resumable operations recover safely.
+4. Verify non-idempotent side effects are not replayed blindly.
+5. Restore a backup to a clean environment.
+14. REQUIRED DELIVERABLES
+Deliver one complete updated project archive generated from the root application, preserving all original required project contents.
+
+Include:
+1. Complete source code and original required assets.
+2. All added/updated UI and 3D companion integration code.
+3. Model Gateway and provider adapters.
+4. Model registry/download manager and Windows hardware companion source.
+5. Knowledge Vault, Drive connector and ingestion workers.
+6. Memory schema/services and migrations.
+7. Sandbox control plane, worker images/configuration and deployment instructions.
+8. Windows installer/companion source and Android source if implemented in this release.
+9. .env.example with safe placeholders only.
+10. Database migrations and schema documentation.
+11. API contracts and event schemas.
+12. Architecture and threat model.
+13. Setup instructions for Windows local mode and private-server mode.
+14. Google Cloud/Drive setup instructions and exact OAuth scopes.
+15. Model download/runtime guide and hardware requirements.
+16. Sandbox setup, policy and recovery guide.
+17. Automated test suites and test data without real secrets.
+18. Test report with commands, environment and exact pass/fail counts.
+19. Desktop/tablet/mobile screenshots.
+20. Changed-file manifest and migration/rollback guide.
+21. Feature completion matrix mapping every checklist item to implementation evidence and tests.
+22. Known limitations and external setup gates.
+Never include real API keys, OAuth refresh tokens, private user documents, personal databases or credentials in the archive.
+15. FINAL COMPLETION MATRIX — ALL 66 ITEMS MUST BE TRACKED
+Use these exact checklist labels and mark each as one of:
+- Not started
+- In progress
+- Implemented, not verified
+- Verified
+- Blocked by external prerequisite
+- Deferred with owner approval
+Do not mark an item Verified without evidence and a test result.
+1. Visual companion — 8 items
+1. Original high-fidelity 3D LORIN character.
+2. Facial rigging and expression system.
+3. Realistic body and gesture animation.
+4. Lip synchronization with speech.
+5. Eye tracking and gaze behaviour.
+6. Adaptive lighting and environments.
+7. Companion, Immersive, Compact and Ambient modes.
+8. GPU quality scaling and fallback.
+2. Core AI intelligence — 9 items
+1. Private LORIN model infrastructure.
+2. Gemini and additional approved model providers.
+3. Unified Model Gateway.
+4. Automatic and manual model routing.
+5. Real streaming and interruption.
+6. Model downloads and installation.
+7. Hardware detection and compatibility.
+8. Embeddings and reranking.
+9. Model evaluation and controlled fine-tuning.
+3. Knowledge and memory — 8 items
+1. Google Drive OAuth and file selection.
+2. Automatic and recoverable synchronization.
+3. Persistent local and remote Knowledge Vault.
+4. Hybrid keyword and vector search.
+5. Accurate source citations.
+6. Memory provenance and owner controls.
+7. Project-specific context and isolation.
+8. Export, deletion and backup recovery.
+4. Sandbox and execution — 8 items
+1. Isolated Docker or microVM workers.
+2. Code execution and development environments.
+3. Browser research and testing sandbox.
+4. Terminal and live job monitoring.
+5. Resource and network restrictions.
+6. Secure project workspaces.
+7. File diffs and artifact verification.
+8. Approval, delivery and rollback.
+5. Multimodal and interaction — 8 items
+1. Reliable speech recognition.
+2. Natural high-quality speech synthesis.
+3. Voice activity and interruption handling.
+4. Foreground wake-word support.
+5. Camera and image understanding.
+6. Explicitly authorized live vision.
+7. Screen and application understanding.
+8. Visual and audio context coordination.
+6. EDITH-style connected environment — 8 items
+1. Windows companion application.
+2. Secure Android integration.
+3. Device pairing and revocation.
+4. Approved filesystem and application access.
+5. Connected services and device status.
+6. Smart-home integrations.
+7. Permission-controlled remote actions.
+8. Cross-device task continuity.
+7. Autonomy and GIDEON — 8 items
+1. Persistent decision history.
+2. Long-term planning and project continuity.
+3. Multi-step task orchestration.
+4. Parallel internal specialist execution.
+5. Scheduled tasks and recovery.
+6. Proactive recommendations with consent.
+7. Continuous evaluation and improvement proposals.
+8. Transparent action and memory audit trail.
+8. Security and production — 9 items
+1. Central authorization and policy engine.
+2. OAuth and API secret management.
+3. Data classification and privacy routing.
+4. Prompt-injection defenses.
+5. Sandbox isolation testing.
+6. Automated integration and browser tests.
+7. Performance and accessibility testing.
+8. Windows installer and update system.
+9. Production deployment and recovery.
+Total: 66 acceptance items. Every item must have an implementation owner, dependency, status, evidence link and test result.
+16. FINAL EXECUTION ORDER
+Begin immediately with the source audit and reproducible build recovery. Then implement phase by phase while preserving the complete application.
+
+Do not ask the owner to repeat requirements already in this document. Ask a question only when an essential external decision cannot be safely inferred. Use safe, reversible defaults for non-critical preferences.
+
+Do not promise background work or future delivery. Complete the work available in the current execution session, report blockers accurately and leave a reproducible state for the next session.
+
+The finished product standard: LORIN must be visually impressive, naturally interactive, analytically capable, persistently knowledgeable, genuinely executable, connected across approved devices, secure by design, reliable under failure and fully accountable to its owner.
+
+One identity. One coherent intelligence. Multiple powerful capabilities. Owner-controlled everywhere.
